@@ -1,2 +1,7 @@
 fastapi==0.63.0
+<<<<<<< HEAD
 uvicorn==0.13.4 
+=======
+uvicorn==0.13.4
+firebase-admin==4.5.3 
+>>>>>>> c88763c0ce94aa18d55f82203aa3c9c353cd776a
