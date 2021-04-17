@@ -1,8 +1,8 @@
 import uvicorn
 from fastapi import FastAPI, status, Response
 from .firebase import *
-from .models.models import UserRegister
-from .services.services import UserService
+from .models.models import UserRegister, Machine
+from .services.services import UserService, MachineService
 #from dotenv import load_dotenv
 
 
@@ -31,6 +31,11 @@ async def register(data : UserRegister, response  : Response):
 #def read_item(item_id: int, q: Optional[str] = None):
 #    return {"item_id": item_id, "q": q}
 
+@app.post("/machine", status_code=status.HTTP_201_CREATED)
+def add_machine(data : Machine, response : Response):
+    code = MachineService().create_machine(data)
+    print(code)
+    
 @app.get("/order")
 def get_order() -> int:
     return 1
