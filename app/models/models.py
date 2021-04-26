@@ -7,11 +7,11 @@ from datetime import datetime
 class UserRegister(BaseModel):
     email : str
     password : str
-    first_name : str
-    last_name : str
+    first_name : Optional[str] = None
+    last_name : Optional[str] = None
 
 class Machine(BaseModel):
     id : Optional[str] = None
     name : str
-    state : int
-    model : str
+    state : Optional[int] = None
+    model : Optional[str] = None

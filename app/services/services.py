@@ -8,8 +8,8 @@ class UserService(ABC):
         try:
             auth.create_user(
                 email= data.email,
-                password= data.password,
-                display_name= "{} {}".format(data.first_name, data.last_name))
+                password= data.password
+                )
             return 201 
         except auth.EmailAlreadyExistsError as ex: 
             print(type(ex))
@@ -35,4 +35,23 @@ class MachineService(ABC):
             return 401
 
     def get_machines(self):
-        pass    
+        try:
+            print("------ Start get machines ------")
+            ref = db.reference("/Machines")
+            print("------ End get machines ------")
+            return (200,ref.get())
+        except Exception as ex:
+            print("Error : {}".format(ex))
+            return 404
+
+    def update_machine(self, data : Machine):
+        try:
+            print("----- Start update machine's name -----")
+            print("{}".format(data))
+            ref  = db.reference("/Machines")
+            ref.child(data.id).update({"name" : data.name})
+            print("------ End update machine's name -----")
+            return 200
+        except Exception as ex:
+            print("Error : {}".format(ex))
+            return 404
