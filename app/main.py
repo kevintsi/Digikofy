@@ -1,8 +1,8 @@
 import uvicorn
 from fastapi import FastAPI, status, Response
 from .firebase import *
-from .models.models import UserRegister, Machine
-from .services.services import UserService, MachineService
+from .models.models import UserRegister, Machine, PlannedCoffee
+from .services.services import UserService, MachineService, PlannedCoffeeService
 #from dotenv import load_dotenv
 
 
@@ -34,7 +34,7 @@ async def update_machine(data : Machine, response : Response):
         print("Something went wrong")
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
-@app.delete("/machine",status_code=status.HTTP_200_OK):
+@app.delete("/machine",status_code=status.HTTP_200_OK)
 async def delete_machine(id : str, response : Response):
     pass
 
@@ -58,10 +58,21 @@ async def get_machines(response : Response):
 async def add_machine(data : Machine, response : Response):
     code = MachineService().create_machine(data)
     print(code)
+    if code != 201:
+        response.status_code = status.HTTP_400_BAD_REQUEST
     
 @app.get("/order")
 def get_order() -> int:
     return 1
+
+
+@app.post("/plannedcoffee", status_code=status.HTTP_201_CREATED)
+async def add_planned_coffee(data : PlannedCoffee, response : Response):
+    code = MachineService().create_machine(data)
+    print(code)
+    if code != 201:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+
 
 print(__name__)
 if __name__ == "__main__":
