@@ -8,11 +8,8 @@ class UserRegister(BaseModel):
     password: str
 
 
-class Machine(BaseModel):
-    id: Optional[str] = None
+class MachineUpdate(BaseModel):
     name: str
-    state: Optional[int] = None
-    model: Optional[str] = None
 
 
 class Coffee(BaseModel):

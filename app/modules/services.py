@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from ..responseModels.responseModels import UserRegister, Machine, Preparation, Coffee as CoffeeModel  # , PlannedCoffee
+from ..modules.responseModels import MachineUpdate, UserRegister, Preparation, Coffee as CoffeeResponseModel  # , PlannedCoffee
 from firebase_admin import auth, exceptions
-from ..models.Coffee import Coffee
+from ..modules.models import Coffee, Machine
 from ..firebase import db
 from fastapi.encoders import jsonable_encoder
 
@@ -33,38 +33,67 @@ class UserService(ABC):
 
 
 class MachineService(ABC):
-    def create_machine(self, data: Machine):
-        try:
-            print("----- Start create_machine ----")
-            doc_ref = db.collection('machines')
-            print(jsonable_encoder(data))
-            doc_ref.add(jsonable_encoder(data))
-            print("----- End create_machine ----")
-            return 201
-        except Exception as ex:
-            print("Error : {}".format(ex))
-            return 401
+    #def create_machine(self, data: MachineResponseModel):
+        #try:
+            #print("----- Start create_machine ----")
+            #doc_ref = db.collection('machines')
+            #print(jsonable_encoder(data))
+            #doc_ref.add(jsonable_encoder(data))
+            #print("----- End create_machine ----")
+            #return 201
+        #except Exception as ex:
+            #print("Error : {}".format(ex))
+            #return 401
 
     def get_machines(self):
         try:
             print("------ Start get machines ------")
-            docs = db.collection('machines').stream()
-            print("Get machines ---> {}".format(docs))
             machines = []
-            for doc in docs:
-                machines.append(doc.to_dict())
+            doc_machines = db.collection('machines').stream()
+            for doc in doc_machines:
+                dico_machine = doc.to_dict()
+                print(dico_machine)
+                docs_user_machine = db.collection('machines').document(dico_machine["id"]).collection(
+                    "users").where("uid", "==", "9KFeGrJB7mQqMVX4RISBGRgI2oJ3").stream()
+                print("Get machines ---> {}".format(docs_user_machine))
+                for doc_mach_user in docs_user_machine:
+                    dico_machine_user = doc_mach_user.to_dict()
+                    print("User's machine info : {}".format(dico_machine_user))
+                    machines.append(Machine(
+                        id=dico_machine["id"], name=dico_machine_user["name"], state=dico_machine["state"], type=dico_machine["type"]))
+            print(machines)
             print("------ End get machines ------")
-            return (200, machines)
+            return 200, machines
         except Exception as ex:
             print("Error : {}".format(ex))
-            return 404
+            return 404, []
 
-    def update_machine(self, data: Machine):
+    def get_machine_by_id(self, id: str):
+        try:
+            print("------ Start get machine by id ------")
+            machine = None
+            doc_machine = db.collection(
+                'machines').document(id).get().to_dict()
+            print(doc_machine)
+            doc_machine_user = db.collection("machines").document(id).collection("users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").get()
+            print(doc_machine_user)
+            dico_machine_user = doc_machine_user.to_dict()
+            print(dico_machine_user)
+            print("User's machine info : {}".format(dico_machine_user))
+            machine = Machine(id=doc_machine["id"], name=dico_machine_user["name"],
+                                state=doc_machine["state"], type=doc_machine["type"])
+            print(machine)
+            print("------ End get machines ------")
+            return 200, machine
+        except Exception as ex:
+            print("Error : {}".format(ex))
+            return 404, []
+
+    def update_machine(self, id: str, data : MachineUpdate):
         try:
             print("----- Start update machine's name -----")
-            print("{}".format(data))
-            ref = db.reference("/Machines")
-            ref.child(data.id).update({"name": data.name})
+            print("{}".format(id))
+            db.collection("machines").document(id).collection("users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").update({"name" : data.name })
             print("------ End update machine's name -----")
             return 200
         except Exception as ex:
@@ -74,8 +103,7 @@ class MachineService(ABC):
     def delete_machine(self, id: str):
         try:
             print("----- Start delete_machine -----")
-            ref = db.reference("/Machines")
-            ref.child(id).delete()
+            db.collection("machines").document(id).delete()
             print("------ End delete_machine -----")
             return 200
         except Exception as ex:
