@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from ..modules.responseModels import MachineUpdate, UserRegister, Preparation, Coffee as CoffeeResponseModel, MachineCreate  # , PlannedCoffee
+from ..modules.responseModels import MachineUpdate, UserRegister, Preparation as PreparationResponseModel, Coffee as CoffeeResponseModel, MachineCreate  # , PlannedCoffee
 from firebase_admin import auth, exceptions
-from ..modules.models import Coffee, Machine
+from ..modules.models import Coffee, Machine, PreparationPlanned, Preparation
 from ..firebase import db
 from fastapi.encoders import jsonable_encoder
 
@@ -33,30 +33,41 @@ class UserService(ABC):
 
 
 class MachineService(ABC):
+
     def create_machine(self, data: MachineCreate):
+        """
+        Create machine
+
+        Args:
+            data (MachineCreate): [Data model for creating MachineCreate]
+
+        Returns:
+            [Code]: [Status code]
+        """
         try:
             print("----- Start create_machine ----")
-            users_exist = db.collection('machines').document(data.id).collection("users").get()
+            users_exist = db.collection('machines').document(
+                data.id).collection("users").get()
             print(len(users_exist))
             if len(users_exist) == 0:
                 print("Machine never created so no users => creating...")
 
                 db.collection("machines").document(data.id).set({
-                    "id" : data.id,
-                    "state" : data.state,
-                    "type" : data.type
+                    "id": data.id,
+                    "state": data.state,
+                    "type": data.type
                 })
 
                 db.collection("machines").document(data.id).collection("users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").set({
-                    "name" : data.name,
-                    "uid" : "9KFeGrJB7mQqMVX4RISBGRgI2oJ3"
+                    "name": data.name,
+                    "uid": "9KFeGrJB7mQqMVX4RISBGRgI2oJ3"
                 })
 
             else:
                 print("Machine already created so users => adding user...")
                 db.collection("machines").document(data.id).collection("users").document("sddsdsd").set({
-                    "name" : data.name,
-                    "uid" : "dsdsdsds"
+                    "name": data.name,
+                    "uid": "dsdsdsds"
                 })
             print("----- End create_machine ----")
             return 201
@@ -65,6 +76,13 @@ class MachineService(ABC):
             return 401
 
     def get_machines(self):
+        """
+
+        Get all the machines available
+
+        Returns:
+            [list(Machine)]: [List of machines]
+        """
         try:
             print("------ Start get machines ------")
             machines = []
@@ -88,31 +106,54 @@ class MachineService(ABC):
             return 404, []
 
     def get_machine_by_id(self, id: str):
+        """
+
+        Get machine by a given id
+
+        Args:
+            id (str): [Machine's id]
+
+        Returns:
+            [Machine]: [Machine found]
+        """
         try:
             print("------ Start get machine by id ------")
             machine = None
             doc_machine = db.collection(
                 'machines').document(id).get().to_dict()
             print(doc_machine)
-            doc_machine_user = db.collection("machines").document(id).collection("users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").get()
+            doc_machine_user = db.collection("machines").document(id).collection(
+                "users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").get()
             print(doc_machine_user)
             dico_machine_user = doc_machine_user.to_dict()
             print(dico_machine_user)
             print("User's machine info : {}".format(dico_machine_user))
             machine = Machine(id=doc_machine["id"], name=dico_machine_user["name"],
-                                state=doc_machine["state"], type=doc_machine["type"])
+                              state=doc_machine["state"], type=doc_machine["type"])
             print(machine)
             print("------ End get machines ------")
             return 200, machine
         except Exception as ex:
             print("Error : {}".format(ex))
-            return 404, []
+            return 404, machine
 
-    def update_machine(self, id: str, data : MachineUpdate):
+    def update_machine(self, id: str, data: MachineUpdate):
+        """
+
+        Update machine 
+
+        Args:
+            id (str): [Id of machine]
+            data (MachineUpdate): [data use for updates]
+
+        Returns:
+            [Code]: [Status code]
+        """
         try:
             print("----- Start update machine's name -----")
             print("{}".format(id))
-            db.collection("machines").document(id).collection("users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").update({"name" : data.name })
+            db.collection("machines").document(id).collection("users").document(
+                "9KFeGrJB7mQqMVX4RISBGRgI2oJ3").update({"name": data.name})
             print("------ End update machine's name -----")
             return 200
         except Exception as ex:
@@ -145,12 +186,12 @@ class PreparationService(ABC):
     # return 401
 
     def get_preparation(self):
+        preparations = list()
         try:
             print("------ Start get preparation ------")
-            docs = db.collection(
-                'users/9KFeGrJB7mQqMVX4RISBGRgI2oJ3/preparations').stream()
+            docs = db.collection("users").document(
+                "9KFeGrJB7mQqMVX4RISBGRgI2oJ3").collection("preparations").stream()
             print("Get Preparation ---> {}".format(docs))
-            preparations = list()
             for doc in docs:
                 dico = doc.to_dict()
                 print("Coffee reference id --> {}".format(dico["coffee"].id))
@@ -159,13 +200,38 @@ class PreparationService(ABC):
                 coffee = doc_coffee.to_dict()
                 print("Information coffee --> {}".format(coffee))
                 print(Coffee(id=coffee["id"], name=coffee["name"],
-                      description=coffee["description"]).__str__())
-                # preparations.append(doc.to_dict())
+                      description=coffee["description"]))
+
+                coffee = Coffee(id=coffee["id"], name=coffee["name"],
+                                description=coffee["description"])
+
+                print("Machine reference id --> {}".format(dico["machine"].id))
+                doc_machine = db.collection("machines").document(
+                    dico["machine"].id).get()
+                machine = doc_machine.to_dict()
+                print("Information machine --> {}".format(machine))
+                print(Machine(id=machine["id"], state=machine["state"],
+                      type=machine["type"]))
+
+                machine = Machine(id=machine["id"], state=machine["state"],
+                                  type=machine["type"])
+
+                print(dico)
+                try:
+                    print("Preparation planned")
+                    preparation = PreparationPlanned(coffee, dico["creationDate"], dico["lastUpdate"], machine,
+                                                     dico["name"], dico["id"], dico["nextTime"], dico["saved"], dico["state"], dico["daysOfWeek"], dico["hours"], dico["lastTime"])
+                except:
+                    print("Preparation not planned")
+                    preparation = Preparation(coffee, dico["creationDate"], dico["lastUpdate"],
+                                              machine, dico["id"], dico["nextTime"], dico["saved"], dico["state"])
+                preparations.append(preparation)
             print("{}".format(preparations))
             print("------ End get preparation  ------")
+            return 200, preparations
         except Exception as ex:
             print("Error : {}".format(ex))
-            return 401
+            return 401, preparations
 
 
 class CoffeeService(ABC):
