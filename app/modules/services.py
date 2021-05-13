@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from ..modules.responseModels import MachineUpdate, UserRegister, Preparation, Coffee as CoffeeResponseModel  # , PlannedCoffee
+from ..modules.responseModels import MachineUpdate, UserRegister, Preparation, Coffee as CoffeeResponseModel, MachineCreate  # , PlannedCoffee
 from firebase_admin import auth, exceptions
 from ..modules.models import Coffee, Machine
 from ..firebase import db
@@ -33,17 +33,36 @@ class UserService(ABC):
 
 
 class MachineService(ABC):
-    #def create_machine(self, data: MachineResponseModel):
-        #try:
-            #print("----- Start create_machine ----")
-            #doc_ref = db.collection('machines')
-            #print(jsonable_encoder(data))
-            #doc_ref.add(jsonable_encoder(data))
-            #print("----- End create_machine ----")
-            #return 201
-        #except Exception as ex:
-            #print("Error : {}".format(ex))
-            #return 401
+    def create_machine(self, data: MachineCreate):
+        try:
+            print("----- Start create_machine ----")
+            users_exist = db.collection('machines').document(data.id).collection("users").get()
+            print(len(users_exist))
+            if len(users_exist) == 0:
+                print("Machine never created so no users => creating...")
+
+                db.collection("machines").document(data.id).set({
+                    "id" : data.id,
+                    "state" : data.state,
+                    "type" : data.type
+                })
+
+                db.collection("machines").document(data.id).collection("users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").set({
+                    "name" : data.name,
+                    "uid" : "9KFeGrJB7mQqMVX4RISBGRgI2oJ3"
+                })
+
+            else:
+                print("Machine already created so users => adding user...")
+                db.collection("machines").document(data.id).collection("users").document("sddsdsd").set({
+                    "name" : data.name,
+                    "uid" : "dsdsdsds"
+                })
+            print("----- End create_machine ----")
+            return 201
+        except Exception as ex:
+            print("Error : {}".format(ex))
+            return 401
 
     def get_machines(self):
         try:

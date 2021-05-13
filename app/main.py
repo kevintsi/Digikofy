@@ -3,7 +3,7 @@ import uvicorn
 from fastapi import FastAPI, status, Response
 from .firebase import *
 # , PlannedCoffee
-from .modules.responseModels import UserRegister, MachineUpdate, Preparation, Coffee
+from .modules.responseModels import MachineCreate, UserRegister, MachineUpdate, Preparation, Coffee
 # , PlannedCoffeeService
 from .modules.services import UserService, MachineService, PreparationService, CoffeeService
 #from dotenv import load_dotenv
@@ -72,8 +72,8 @@ async def get_machines(id: str, response: Response):
 
 
 @app.post("/machine", status_code=status.HTTP_201_CREATED)
-async def add_machine(data: MachineUpdate, response: Response):
-    #code = MachineService().create_machine(data)
+async def add_machine(data: MachineCreate, response: Response):
+    code = MachineService().create_machine(data)
     print(code)
     if code != 201:
         response.status_code = status.HTTP_400_BAD_REQUEST

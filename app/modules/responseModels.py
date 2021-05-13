@@ -11,6 +11,12 @@ class UserRegister(BaseModel):
 class MachineUpdate(BaseModel):
     name: str
 
+class MachineCreate(BaseModel):
+    id : str
+    state : Optional[int]
+    type : Optional[int]
+    name : str
+
 
 class Coffee(BaseModel):
     id: Optional[str] = None
