@@ -241,7 +241,6 @@ class PreparationService(ABC):
                         list_preparations.append(prep)
                     
     
-
             print("------ End get_preparation_machine ------")
             return 200, list_preparations
         except Exception as ex:
