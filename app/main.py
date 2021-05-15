@@ -1,5 +1,5 @@
 from os import stat
-from starlette.status import HTTP_404_NOT_FOUND
+from starlette.status import HTTP_200_OK, HTTP_404_NOT_FOUND
 import uvicorn
 from fastapi import FastAPI, status, Response
 from .firebase import *
@@ -119,6 +119,16 @@ async def get_preparation(response: Response):
         return preparations
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
+
+
+@app.get("/preparation/machine/{id}", status_code=HTTP_200_OK)
+async def get_preparation_machine(id: str, response: Response):
+    code, preparations = PreparationService().get_preparation_machine(id)
+    if code == 200 and len(preparations) > 0:
+        return preparations
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
+
 
 print(__name__)
 if __name__ == "__main__":
