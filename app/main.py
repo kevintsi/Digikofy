@@ -4,7 +4,7 @@ import uvicorn
 from fastapi import FastAPI, status, Response
 from .firebase import *
 # , PlannedCoffee
-from .modules.responseModels import MachineCreate, UserRegister, MachineUpdate, Preparation, Coffee
+from .modules.responseModels import MachineCreate, ReportPreparationStarted, UserRegister, MachineUpdate, Preparation, Coffee
 # , PlannedCoffeeService
 from .modules.services import UserService, MachineService, PreparationService, CoffeeService
 #from dotenv import load_dotenv
@@ -128,6 +128,14 @@ async def get_preparation_machine(id: str, response: Response):
         return preparations
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
+
+@app.post("/preparation/started", status_code=status.HTTP_200_OK)
+async def report_preparation_started(data: ReportPreparationStarted, response: Response):
+    code = PreparationService().report_preparation_started(data)
+    print(code)
+    if code != 200:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+
 
 
 print(__name__)

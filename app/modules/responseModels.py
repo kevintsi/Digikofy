@@ -18,6 +18,11 @@ class MachineCreate(BaseModel):
     name : str
 
 
+class ReportPreparationStarted(BaseModel):
+    machine_id : str
+    preparation_id : str
+
+
 class Coffee(BaseModel):
     id: Optional[str] = None
     name: str

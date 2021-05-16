@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from ..modules.responseModels import MachineUpdate, UserRegister, Preparation as PreparationResponseModel, Coffee as CoffeeResponseModel, MachineCreate  # , PlannedCoffee
+from ..modules.responseModels import MachineUpdate, ReportPreparationStarted, UserRegister, Preparation as PreparationResponseModel, Coffee as CoffeeResponseModel, MachineCreate  # , PlannedCoffee
 from firebase_admin import auth, exceptions
 from ..modules.models import Coffee, Machine, PreparationPlanned, Preparation
 from ..firebase import db
@@ -295,6 +295,32 @@ class PreparationService(ABC):
             print("Error : {}".format(ex))
             return 401, preparations
 
+    def report_preparation_started(self, data : ReportPreparationStarted):
+        try:
+            print("------ Start report_preparation_started ------")
+            user = db.collection("users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3")
+
+            prep = user.collection("preparations").document(data.preparation_id)
+        
+            print(prep)
+            prep.update({"state" : 1})
+
+            machine_id = prep.get().to_dict()["machine"].id
+            print(machine_id)
+
+            db.collection("machines").document(machine_id).update({"state" : 1})
+
+            notif_ref = user.collection("notifications").document()
+
+            notif_ref.set({
+                "id" : notif_ref.id,
+                "preparation" : prep
+            })
+
+            print("------ End report_preparation_started ------")
+        except Exception as ex:
+            print("Error : {}".format(ex))
+            return 404
 
 class CoffeeService(ABC):
     def get_coffee(self):
