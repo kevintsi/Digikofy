@@ -18,7 +18,7 @@ class MachineCreate(BaseModel):
     name : str
 
 
-class ReportPreparationStarted(BaseModel):
+class ReportPreparation(BaseModel):
     machine_id : str
     preparation_id : str
 

@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
-from ..modules.responseModels import MachineUpdate, ReportPreparationStarted, UserRegister, Preparation as PreparationResponseModel, Coffee as CoffeeResponseModel, MachineCreate  # , PlannedCoffee
+from ..modules.response_models import MachineUpdate, ReportPreparation, UserRegister, Preparation as PreparationResponseModel, Coffee as CoffeeResponseModel, MachineCreate  # , PlannedCoffee
 from firebase_admin import auth, exceptions
 from ..modules.models import Coffee, Machine, PreparationPlanned, Preparation
 from ..firebase import db
 from fastapi.encoders import jsonable_encoder
 from datetime import date, datetime
 
-#TODO CHANGE 9KFeGrJB7mQqMVX4RISBGRgI2oJ3 TO DYNAMIC VALUE GET FROM HEADER 
+#TODO CHANGE 9KFeGrJB7mQqMVX4RISBGRgI2oJ3 TO DYNAMIC VALUE GET FROM HEADER TOKEN
 
 
 class UserService(ABC):
@@ -295,7 +295,7 @@ class PreparationService(ABC):
             print("Error : {}".format(ex))
             return 401, preparations
 
-    def report_preparation_started(self, data : ReportPreparationStarted):
+    def report_preparation_started(self, data : ReportPreparation):
         try:
             print("------ Start report_preparation_started ------")
             user = db.collection("users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3")
@@ -318,6 +318,112 @@ class PreparationService(ABC):
             })
 
             print("------ End report_preparation_started ------")
+        except Exception as ex:
+            print("Error : {}".format(ex))
+            return 404
+
+    def report_preparation_succeeded(self, data : ReportPreparation):
+        try:
+            print("------ Start report_preparation_succeeded ------")
+
+            user = db.collection("users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3")
+
+            prep = user.collection("preparations").document(data.preparation_id)
+        
+            print(prep)
+            prep.update({"state" : 0})
+
+            machine_id = prep.get().to_dict()["machine"].id
+            print(machine_id)
+
+            db.collection("machines").document(machine_id).update({"state" : 0})
+
+            prep_dict = prep.get().to_dict()
+
+            is_saved = prep_dict["saved"]
+
+            if is_saved:
+
+                current_date = datetime.now()
+
+                #day_next_time = 0
+
+                #for day in prep_dict["daysOfWeek"]:
+                    #if current_date.weekday() < day:
+                        #day_next_time = day
+
+                if current_date.day == 31:
+                    prep.update({
+                        "lastTime" : prep_dict["nextTime"],
+                        "nextTime" : datetime(current_date.year, current_date.month+1, prep_dict["daysOfWeek"][0], prep_dict["hours"][0])
+                    })
+                else:
+                    prep.update({
+                        "lastTime" : prep_dict["nextTime"],
+                        "nextTime" : datetime(current_date.year, current_date.month, prep_dict["daysOfWeek"][0], prep_dict["hours"][0])
+                    })
+
+            notif_ref = user.collection("notifications").document()
+
+            notif_ref.set({
+                "id" : notif_ref.id,
+                "preparation" : prep
+            })
+
+            print("------ End report_preparation_succeeded ------")
+        except Exception as ex:
+            print("Error : {}".format(ex))
+            return 404
+
+    def report_preparation_failed(self, data : ReportPreparation):
+        try:
+            print("------ Start report_preparation_failed ------")
+
+            user = db.collection("users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3")
+
+            prep = user.collection("preparations").document(data.preparation_id)
+        
+            print(prep)
+            prep.update({"state" : 0})
+
+            machine_id = prep.get().to_dict()["machine"].id
+            print(machine_id)
+
+            db.collection("machines").document(machine_id).update({"state" : 0})
+
+            prep_dict = prep.get().to_dict()
+
+            is_saved = prep_dict["saved"]
+
+            if is_saved:
+
+                current_date = datetime.now()
+
+                #day_next_time = 0
+
+                #for day in prep_dict["daysOfWeek"]:
+                    #if current_date.weekday() < day:
+                        #day_next_time = day
+
+                if current_date.day == 31:
+                    prep.update({
+                        "lastTime" : prep_dict["nextTime"],
+                        "nextTime" : datetime(current_date.year, current_date.month+1, prep_dict["daysOfWeek"][0], prep_dict["hours"][0])
+                    })
+                else:
+                    prep.update({
+                        "lastTime" : prep_dict["nextTime"],
+                        "nextTime" : datetime(current_date.year, current_date.month, prep_dict["daysOfWeek"][0], prep_dict["hours"][0])
+                    })
+
+            notif_ref = user.collection("notifications").document()
+
+            notif_ref.set({
+                "id" : notif_ref.id,
+                "preparation" : prep
+            })
+
+            print("------ End report_preparation_failed ------")
         except Exception as ex:
             print("Error : {}".format(ex))
             return 404

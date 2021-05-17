@@ -1,11 +1,6 @@
-from os import stat
-from starlette.status import HTTP_200_OK, HTTP_404_NOT_FOUND
 import uvicorn
 from fastapi import FastAPI, status, Response
-from .firebase import *
-# , PlannedCoffee
-from .modules.responseModels import MachineCreate, ReportPreparationStarted, UserRegister, MachineUpdate, Preparation, Coffee
-# , PlannedCoffeeService
+from .modules.response_models import MachineCreate, ReportPreparation, UserRegister, MachineUpdate, Preparation,
 from .modules.services import UserService, MachineService, PreparationService, CoffeeService
 #from dotenv import load_dotenv
 
@@ -121,7 +116,7 @@ async def get_preparation(response: Response):
         response.status_code = status.HTTP_404_NOT_FOUND
 
 
-@app.get("/preparation/machine/{id}", status_code=HTTP_200_OK)
+@app.get("/preparation/machine/{id}", status_code=status.HTTP_200_OK)
 async def get_preparation_machine(id: str, response: Response):
     code, preparations = PreparationService().get_preparation_machine(id)
     if code == 200 and len(preparations) > 0:
@@ -130,8 +125,23 @@ async def get_preparation_machine(id: str, response: Response):
         response.status_code = status.HTTP_404_NOT_FOUND
 
 @app.post("/preparation/started", status_code=status.HTTP_200_OK)
-async def report_preparation_started(data: ReportPreparationStarted, response: Response):
+async def report_preparation_started(data: ReportPreparation, response: Response):
     code = PreparationService().report_preparation_started(data)
+    print(code)
+    if code != 200:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+
+@app.post("/preparation/succeeded", status_code=status.HTTP_200_OK)
+async def report_preparation_started(data: ReportPreparation, response: Response):
+    code = PreparationService().report_preparation_succeeded(data)
+    print(code)
+    if code != 200:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+
+
+@app.post("/preparation/failed", status_code=status.HTTP_200_OK)
+async def report_preparation_started(data: ReportPreparation, response: Response):
+    code = PreparationService().report_preparation_failed(data)
     print(code)
     if code != 200:
         response.status_code = status.HTTP_400_BAD_REQUEST
