@@ -13,8 +13,8 @@ class MachineUpdate(BaseModel):
 
 class MachineCreate(BaseModel):
     id : str
-    state : Optional[int]
-    type : Optional[int]
+    state : Optional[int] = None
+    type : Optional[int] = None
     name : str
 
 

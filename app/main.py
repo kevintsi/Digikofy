@@ -1,6 +1,6 @@
 import uvicorn
 from fastapi import FastAPI, status, Response
-from .modules.response_models import MachineCreate, ReportPreparation, UserRegister, MachineUpdate, Preparation,
+from .modules.response_models import MachineCreate, ReportPreparation, UserRegister, MachineUpdate, Preparation
 from .modules.services import UserService, MachineService, PreparationService, CoffeeService
 #from dotenv import load_dotenv
 

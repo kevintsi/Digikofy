@@ -4,7 +4,7 @@ from firebase_admin import auth, exceptions
 from ..modules.models import Coffee, Machine, PreparationPlanned, Preparation
 from ..firebase import db
 from fastapi.encoders import jsonable_encoder
-from datetime import date, datetime
+from datetime import datetime, time, timedelta
 
 #TODO CHANGE 9KFeGrJB7mQqMVX4RISBGRgI2oJ3 TO DYNAMIC VALUE GET FROM HEADER TOKEN
 
@@ -343,25 +343,60 @@ class PreparationService(ABC):
             is_saved = prep_dict["saved"]
 
             if is_saved:
-
+                
                 current_date = datetime.now()
 
-                #day_next_time = 0
+                current_dayofweek =  current_date.weekday() # day = 6
+                 # daysOfWeek = [4,5,6]
 
-                #for day in prep_dict["daysOfWeek"]:
-                    #if current_date.weekday() < day:
-                        #day_next_time = day
+                """try:
 
-                if current_date.day == 31:
-                    prep.update({
-                        "lastTime" : prep_dict["nextTime"],
-                        "nextTime" : datetime(current_date.year, current_date.month+1, prep_dict["daysOfWeek"][0], prep_dict["hours"][0])
-                    })
+                    index_of_nearest_day_to_day_of_week = prep_dict["daysOfWeek"].index(current_dayofweek)
+                    print("Index of nearest day to day of week : {}".format(index_of_nearest_day_to_day_of_week))
+
+                except Exception as ex:
+
+                    print("Not found")
+                    
+                    for day in prep_dict["daysOfWeek"]:
+                        if day < current_dayofweek:
+                            print("Day : {}".format(day))
+                            index_of_nearest_day_to_day_of_week = prep_dict["daysOfWeek"].index(day)
+                            break
+                    
+                    index_of_nearest_day_to_day_of_week = len(prep_dict["daysOfWeek"]) - 1"""
+                
+                
+                if len(prep_dict["daysOfWeek"]) > 1:                
+                    i = 0
+
+                    while current_dayofweek > prep_dict["daysOfWeek"][i]:
+                        i=i+1
+
+                    if i == len(prep_dict["daysOfWeek"]) - 1:
+                        index_wanted_found = 0
+                    else:
+                        index_wanted_found = i
+
+                    print("Index the closest day of week : {0} so prep_dict[{0}] = {1}".format(index_wanted_found, prep_dict["daysOfWeek"][index_wanted_found]))
+
+                    next_time = current_date
+
+                    while prep_dict["daysOfWeek"][index_wanted_found] != next_time.weekday()+1:
+                        print("Next time : {} and weekdays : {}".format(next_time, next_time.weekday()))
+                        next_time = next_time + timedelta(days=1)
+
+                    print("Next date : {}".format(next_time))
+
                 else:
-                    prep.update({
-                        "lastTime" : prep_dict["nextTime"],
-                        "nextTime" : datetime(current_date.year, current_date.month, prep_dict["daysOfWeek"][0], prep_dict["hours"][0])
-                    })
+                    next_time = current_date + timedelta(days=prep_dict["daysOfWeek"][0]-1)
+                    print("Next date : {}".format(next_time))
+
+
+                prep.update({
+                    "lastTime" : prep_dict["nextTime"],
+                    "nextTime" : next_time
+                })
 
             notif_ref = user.collection("notifications").document()
 
@@ -399,22 +434,39 @@ class PreparationService(ABC):
 
                 current_date = datetime.now()
 
+                current_dayofweek =  current_date.weekday()
+
                 #day_next_time = 0
+                if len(prep_dict["daysOfWeek"]) > 1:                
+                    i = 0
 
-                #for day in prep_dict["daysOfWeek"]:
-                    #if current_date.weekday() < day:
-                        #day_next_time = day
+                    while current_dayofweek > prep_dict["daysOfWeek"][i]:
+                        i=i+1
 
-                if current_date.day == 31:
-                    prep.update({
-                        "lastTime" : prep_dict["nextTime"],
-                        "nextTime" : datetime(current_date.year, current_date.month+1, prep_dict["daysOfWeek"][0], prep_dict["hours"][0])
-                    })
+                    if i == len(prep_dict["daysOfWeek"]) - 1:
+                        index_wanted_found = 0
+                    else:
+                        index_wanted_found = i
+
+                    print("Index the closest day of week : {0} so prep_dict[{0}] = {1}".format(index_wanted_found, prep_dict["daysOfWeek"][index_wanted_found]))
+
+                    next_time = current_date
+
+                    while prep_dict["daysOfWeek"][index_wanted_found] != next_time.weekday()+1:
+                        print("Next time : {} and weekdays : {}".format(next_time, next_time.weekday()))
+                        next_time = next_time + timedelta(days=1)
+
+                    print("Next date : {}".format(next_time))
+
                 else:
-                    prep.update({
-                        "lastTime" : prep_dict["nextTime"],
-                        "nextTime" : datetime(current_date.year, current_date.month, prep_dict["daysOfWeek"][0], prep_dict["hours"][0])
-                    })
+                    next_time = current_date + timedelta(days=prep_dict["daysOfWeek"][0]-1)
+                    print("Next date : {}".format(next_time))
+
+
+                prep.update({
+                    "lastTime" : prep_dict["nextTime"],
+                    "nextTime" : next_time
+                })
 
             notif_ref = user.collection("notifications").document()
 
