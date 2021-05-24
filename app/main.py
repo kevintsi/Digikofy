@@ -124,23 +124,23 @@ async def get_preparation_machine(id: str, response: Response):
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
 
-@app.post("/preparation/started", status_code=status.HTTP_200_OK)
+@app.get("/preparation/started", status_code=status.HTTP_200_OK)
 async def report_preparation_started(data: ReportPreparation, response: Response):
     code = PreparationService().report_preparation_started(data)
     print(code)
     if code != 200:
         response.status_code = status.HTTP_400_BAD_REQUEST
 
-@app.post("/preparation/succeeded", status_code=status.HTTP_200_OK)
-async def report_preparation_started(data: ReportPreparation, response: Response):
+@app.get("/preparation/succeeded", status_code=status.HTTP_200_OK)
+async def report_preparation_succeeded(data: ReportPreparation, response: Response):
     code = PreparationService().report_preparation_succeeded(data)
     print(code)
     if code != 200:
         response.status_code = status.HTTP_400_BAD_REQUEST
 
 
-@app.post("/preparation/failed", status_code=status.HTTP_200_OK)
-async def report_preparation_started(data: ReportPreparation, response: Response):
+@app.get("/preparation/failed", status_code=status.HTTP_200_OK)
+async def report_preparation_failed(data: ReportPreparation, response: Response):
     code = PreparationService().report_preparation_failed(data)
     print(code)
     if code != 200:
