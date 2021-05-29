@@ -1,6 +1,6 @@
 import uvicorn
 from fastapi import FastAPI, status, Response
-from .modules.response_models import MachineCreate, ReportPreparation, UserRegister, MachineUpdate, Preparation
+from .modules.response_models import CreatePreparation, MachineCreate, ReportPreparation, UserRegister, MachineUpdate, Preparation
 from .modules.services import UserService, MachineService, PreparationService, CoffeeService
 #from dotenv import load_dotenv
 
@@ -101,11 +101,11 @@ async def get_coffee_by_id(id: str, response: Response):
 
 
 @app.post("/preparation", status_code=status.HTTP_201_CREATED)
-async def add_preparation(data: Preparation, response: Response):
-    #code = MachineService().create_machine(data)
-    # print(code)
-    # if code != 201:
-    response.status_code = status.HTTP_400_BAD_REQUEST
+async def add_preparation(data: CreatePreparation, response: Response):
+    code = PreparationService().create_preparation(data)
+    print(code)
+    if code != 201:
+        response.status_code = status.HTTP_400_BAD_REQUEST
 
 @app.get("/preparation", status_code=status.HTTP_200_OK)
 async def get_preparation(response: Response):
@@ -124,7 +124,7 @@ async def get_preparation_machine(id: str, response: Response):
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
 
-@app.get("/preparation/started", status_code=status.HTTP_200_OK)
+@app.post("/preparation/started", status_code=status.HTTP_200_OK)
 async def report_preparation_started(data: ReportPreparation, response: Response):
     code = PreparationService().report_preparation_started(data)
     print(code)

@@ -1,3 +1,4 @@
+from os import name
 from typing import Optional
 from pydantic import BaseModel
 from datetime import datetime
@@ -19,14 +20,25 @@ class MachineCreate(BaseModel):
 
 
 class ReportPreparation(BaseModel):
-    machine_id : str
     preparation_id : str
+
 
 
 class Coffee(BaseModel):
     id: Optional[str] = None
     name: str
     description: str
+
+
+
+class CreatePreparation(BaseModel):
+    coffee_id: str
+    days_of_week : Optional[list] = None
+    hours : Optional[list] = None
+    machine_id : str
+    name : str
+    saved : bool
+    state : int
 
 
 class Preparation(BaseModel):

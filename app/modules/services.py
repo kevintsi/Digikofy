@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
-from ..modules.response_models import MachineUpdate, ReportPreparation, UserRegister, Preparation as PreparationResponseModel, Coffee as CoffeeResponseModel, MachineCreate  # , PlannedCoffee
+from ..modules.response_models import CreatePreparation, MachineUpdate, ReportPreparation, UserRegister, Preparation as PreparationResponseModel, Coffee as CoffeeResponseModel, MachineCreate  # , PlannedCoffee
 from firebase_admin import auth, exceptions
 from ..modules.models import Coffee, Machine, PreparationPlanned, Preparation
 from ..firebase import db
 from fastapi.encoders import jsonable_encoder
-from datetime import datetime, time, timedelta
+from datetime import datetime, timedelta, tzinfo
+import pytz
 
-#TODO CHANGE 9KFeGrJB7mQqMVX4RISBGRgI2oJ3 TO DYNAMIC VALUE GET FROM HEADER TOKEN
+# TODO CHANGE 9KFeGrJB7mQqMVX4RISBGRgI2oJ3 TO DYNAMIC VALUE GET FROM HEADER TOKEN
 
 
 class UserService(ABC):
@@ -193,9 +194,10 @@ class PreparationService(ABC):
             users = db.collection("users").stream()
 
             for user in users:
-                preparations = db.collection("users").document(user.id).collection("preparations").stream()
+                preparations = db.collection("users").document(
+                    user.id).collection("preparations").stream()
                 print("Docs preparation with id : {} ---> {}".format(id, preparations))
-                
+
                 for preparation in preparations:
 
                     prepa_dict = preparation.to_dict()
@@ -204,7 +206,8 @@ class PreparationService(ABC):
 
                     date_preparation = datetime(
                         year, month, day, hour, minute, second)
-                    print("Early : {}".format(not date_preparation < datetime.now() and prepa_dict["state"] == 0))
+                    print("Early : {}".format(not date_preparation <
+                          datetime.now() and prepa_dict["state"] == 0))
                     if not date_preparation < datetime.now() and prepa_dict["state"] == 0:
 
                         print("Preparation not yet passed")
@@ -220,27 +223,26 @@ class PreparationService(ABC):
                         doc_machine = db.collection("machines").document(
                             prepa_dict["machine"].id).get()
 
-                        
-                        name = db.collection("machines").document(prepa_dict["machine"].id).collection("users").document(user.id).get().to_dict()["name"]
-                        
+                        name = db.collection("machines").document(prepa_dict["machine"].id).collection(
+                            "users").document(user.id).get().to_dict()["name"]
+
                         doc_machine = doc_machine.to_dict()
 
                         machine = Machine(id=doc_machine["id"], state=doc_machine["state"],
-                                            type=doc_machine["type"], name=name)
+                                          type=doc_machine["type"], name=name)
 
                         try:
                             print("Preparation planned")
 
                             prep = PreparationPlanned(coffee, prepa_dict["creationDate"], prepa_dict["lastUpdate"], machine,
-                                                            prepa_dict["name"], prepa_dict["id"], prepa_dict["nextTime"], prepa_dict["saved"], prepa_dict["state"], prepa_dict["daysOfWeek"], prepa_dict["hours"], prepa_dict["lastTime"])
+                                                      prepa_dict["name"], prepa_dict["id"], prepa_dict["nextTime"], prepa_dict["saved"], prepa_dict["state"], prepa_dict["daysOfWeek"], prepa_dict["hours"], prepa_dict["lastTime"])
                         except:
                             print("Preparation not planned")
                             prep = Preparation(coffee, prepa_dict["creationDate"], prepa_dict["lastUpdate"],
-                                                    machine, prepa_dict["id"], prepa_dict["nextTime"], prepa_dict["saved"], prepa_dict["state"])
-                        
+                                               machine, prepa_dict["id"], prepa_dict["nextTime"], prepa_dict["saved"], prepa_dict["state"])
+
                         list_preparations.append(prep)
-                    
-    
+
             print("------ End get_preparation_machine ------")
             return 200, list_preparations
         except Exception as ex:
@@ -295,59 +297,67 @@ class PreparationService(ABC):
             print("Error : {}".format(ex))
             return 401, preparations
 
-    def report_preparation_started(self, data : ReportPreparation):
+    def report_preparation_started(self, data: ReportPreparation):
         try:
             print("------ Start report_preparation_started ------")
-            user = db.collection("users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3")
 
-            prep = user.collection("preparations").document(data.preparation_id)
-        
+            user = db.collection("users").document(
+                "9KFeGrJB7mQqMVX4RISBGRgI2oJ3")
+
+            prep = user.collection("preparations").document(
+                data.preparation_id)
+
             print(prep)
-            prep.update({"state" : 1})
+            prep.update({"state": 1})
 
             machine_id = prep.get().to_dict()["machine"].id
             print(machine_id)
 
-            db.collection("machines").document(machine_id).update({"state" : 1})
+            db.collection("machines").document(machine_id).update({"state": 1})
 
             notif_ref = user.collection("notifications").document()
 
             notif_ref.set({
-                "id" : notif_ref.id,
-                "preparation" : prep
+                "id": notif_ref.id,
+                "preparation": prep,
+                "state": 0
             })
 
             print("------ End report_preparation_started ------")
+
+            return 200
         except Exception as ex:
             print("Error : {}".format(ex))
             return 404
 
-    def report_preparation_succeeded(self, data : ReportPreparation):
+    def report_preparation_succeeded(self, data: ReportPreparation):
         try:
             print("------ Start report_preparation_succeeded ------")
 
-            user = db.collection("users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3")
+            user = db.collection("users").document(
+                "9KFeGrJB7mQqMVX4RISBGRgI2oJ3")
 
-            prep = user.collection("preparations").document(data.preparation_id)
-        
+            prep = user.collection("preparations").document(
+                data.preparation_id)
+
             print(prep)
-            prep.update({"state" : 0})
+            prep.update({"state": 0})
 
             machine_id = prep.get().to_dict()["machine"].id
             print(machine_id)
 
-            db.collection("machines").document(machine_id).update({"state" : 0})
+            db.collection("machines").document(machine_id).update({"state": 0})
 
             prep_dict = prep.get().to_dict()
 
             is_saved = prep_dict["saved"]
 
             if is_saved:
-                
+
                 current_date = datetime.now()
 
-                current_dayofweek =  current_date.weekday() # day = 6
-                 # daysOfWeek = [4,5,6]
+                current_dayofweek = current_date.weekday()  # day = 6
+                # daysOfWeek = [4,5,6]
 
                 """try:
 
@@ -365,66 +375,109 @@ class PreparationService(ABC):
                             break
                     
                     index_of_nearest_day_to_day_of_week = len(prep_dict["daysOfWeek"]) - 1"""
-                
-                
-                if len(prep_dict["daysOfWeek"]) > 1:                
+
+                if len(prep_dict["daysOfWeek"]) > 1:
                     i = 0
 
                     while current_dayofweek > prep_dict["daysOfWeek"][i]:
-                        i=i+1
+                        i = i+1
 
                     if i == len(prep_dict["daysOfWeek"]) - 1:
                         index_wanted_found = 0
                     else:
                         index_wanted_found = i
 
-                    print("Index the closest day of week : {0} so prep_dict[{0}] = {1}".format(index_wanted_found, prep_dict["daysOfWeek"][index_wanted_found]))
+                    print("Index the closest day of week : {0} so prep_dict[{0}] = {1}".format(
+                        index_wanted_found, prep_dict["daysOfWeek"][index_wanted_found]))
 
                     next_time = current_date
 
                     while prep_dict["daysOfWeek"][index_wanted_found] != next_time.weekday()+1:
-                        print("Next time : {} and weekdays : {}".format(next_time, next_time.weekday()))
+                        print("Next time : {} and weekdays : {}".format(
+                            next_time, next_time.weekday()))
                         next_time = next_time + timedelta(days=1)
 
                     print("Next date : {}".format(next_time))
 
                 else:
-                    next_time = current_date + timedelta(days=prep_dict["daysOfWeek"][0]-1)
+                    next_time = current_date + \
+                        timedelta(days=prep_dict["daysOfWeek"][0]-1)
                     print("Next date : {}".format(next_time))
 
+                has_same_date = ((prep_dict["nextTime"].day == current_date.day) and (
+                    prep_dict["nextTime"].month == current_date.month) and (prep_dict["nextTime"].year == current_date.year))
+                print(has_same_date)
+                if not has_same_date:
+                    print("Not the same date")
+                    splitted_hours = prep_dict["hours"][0].split(":")
+                    hour = int(splitted_hours[0])
+                    minute = int(splitted_hours[1])
+                    second = int(splitted_hours[2])
+
+                    print("Hour = {} , Minute = {} , Second = {}".format(
+                        hour, minute, second))
+
+                    next_time = datetime(
+                        next_time.year, next_time.month, next_time.day, hour, minute, second, 0)
+
+                    print("Next time with hour = {}".format(next_time))
+                else:
+                    print("Same date")
+                    i = 0
+                    for h in prep_dict["hours"]:
+                        splitted_hours = h.split(":")
+                        hour = int(splitted_hours[0])
+                        minute = int(splitted_hours[1])
+                        second = int(splitted_hours[2])
+
+                        new_date = current_date.replace(
+                            hour=hour, minute=minute, second=second, microsecond=0)
+
+                        if new_date > current_date:
+                            next_time = new_date
+                            break
+
+                    print("Next time with hour = {}".format(next_time))
+
+                print("New value of next_time = {}".format(next_time))
 
                 prep.update({
-                    "lastTime" : prep_dict["nextTime"],
-                    "nextTime" : next_time
+                    "lastTime": prep_dict["nextTime"],
+                    "nextTime": next_time
                 })
 
             notif_ref = user.collection("notifications").document()
 
             notif_ref.set({
-                "id" : notif_ref.id,
-                "preparation" : prep
+                "id": notif_ref.id,
+                "preparation": prep,
+                "state": 1
             })
 
             print("------ End report_preparation_succeeded ------")
+
+            return 200
         except Exception as ex:
             print("Error : {}".format(ex))
             return 404
 
-    def report_preparation_failed(self, data : ReportPreparation):
+    def report_preparation_failed(self, data: ReportPreparation):
         try:
             print("------ Start report_preparation_failed ------")
 
-            user = db.collection("users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3")
+            user = db.collection("users").document(
+                "9KFeGrJB7mQqMVX4RISBGRgI2oJ3")
 
-            prep = user.collection("preparations").document(data.preparation_id)
-        
+            prep = user.collection("preparations").document(
+                data.preparation_id)
+
             print(prep)
-            prep.update({"state" : 0})
+            prep.update({"state": 0})
 
             machine_id = prep.get().to_dict()["machine"].id
             print(machine_id)
 
-            db.collection("machines").document(machine_id).update({"state" : 0})
+            db.collection("machines").document(machine_id).update({"state": 0})
 
             prep_dict = prep.get().to_dict()
 
@@ -434,51 +487,131 @@ class PreparationService(ABC):
 
                 current_date = datetime.now()
 
-                current_dayofweek =  current_date.weekday()
+                current_dayofweek = current_date.weekday()
 
                 #day_next_time = 0
-                if len(prep_dict["daysOfWeek"]) > 1:                
+                if len(prep_dict["daysOfWeek"]) > 1:
                     i = 0
 
                     while current_dayofweek > prep_dict["daysOfWeek"][i]:
-                        i=i+1
+                        i = i+1
 
                     if i == len(prep_dict["daysOfWeek"]) - 1:
                         index_wanted_found = 0
                     else:
                         index_wanted_found = i
 
-                    print("Index the closest day of week : {0} so prep_dict[{0}] = {1}".format(index_wanted_found, prep_dict["daysOfWeek"][index_wanted_found]))
+                    print("Index the closest day of week : {0} so prep_dict[{0}] = {1}".format(
+                        index_wanted_found, prep_dict["daysOfWeek"][index_wanted_found]))
 
                     next_time = current_date
 
                     while prep_dict["daysOfWeek"][index_wanted_found] != next_time.weekday()+1:
-                        print("Next time : {} and weekdays : {}".format(next_time, next_time.weekday()))
+                        print("Next time : {} and weekdays : {}".format(
+                            next_time, next_time.weekday()))
                         next_time = next_time + timedelta(days=1)
 
                     print("Next date : {}".format(next_time))
 
                 else:
-                    next_time = current_date + timedelta(days=prep_dict["daysOfWeek"][0]-1)
+                    next_time = current_date + \
+                        timedelta(days=prep_dict["daysOfWeek"][0]-1)
                     print("Next date : {}".format(next_time))
 
+                has_same_date = ((prep_dict["nextTime"].day == current_date.day) and (
+                    prep_dict["nextTime"].month == current_date.month) and (prep_dict["nextTime"].year == current_date.year))
+                print(has_same_date)
+                if not has_same_date:
+                    print("Not the same date")
+                    splitted_hours = prep_dict["hours"][0].split(":")
+                    hour = int(splitted_hours[0])
+                    minute = int(splitted_hours[1])
+                    second = int(splitted_hours[2])
+
+                    print("Hour = {} , Minute = {} , Second = {}".format(
+                        hour, minute, second))
+
+                    next_time = datetime(
+                        next_time.year, next_time.month, next_time.day, hour, minute, second, 0)
+
+                    print("Next time with hour = {}".format(next_time))
+                else:
+                    print("Same date")
+                    i = 0
+                    for h in prep_dict["hours"]:
+                        splitted_hours = h.split(":")
+                        hour = int(splitted_hours[0])
+                        minute = int(splitted_hours[1])
+                        second = int(splitted_hours[2])
+
+                        new_date = current_date.replace(
+                            hour=hour, minute=minute, second=second, microsecond=0)
+
+                        if new_date > current_date:
+                            next_time = new_date
+                            break
+
+                    print("Next time with hour = {}".format(next_time))
 
                 prep.update({
-                    "lastTime" : prep_dict["nextTime"],
-                    "nextTime" : next_time
+                    "lastTime": prep_dict["nextTime"],
+                    "nextTime": next_time
                 })
 
             notif_ref = user.collection("notifications").document()
 
             notif_ref.set({
-                "id" : notif_ref.id,
-                "preparation" : prep
+                "id": notif_ref.id,
+                "preparation": prep,
+                "state": 2
             })
 
             print("------ End report_preparation_failed ------")
+
+            return 200
         except Exception as ex:
             print("Error : {}".format(ex))
             return 404
+
+    def create_preparation(self, data: CreatePreparation):
+        try:
+            print("------- Start create_preparation -------")
+            prep = db.collection("users").document(
+                "9KFeGrJB7mQqMVX4RISBGRgI2oJ3").collection("preparations").document()
+
+            coffee = db.collection("coffee").document(data.coffee_id)
+
+            if data.saved:
+                prep.set({
+                    "coffee": coffee,
+                    "creationDate": datetime.now(),
+                    "daysOfWeek": data.days_of_week,
+                    "hours": data.hours,
+                    "id": prep.id,
+                    "lastTime": datetime.now(),
+                    "lastUpdate": datetime.now(),
+                    "machine": data.machine_id,
+                    "name": data.name,
+                    "saved": data.saved,
+                    "state" : data.state
+                })
+            else:
+                prep.set({
+                    "coffee": coffee,
+                    "creationDate": datetime.now(),
+                    "id": prep.id,
+                    "lastUpdate": datetime.now(),
+                    "machine": data.machine_id,
+                    "name": data.name,
+                    "saved": data.saved,
+                    "state" : data.state
+                })
+            print("------- End create_preparation -------")
+            return 201
+        except Exception as ex:
+            print("Error : {}".format(ex))
+            return 404
+
 
 class CoffeeService(ABC):
     def get_coffee(self):
