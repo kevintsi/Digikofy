@@ -40,6 +40,9 @@ class CreatePreparation(BaseModel):
     saved : bool
     state : int
 
+class UpdatePreparation(BaseModel):
+    name : str
+
 
 class Preparation(BaseModel):
     id: Optional[str] = None

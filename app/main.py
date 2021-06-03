@@ -1,12 +1,11 @@
+from typing import Optional
 import uvicorn
-from fastapi import FastAPI, status, Response
-from .modules.response_models import CreatePreparation, MachineCreate, ReportPreparation, UserRegister, MachineUpdate, Preparation
+from fastapi import FastAPI, status, Response, Request
+from .modules.response_models import CreatePreparation, MachineCreate, ReportPreparation, UpdatePreparation, UserRegister, MachineUpdate
 from .modules.services import UserService, MachineService, PreparationService, CoffeeService
-#from dotenv import load_dotenv
 
 
 app = FastAPI()
-# load_dotenv(dotenv_path=".env")
 
 
 @app.post("/register", status_code=status.HTTP_201_CREATED)
@@ -23,7 +22,7 @@ async def register(data: UserRegister, response: Response):
 
 
 
-@app.put("/machine/{id}", response_model=MachineUpdate, status_code=status.HTTP_200_OK)
+@app.put("/machine/{id}", status_code=status.HTTP_200_OK)
 async def update_machine(id: str, data : MachineUpdate, response: Response):
     code = MachineService().update_machine(id, data)
     if code == 200:
@@ -36,15 +35,21 @@ async def update_machine(id: str, data : MachineUpdate, response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
-@app.delete("/machine", status_code=status.HTTP_200_OK)
+@app.delete("/machine/{id}", status_code=status.HTTP_200_OK)
 async def delete_machine(id: str, response: Response):
     code = MachineService().delete_machine(id)
     if code != 200:
         response.status_code = status.HTTP_403_FORBIDDEN
 
 
-@app.get("/machine", status_code=status.HTTP_200_OK)
-async def get_machines(response: Response):
+@app.get("/machines", status_code=status.HTTP_200_OK)
+async def get_machines(response: Response, request : Request):
+    print(request.headers)
+    """token = check_auth(request)
+    if token == "":
+        response.status_code = status.HTTP_403_FORBIDDEN
+        return"""
+
     (code, data) = MachineService().get_machines()
     print(code)
     if data is not None and code == 200:
@@ -75,7 +80,7 @@ async def add_machine(data: MachineCreate, response: Response):
         response.status_code = status.HTTP_400_BAD_REQUEST
 
 
-@app.get("/coffee", status_code=status.HTTP_201_CREATED)
+@app.get("/coffees", status_code=status.HTTP_201_CREATED)
 async def get_coffee(response: Response):
     (code, data) = CoffeeService().get_coffee()
     print(code)
@@ -107,7 +112,21 @@ async def add_preparation(data: CreatePreparation, response: Response):
     if code != 201:
         response.status_code = status.HTTP_400_BAD_REQUEST
 
-@app.get("/preparation", status_code=status.HTTP_200_OK)
+@app.delete("/preparation/{id}", status_code=status.HTTP_200_OK)
+async def delete_preparation(id : str, response: Response):
+    code = PreparationService().delete_preparation(id)
+    print(code)
+    if code != 200:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+
+@app.put("/preparation/{id}", status_code=status.HTTP_200_OK)
+async def update_preparation(id : str, data: UpdatePreparation, response: Response):
+    code = PreparationService().update_preparation(data, id)
+    print(code)
+    if code != 200:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+
+@app.get("/preparations", status_code=status.HTTP_200_OK)
 async def get_preparation(response: Response):
     code, preparations = PreparationService().get_preparation()
     if code == 200 and len(preparations) > 0:
@@ -147,7 +166,13 @@ async def report_preparation_failed(data: ReportPreparation, response: Response)
         response.status_code = status.HTTP_400_BAD_REQUEST
 
 
+def check_auth(request : Request):
+    token = ""
+    if "Authorization" not in request.headers:
+        return token
+    else:
+        token = request.headers["Authorization"].split(" ")[1]
+        return token
 
-print(__name__)
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

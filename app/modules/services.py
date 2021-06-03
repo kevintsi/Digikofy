@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
-from ..modules.response_models import CreatePreparation, MachineUpdate, ReportPreparation, UserRegister, Preparation as PreparationResponseModel, Coffee as CoffeeResponseModel, MachineCreate  # , PlannedCoffee
-from firebase_admin import auth, exceptions
+from ..modules.response_models import CreatePreparation, MachineUpdate, ReportPreparation, UpdatePreparation, UserRegister, Preparation as PreparationResponseModel, Coffee as CoffeeResponseModel, MachineCreate  # , PlannedCoffee
+from firebase_admin import auth
 from ..modules.models import Coffee, Machine, PreparationPlanned, Preparation
 from ..firebase import db
 from fastapi.encoders import jsonable_encoder
-from datetime import datetime, timedelta, tzinfo
+from datetime import datetime, timedelta
 import pytz
 
 # TODO CHANGE 9KFeGrJB7mQqMVX4RISBGRgI2oJ3 TO DYNAMIC VALUE GET FROM HEADER TOKEN
@@ -69,9 +69,9 @@ class MachineService(ABC):
 
             else:
                 print("Machine already created so users => adding user...")
-                db.collection("machines").document(data.id).collection("users").document("sddsdsd").set({
+                db.collection("machines").document(data.id).collection("users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").set({
                     "name": data.name,
-                    "uid": "dsdsdsds"
+                    "uid": "9KFeGrJB7mQqMVX4RISBGRgI2oJ3"
                 })
             print("----- End create_machine ----")
             return 201
@@ -79,7 +79,7 @@ class MachineService(ABC):
             print("Error : {}".format(ex))
             return 401
 
-    def get_machines(self):
+    def get_machines(self, token : str):
         """
 
         Get all the machines available
@@ -88,6 +88,10 @@ class MachineService(ABC):
             [list(Machine)]: [List of machines]
         """
         try:
+            """decode_token = auth.verify_id_token(token)
+            uid = decode_token["uid"]
+            print("UID : {}".format(uid))"""
+
             print("------ Start get machines ------")
             machines = []
             doc_machines = db.collection('machines').stream()
@@ -354,27 +358,10 @@ class PreparationService(ABC):
 
             if is_saved:
 
-                current_date = datetime.now()
+                current_date = datetime.now(tz=pytz.utc)
 
                 current_dayofweek = current_date.weekday()  # day = 6
                 # daysOfWeek = [4,5,6]
-
-                """try:
-
-                    index_of_nearest_day_to_day_of_week = prep_dict["daysOfWeek"].index(current_dayofweek)
-                    print("Index of nearest day to day of week : {}".format(index_of_nearest_day_to_day_of_week))
-
-                except Exception as ex:
-
-                    print("Not found")
-                    
-                    for day in prep_dict["daysOfWeek"]:
-                        if day < current_dayofweek:
-                            print("Day : {}".format(day))
-                            index_of_nearest_day_to_day_of_week = prep_dict["daysOfWeek"].index(day)
-                            break
-                    
-                    index_of_nearest_day_to_day_of_week = len(prep_dict["daysOfWeek"]) - 1"""
 
                 if len(prep_dict["daysOfWeek"]) > 1:
                     i = 0
@@ -418,7 +405,7 @@ class PreparationService(ABC):
                         hour, minute, second))
 
                     next_time = datetime(
-                        next_time.year, next_time.month, next_time.day, hour, minute, second, 0)
+                        next_time.year, next_time.month, next_time.day, hour, minute, second, 0, tzinfo=pytz.utc)
 
                     print("Next time with hour = {}".format(next_time))
                 else:
@@ -485,7 +472,7 @@ class PreparationService(ABC):
 
             if is_saved:
 
-                current_date = datetime.now()
+                current_date = datetime.now(tz=pytz.utc)
 
                 current_dayofweek = current_date.weekday()
 
@@ -532,7 +519,7 @@ class PreparationService(ABC):
                         hour, minute, second))
 
                     next_time = datetime(
-                        next_time.year, next_time.month, next_time.day, hour, minute, second, 0)
+                        next_time.year, next_time.month, next_time.day, hour, minute, second, 0, tzinfo=pytz.utc)
 
                     print("Next time with hour = {}".format(next_time))
                 else:
@@ -584,12 +571,12 @@ class PreparationService(ABC):
             if data.saved:
                 prep.set({
                     "coffee": coffee,
-                    "creationDate": datetime.now(),
+                    "creationDate": datetime.now(tz=pytz.utc),
                     "daysOfWeek": data.days_of_week,
                     "hours": data.hours,
                     "id": prep.id,
-                    "lastTime": datetime.now(),
-                    "lastUpdate": datetime.now(),
+                    "lastTime": datetime.now(tz=pytz.utc),
+                    "lastUpdate": datetime.now(tz=pytz.utc),
                     "machine": data.machine_id,
                     "name": data.name,
                     "saved": data.saved,
@@ -598,9 +585,9 @@ class PreparationService(ABC):
             else:
                 prep.set({
                     "coffee": coffee,
-                    "creationDate": datetime.now(),
+                    "creationDate": datetime.now(tz=pytz.utc),
                     "id": prep.id,
-                    "lastUpdate": datetime.now(),
+                    "lastUpdate": datetime.now(tz=pytz.utc),
                     "machine": data.machine_id,
                     "name": data.name,
                     "saved": data.saved,
@@ -611,6 +598,28 @@ class PreparationService(ABC):
         except Exception as ex:
             print("Error : {}".format(ex))
             return 404
+
+    def update_preparation(self, data : UpdatePreparation, id : str):
+        try:
+            print("------ Start update_preparation ------")
+            prepa = db.collection('users').document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").collection("preparations").document(id)
+            prepa.update({"name" : data.name, "lastUpdate" : datetime.now(tz=pytz.utc)})
+            print("------ End update_preparation ------")
+            return 200
+        except Exception as ex:
+            print("Error : {}".format(ex))
+            return 400
+
+    def delete_preparation(self, id : str):
+        try:
+            print("------ Start delete_preparation ------")
+            prepa = db.collection('users').document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").collection("preparations").document(id)
+            prepa.delete()
+            print("------ End delete_preparation ------")
+            return 200
+        except Exception as ex:
+            print("Error : {}".format(ex))
+            return 400
 
 
 class CoffeeService(ABC):
