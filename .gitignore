@@ -51,3 +51,7 @@ docs/_build/
 
 # Rest file 
 *.rest
+
+.vscode/
+
+.pytest_cache/

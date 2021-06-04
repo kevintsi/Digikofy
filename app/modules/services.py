@@ -79,7 +79,7 @@ class MachineService(ABC):
             print("Error : {}".format(ex))
             return 401
 
-    def get_machines(self, token : str):
+    def get_machines(self): #  token : str when I will have the token
         """
 
         Get all the machines available
