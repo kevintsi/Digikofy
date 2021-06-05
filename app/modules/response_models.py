@@ -36,13 +36,16 @@ class CreatePreparation(BaseModel):
     days_of_week : Optional[list] = None
     hours : Optional[list] = None
     machine_id : str
-    name : str
+    name : Optional[str] = None
+    next_time : Optional[str] = None
     saved : bool
-    state : int
 
-class UpdatePreparation(BaseModel):
+class UpdatePreparationSaved(BaseModel):
     name : str
-
+    coffee_id : str
+    machine_id : str
+    days_of_week : list
+    hours : list
 
 class Preparation(BaseModel):
     id: Optional[str] = None

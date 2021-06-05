@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
-from ..modules.response_models import CreatePreparation, MachineUpdate, ReportPreparation, UpdatePreparation, UserRegister, Preparation as PreparationResponseModel, Coffee as CoffeeResponseModel, MachineCreate  # , PlannedCoffee
+from ..modules.response_models import CreatePreparation, MachineUpdate, ReportPreparation, UpdatePreparationSaved, UserRegister, Preparation as PreparationResponseModel, Coffee as CoffeeResponseModel, MachineCreate  # , PlannedCoffee
 from firebase_admin import auth
-from ..modules.models import Coffee, Machine, PreparationPlanned, Preparation
+from ..modules.models import Coffee, Machine, Preparation, PreparationSaved
 from ..firebase import db
 from fastapi.encoders import jsonable_encoder
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 import pytz
 
 # TODO CHANGE 9KFeGrJB7mQqMVX4RISBGRgI2oJ3 TO DYNAMIC VALUE GET FROM HEADER TOKEN
@@ -235,15 +235,15 @@ class PreparationService(ABC):
                         machine = Machine(id=doc_machine["id"], state=doc_machine["state"],
                                           type=doc_machine["type"], name=name)
 
-                        try:
-                            print("Preparation planned")
-
-                            prep = PreparationPlanned(coffee, prepa_dict["creationDate"], prepa_dict["lastUpdate"], machine,
-                                                      prepa_dict["name"], prepa_dict["id"], prepa_dict["nextTime"], prepa_dict["saved"], prepa_dict["state"], prepa_dict["daysOfWeek"], prepa_dict["hours"], prepa_dict["lastTime"])
-                        except:
-                            print("Preparation not planned")
+                        if prepa_dict["saved"]:
+                            print("Preparation saved")
+                            prep = PreparationSaved(coffee, prepa_dict["creationDate"], prepa_dict["lastUpdate"], machine, 
+                            prepa_dict["id"], prepa_dict["saved"], prepa_dict["state"], prepa_dict["nextTime"], prepa_dict["name"],
+                             prepa_dict["daysOfWeek"], prepa_dict["hours"], prepa_dict["lastTime"])
+                        else:
+                            print("Preparation not saved")
                             prep = Preparation(coffee, prepa_dict["creationDate"], prepa_dict["lastUpdate"],
-                                               machine, prepa_dict["id"], prepa_dict["nextTime"], prepa_dict["saved"], prepa_dict["state"])
+                                                    machine, prepa_dict["id"], prepa_dict["saved"], prepa_dict["state"], prepa_dict["nextTime"])
 
                         list_preparations.append(prep)
 
@@ -285,14 +285,14 @@ class PreparationService(ABC):
                                   type=machine["type"])
 
                 print(dico)
-                try:
-                    print("Preparation planned")
-                    preparation = PreparationPlanned(coffee, dico["creationDate"], dico["lastUpdate"], machine,
-                                                     dico["name"], dico["id"], dico["nextTime"], dico["saved"], dico["state"], dico["daysOfWeek"], dico["hours"], dico["lastTime"])
-                except:
-                    print("Preparation not planned")
+                if dico["saved"]:
+                    print("Preparation saved")
+                    preparation = PreparationSaved(coffee, dico["creationDate"], dico["lastUpdate"], machine, 
+                    dico["id"], dico["saved"], dico["state"], dico["nextTime"], dico["name"], dico["daysOfWeek"], dico["hours"], dico["lastTime"])
+                else:
+                    print("Preparation not saved")
                     preparation = Preparation(coffee, dico["creationDate"], dico["lastUpdate"],
-                                              machine, dico["id"], dico["nextTime"], dico["saved"], dico["state"])
+                                              machine, dico["id"], dico["saved"], dico["state"], dico["nextTime"])
                 preparations.append(preparation)
             print("{}".format(preparations))
             print("------ End get preparation  ------")
@@ -358,73 +358,7 @@ class PreparationService(ABC):
 
             if is_saved:
 
-                current_date = datetime.now(tz=pytz.utc)
-
-                current_dayofweek = current_date.weekday()  # day = 6
-                # daysOfWeek = [4,5,6]
-
-                if len(prep_dict["daysOfWeek"]) > 1:
-                    i = 0
-
-                    while current_dayofweek > prep_dict["daysOfWeek"][i]:
-                        i = i+1
-
-                    if i == len(prep_dict["daysOfWeek"]) - 1:
-                        index_wanted_found = 0
-                    else:
-                        index_wanted_found = i
-
-                    print("Index the closest day of week : {0} so prep_dict[{0}] = {1}".format(
-                        index_wanted_found, prep_dict["daysOfWeek"][index_wanted_found]))
-
-                    next_time = current_date
-
-                    while prep_dict["daysOfWeek"][index_wanted_found] != next_time.weekday()+1:
-                        print("Next time : {} and weekdays : {}".format(
-                            next_time, next_time.weekday()))
-                        next_time = next_time + timedelta(days=1)
-
-                    print("Next date : {}".format(next_time))
-
-                else:
-                    next_time = current_date + \
-                        timedelta(days=prep_dict["daysOfWeek"][0]-1)
-                    print("Next date : {}".format(next_time))
-
-                has_same_date = ((prep_dict["nextTime"].day == current_date.day) and (
-                    prep_dict["nextTime"].month == current_date.month) and (prep_dict["nextTime"].year == current_date.year))
-                print(has_same_date)
-                if not has_same_date:
-                    print("Not the same date")
-                    splitted_hours = prep_dict["hours"][0].split(":")
-                    hour = int(splitted_hours[0])
-                    minute = int(splitted_hours[1])
-                    second = int(splitted_hours[2])
-
-                    print("Hour = {} , Minute = {} , Second = {}".format(
-                        hour, minute, second))
-
-                    next_time = datetime(
-                        next_time.year, next_time.month, next_time.day, hour, minute, second, 0, tzinfo=pytz.utc)
-
-                    print("Next time with hour = {}".format(next_time))
-                else:
-                    print("Same date")
-                    i = 0
-                    for h in prep_dict["hours"]:
-                        splitted_hours = h.split(":")
-                        hour = int(splitted_hours[0])
-                        minute = int(splitted_hours[1])
-                        second = int(splitted_hours[2])
-
-                        new_date = current_date.replace(
-                            hour=hour, minute=minute, second=second, microsecond=0)
-
-                        if new_date > current_date:
-                            next_time = new_date
-                            break
-
-                    print("Next time with hour = {}".format(next_time))
+                next_time = calculate_next_time(prep_dict["daysOfWeek"], prep_dict["hours"], prep_dict["nextTime"])
 
                 print("New value of next_time = {}".format(next_time))
 
@@ -432,6 +366,7 @@ class PreparationService(ABC):
                     "lastTime": prep_dict["nextTime"],
                     "nextTime": next_time
                 })
+            
 
             notif_ref = user.collection("notifications").document()
 
@@ -471,79 +406,15 @@ class PreparationService(ABC):
             is_saved = prep_dict["saved"]
 
             if is_saved:
-
-                current_date = datetime.now(tz=pytz.utc)
-
-                current_dayofweek = current_date.weekday()
-
-                #day_next_time = 0
-                if len(prep_dict["daysOfWeek"]) > 1:
-                    i = 0
-
-                    while current_dayofweek > prep_dict["daysOfWeek"][i]:
-                        i = i+1
-
-                    if i == len(prep_dict["daysOfWeek"]) - 1:
-                        index_wanted_found = 0
-                    else:
-                        index_wanted_found = i
-
-                    print("Index the closest day of week : {0} so prep_dict[{0}] = {1}".format(
-                        index_wanted_found, prep_dict["daysOfWeek"][index_wanted_found]))
-
-                    next_time = current_date
-
-                    while prep_dict["daysOfWeek"][index_wanted_found] != next_time.weekday()+1:
-                        print("Next time : {} and weekdays : {}".format(
-                            next_time, next_time.weekday()))
-                        next_time = next_time + timedelta(days=1)
-
-                    print("Next date : {}".format(next_time))
-
-                else:
-                    next_time = current_date + \
-                        timedelta(days=prep_dict["daysOfWeek"][0]-1)
-                    print("Next date : {}".format(next_time))
-
-                has_same_date = ((prep_dict["nextTime"].day == current_date.day) and (
-                    prep_dict["nextTime"].month == current_date.month) and (prep_dict["nextTime"].year == current_date.year))
-                print(has_same_date)
-                if not has_same_date:
-                    print("Not the same date")
-                    splitted_hours = prep_dict["hours"][0].split(":")
-                    hour = int(splitted_hours[0])
-                    minute = int(splitted_hours[1])
-                    second = int(splitted_hours[2])
-
-                    print("Hour = {} , Minute = {} , Second = {}".format(
-                        hour, minute, second))
-
-                    next_time = datetime(
-                        next_time.year, next_time.month, next_time.day, hour, minute, second, 0, tzinfo=pytz.utc)
-
-                    print("Next time with hour = {}".format(next_time))
-                else:
-                    print("Same date")
-                    i = 0
-                    for h in prep_dict["hours"]:
-                        splitted_hours = h.split(":")
-                        hour = int(splitted_hours[0])
-                        minute = int(splitted_hours[1])
-                        second = int(splitted_hours[2])
-
-                        new_date = current_date.replace(
-                            hour=hour, minute=minute, second=second, microsecond=0)
-
-                        if new_date > current_date:
-                            next_time = new_date
-                            break
-
-                    print("Next time with hour = {}".format(next_time))
-
+                
+                next_time = calculate_next_time(prep_dict["daysOfWeek"], prep_dict["hours"], prep_dict["nextTime"])
                 prep.update({
                     "lastTime": prep_dict["nextTime"],
                     "nextTime": next_time
                 })
+            else:
+                # TODO what happen
+                pass
 
             notif_ref = user.collection("notifications").document()
 
@@ -566,9 +437,15 @@ class PreparationService(ABC):
             prep = db.collection("users").document(
                 "9KFeGrJB7mQqMVX4RISBGRgI2oJ3").collection("preparations").document()
 
-            coffee = db.collection("coffee").document(data.coffee_id)
+            coffee = db.collection("coffees").document(data.coffee_id)
+            machine = db.collection("machines").document(data.machine_id)
+            
+            prep_dict = prep.get().to_dict()
 
             if data.saved:
+
+                next_time = calculate_next_time(data.days_of_week, data.hours, prep_dict["nextTime"])
+
                 prep.set({
                     "coffee": coffee,
                     "creationDate": datetime.now(tz=pytz.utc),
@@ -577,10 +454,11 @@ class PreparationService(ABC):
                     "id": prep.id,
                     "lastTime": datetime.now(tz=pytz.utc),
                     "lastUpdate": datetime.now(tz=pytz.utc),
-                    "machine": data.machine_id,
+                    "machine": machine,
                     "name": data.name,
                     "saved": data.saved,
-                    "state" : data.state
+                    "nextTime" : next_time,
+                    "state" : 0
                 })
             else:
                 prep.set({
@@ -588,10 +466,10 @@ class PreparationService(ABC):
                     "creationDate": datetime.now(tz=pytz.utc),
                     "id": prep.id,
                     "lastUpdate": datetime.now(tz=pytz.utc),
-                    "machine": data.machine_id,
-                    "name": data.name,
+                    "machine": machine,
+                    "nextTime" : datetime.strptime(data.next_time, "%Y-%m-%dT%H:%M:%SZ"),
                     "saved": data.saved,
-                    "state" : data.state
+                    "state" : 0
                 })
             print("------- End create_preparation -------")
             return 201
@@ -599,11 +477,29 @@ class PreparationService(ABC):
             print("Error : {}".format(ex))
             return 404
 
-    def update_preparation(self, data : UpdatePreparation, id : str):
+    def update_preparation(self, data : UpdatePreparationSaved, id : str):
         try:
             print("------ Start update_preparation ------")
+
             prepa = db.collection('users').document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").collection("preparations").document(id)
-            prepa.update({"name" : data.name, "lastUpdate" : datetime.now(tz=pytz.utc)})
+            
+            coffee = db.collection('coffees').document(data.coffee_id)
+
+            machine = db.collection('machines').document(data.machine_id)
+
+            next_time = calculate_next_time(data.days_of_week, data.hours, prepa.get().to_dict()["nextTime"])
+
+            print("Date now  = {} {} and date nexttime =  {} {}".format(datetime.now(tz=pytz.utc), type(datetime.now(tz=pytz.utc)), next_time, type(next_time)))
+
+            prepa.update({"name" : data.name,
+             "lastUpdate" : datetime.now(tz=pytz.utc),
+             "daysOfWeek" : data.days_of_week,
+             "hours" : data.hours,
+             "nextTime" : next_time,
+             "coffee" : coffee,
+             "machine" : machine
+             })
+
             print("------ End update_preparation ------")
             return 200
         except Exception as ex:
@@ -646,3 +542,80 @@ class CoffeeService(ABC):
         except Exception as ex:
             print("Error : {}".format(ex))
             return 401
+
+
+
+def calculate_next_time(day_of_week : list, hours : list, old_next_time):
+
+    print("---- Start calculate_next_time ------")
+    
+    current_date = datetime.now(tz=pytz.utc)
+
+    current_dayofweek = current_date.weekday()  # day = 6
+    # daysOfWeek = [4,5,6]
+
+    if len(day_of_week) > 1:
+        i = 0
+        
+        while current_dayofweek > day_of_week[i]:
+            i = i+1
+
+        if i == len(day_of_week) - 1:
+            index_wanted_found = 0
+        else:
+            index_wanted_found = i
+
+        print("Index the closest day of week : {0} so prep_dict[{0}] = {1}".format(
+            index_wanted_found, day_of_week[index_wanted_found]))
+
+        next_time = current_date
+
+        while day_of_week[index_wanted_found] != next_time.weekday()+1:
+            print("Next time : {} and weekdays : {}".format(
+                next_time, next_time.weekday()))
+            next_time = next_time + timedelta(days=1)
+
+        print("Next date : {}".format(next_time))
+
+    else:
+        next_time = current_date + \
+            timedelta(days=day_of_week[0]-1)
+        print("Next date : {}".format(next_time))
+
+    has_same_date = ((old_next_time.day == current_date.day) and (
+        old_next_time.month == current_date.month) and (old_next_time.year == current_date.year))
+    
+    print(has_same_date)
+    if not has_same_date:
+        print("Not the same date")
+        splitted_hours = hours[0].split(":")
+        hour = int(splitted_hours[0])
+        minute = int(splitted_hours[1])
+        second = int(splitted_hours[2])
+
+        print("Hour = {} , Minute = {} , Second = {}".format(
+            hour, minute, second))
+
+        next_time = datetime(
+            next_time.year, next_time.month, next_time.day, hour, minute, second, 0, tzinfo=pytz.utc)
+
+        print("Next time with hour = {}".format(next_time))
+    else:
+        print("Same date")
+        i = 0
+        for h in hours:
+            splitted_hours = h.split(":")
+            hour = int(splitted_hours[0])
+            minute = int(splitted_hours[1])
+            second = int(splitted_hours[2])
+
+            new_date = current_date.replace(
+                hour=hour, minute=minute, second=second, microsecond=0, tzinfo=pytz.utc)
+
+            if new_date > current_date:
+                next_time = new_date
+                break
+
+        print("Next time with hour = {}".format(next_time))
+
+    return next_time

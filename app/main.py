@@ -1,7 +1,7 @@
 from typing import Optional
 import uvicorn
 from fastapi import FastAPI, status, Response, Request
-from .modules.response_models import CreatePreparation, MachineCreate, ReportPreparation, UpdatePreparation, UserRegister, MachineUpdate
+from .modules.response_models import CreatePreparation, MachineCreate, ReportPreparation, UpdatePreparationSaved, UserRegister, MachineUpdate
 from .modules.services import UserService, MachineService, PreparationService, CoffeeService
 
 
@@ -120,7 +120,7 @@ async def delete_preparation(id : str, response: Response):
         response.status_code = status.HTTP_400_BAD_REQUEST
 
 @app.put("/preparation/{id}", status_code=status.HTTP_200_OK)
-async def update_preparation(id : str, data: UpdatePreparation, response: Response):
+async def update_preparation(id : str, data: UpdatePreparationSaved, response: Response):
     code = PreparationService().update_preparation(data, id)
     print(code)
     if code != 200:
@@ -129,7 +129,7 @@ async def update_preparation(id : str, data: UpdatePreparation, response: Respon
 @app.get("/preparations", status_code=status.HTTP_200_OK)
 async def get_preparation(response: Response):
     code, preparations = PreparationService().get_preparation()
-    if code == 200 and len(preparations) > 0:
+    if code == 200:
         return preparations
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
