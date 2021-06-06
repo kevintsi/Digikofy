@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from ..modules.response_models import CreatePreparation, MachineUpdate, ReportPreparation, UpdatePreparationSaved, UserRegister, Preparation as PreparationResponseModel, Coffee as CoffeeResponseModel, MachineCreate  # , PlannedCoffee
+from ..modules.response_models import CreatePreparation, MachineUpdate, PreparationSaved, ReportPreparation, UpdatePreparationSaved,\
+     UserRegister, MachineCreate, Machine, Coffee, Preparation
 from firebase_admin import auth
-from ..modules.models import Coffee, Machine, Preparation, PreparationSaved
 from ..firebase import db
 from fastapi.encoders import jsonable_encoder
 from datetime import date, datetime, timedelta
@@ -77,7 +77,7 @@ class MachineService(ABC):
             return 201
         except Exception as ex:
             print("Error : {}".format(ex))
-            return 401
+            return 500
 
     def get_machines(self): #  token : str when I will have the token
         """
@@ -111,7 +111,7 @@ class MachineService(ABC):
             return 200, machines
         except Exception as ex:
             print("Error : {}".format(ex))
-            return 404, []
+            return 500, []
 
     def get_machine_by_id(self, id: str):
         """
@@ -127,23 +127,26 @@ class MachineService(ABC):
         try:
             print("------ Start get machine by id ------")
             machine = None
-            doc_machine = db.collection(
-                'machines').document(id).get().to_dict()
-            print(doc_machine)
-            doc_machine_user = db.collection("machines").document(id).collection(
-                "users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").get()
-            print(doc_machine_user)
-            dico_machine_user = doc_machine_user.to_dict()
-            print(dico_machine_user)
-            print("User's machine info : {}".format(dico_machine_user))
-            machine = Machine(id=doc_machine["id"], name=dico_machine_user["name"],
-                              state=doc_machine["state"], type=doc_machine["type"])
-            print(machine)
+            doc_machine = db.collection('machines').document(id).get()
+            if doc_machine.exists:
+                doc_machine = doc_machine.to_dict()
+                print(doc_machine)
+                doc_machine_user = db.collection("machines").document(id).collection(
+                    "users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").get()
+                print(doc_machine_user)
+                dico_machine_user = doc_machine_user.to_dict()
+                print(dico_machine_user)
+                print("User's machine info : {}".format(dico_machine_user))
+                machine = Machine(id=doc_machine["id"], name=dico_machine_user["name"],
+                                state=doc_machine["state"], type=doc_machine["type"])
+                print(machine)
+            else:
+                return 404, machine
             print("------ End get machines ------")
             return 200, machine
         except Exception as ex:
             print("Error : {}".format(ex))
-            return 404, machine
+            return 500, machine
 
     def update_machine(self, id: str, data: MachineUpdate):
         """
@@ -169,14 +172,43 @@ class MachineService(ABC):
             return 404
 
     def delete_machine(self, id: str):
+        """
+        
+        Delete the machine with the given id
+
+        Args:
+            id (str): [Machine's id]
+
+        Returns:
+            [Code]: [Status code]
+        """
         try:
             print("----- Start delete_machine -----")
-            db.collection("machines").document(id).delete()
-            print("------ End delete_machine -----")
-            return 200
+            document = db.collection("machines").document(id)
+            if document.get().exists:
+                
+                document.delete()
+                
+                users= db.collection("users").stream()
+
+                for user in users:
+
+                    preps = db.collection("users").document(user.id).collection("preparations").stream()
+
+                    for prep in preps:
+                        
+                        prep_dict = prep.to_dict()
+
+                        if prep_dict["machine"].id == id:
+                            prep.reference.delete()
+
+                print("------ End delete_machine -----")
+                return 200
+            else:
+                return 404
         except Exception as ex:
             print("Error : {}".format(ex))
-            return 404
+            return 500
 
 
 class PreparationService(ABC):
@@ -195,63 +227,70 @@ class PreparationService(ABC):
             print("------ Start get_preparation_machine ------")
             machine_ref = db.collection("machines").document(id)
             print(machine_ref)
-            users = db.collection("users").stream()
 
-            for user in users:
-                preparations = db.collection("users").document(
-                    user.id).collection("preparations").stream()
-                print("Docs preparation with id : {} ---> {}".format(id, preparations))
+            if machine_ref.get().exists:
 
-                for preparation in preparations:
+                users = db.collection("users").stream()
 
-                    prepa_dict = preparation.to_dict()
-                    nextTime = prepa_dict["nextTime"]
-                    year, month, day, hour, minute, second = nextTime.year, nextTime.month, nextTime.day, nextTime.hour, nextTime.minute, nextTime.second
+                for user in users:
+                    preparations = db.collection("users").document(
+                        user.id).collection("preparations").stream()
+                    print("Docs preparation with id : {} ---> {}".format(id, preparations))
 
-                    date_preparation = datetime(
-                        year, month, day, hour, minute, second)
-                    print("Early : {}".format(not date_preparation <
-                          datetime.now() and prepa_dict["state"] == 0))
-                    if not date_preparation < datetime.now() and prepa_dict["state"] == 0:
+                    for preparation in preparations:
 
-                        print("Preparation not yet passed")
+                        prepa_dict = preparation.to_dict()
+                        nextTime = prepa_dict["nextTime"]
+                        year, month, day, hour, minute, second = nextTime.year, nextTime.month, nextTime.day, nextTime.hour, nextTime.minute, nextTime.second
 
-                        doc_coffee = db.collection("coffees").document(
-                            prepa_dict["coffee"].id).get()
+                        date_preparation = datetime(
+                            year, month, day, hour, minute, second)
+                        print("Early : {}".format(not date_preparation <
+                            datetime.now() and prepa_dict["state"] == 0))
+                        if not date_preparation < datetime.now() and prepa_dict["state"] == 0:
 
-                        doc_coffee = doc_coffee.to_dict()
+                            print("Preparation not yet passed")
 
-                        coffee = Coffee(id=doc_coffee["id"], name=doc_coffee["name"],
-                                        description=doc_coffee["description"])
+                            doc_coffee = db.collection("coffees").document(
+                                prepa_dict["coffee"].id).get()
 
-                        doc_machine = db.collection("machines").document(
-                            prepa_dict["machine"].id).get()
+                            doc_coffee = doc_coffee.to_dict()
 
-                        name = db.collection("machines").document(prepa_dict["machine"].id).collection(
-                            "users").document(user.id).get().to_dict()["name"]
+                            coffee = Coffee(id=doc_coffee["id"], name=doc_coffee["name"],
+                                            description=doc_coffee["description"])
 
-                        doc_machine = doc_machine.to_dict()
+                            doc_machine = db.collection("machines").document(
+                                prepa_dict["machine"].id).get()
 
-                        machine = Machine(id=doc_machine["id"], state=doc_machine["state"],
-                                          type=doc_machine["type"], name=name)
+                            name = db.collection("machines").document(prepa_dict["machine"].id).collection(
+                                "users").document(user.id).get().to_dict()["name"]
 
-                        if prepa_dict["saved"]:
-                            print("Preparation saved")
-                            prep = PreparationSaved(coffee, prepa_dict["creationDate"], prepa_dict["lastUpdate"], machine, 
-                            prepa_dict["id"], prepa_dict["saved"], prepa_dict["state"], prepa_dict["nextTime"], prepa_dict["name"],
-                             prepa_dict["daysOfWeek"], prepa_dict["hours"], prepa_dict["lastTime"])
-                        else:
-                            print("Preparation not saved")
-                            prep = Preparation(coffee, prepa_dict["creationDate"], prepa_dict["lastUpdate"],
-                                                    machine, prepa_dict["id"], prepa_dict["saved"], prepa_dict["state"], prepa_dict["nextTime"])
+                            doc_machine = doc_machine.to_dict()
 
-                        list_preparations.append(prep)
+                            machine = Machine(id=doc_machine["id"], state=doc_machine["state"],
+                                            type=doc_machine["type"], name=name)
 
-            print("------ End get_preparation_machine ------")
-            return 200, list_preparations
+                            if prepa_dict["saved"]:
+                                print("Preparation saved")
+                                prep = PreparationSaved(coffee=coffee, creation_date=prepa_dict["creationDate"], last_update=prepa_dict["lastUpdate"], machine=machine, 
+                                id=prepa_dict["id"], saved=prepa_dict["saved"], state=prepa_dict["state"], next_time=prepa_dict["nextTime"],
+                                days_of_week=prepa_dict["daysOfWeek"], hours=prepa_dict["hours"], last_time=prepa_dict["lastTime"], name=prepa_dict["name"])
+                                print("Preparation : {}".format(prep))
+                            else:
+                                print("Preparation not saved")
+                                prep = Preparation(coffee=coffee, creation_date=prepa_dict["creationDate"], last_update=prepa_dict["lastUpdate"], machine=machine, 
+                                id=prepa_dict["id"], saved=prepa_dict["saved"], state=prepa_dict["state"], next_time=prepa_dict["nextTime"])
+                            
+                            print("Preparation : {}".format(prep))
+                            list_preparations.append(prep)
+
+                print("------ End get_preparation_machine ------")
+                return 200, list_preparations
+            else:
+                return 404, list_preparations
         except Exception as ex:
             print("Error : {}".format(ex))
-            return 404, list_preparations
+            return 500, list_preparations
 
     def get_preparation(self):
         preparations = list()
@@ -299,7 +338,7 @@ class PreparationService(ABC):
             return 200, preparations
         except Exception as ex:
             print("Error : {}".format(ex))
-            return 401, preparations
+            return 500, preparations
 
     def report_preparation_started(self, data: ReportPreparation):
         try:
@@ -311,28 +350,32 @@ class PreparationService(ABC):
             prep = user.collection("preparations").document(
                 data.preparation_id)
 
-            print(prep)
-            prep.update({"state": 1})
+            if prep.get().exists:
 
-            machine_id = prep.get().to_dict()["machine"].id
-            print(machine_id)
+                print(prep)
+                prep.update({"state": 1})
 
-            db.collection("machines").document(machine_id).update({"state": 1})
+                machine_id = prep.get().to_dict()["machine"].id
+                print(machine_id)
 
-            notif_ref = user.collection("notifications").document()
+                db.collection("machines").document(machine_id).update({"state": 1})
 
-            notif_ref.set({
-                "id": notif_ref.id,
-                "preparation": prep,
-                "state": 0
-            })
+                notif_ref = user.collection("notifications").document()
 
-            print("------ End report_preparation_started ------")
+                notif_ref.set({
+                    "id": notif_ref.id,
+                    "preparation": prep,
+                    "state": 0
+                })
 
-            return 200
+                print("------ End report_preparation_started ------")
+
+                return 200
+            else:
+                return 404
         except Exception as ex:
             print("Error : {}".format(ex))
-            return 404
+            return 500
 
     def report_preparation_succeeded(self, data: ReportPreparation):
         try:
@@ -344,44 +387,48 @@ class PreparationService(ABC):
             prep = user.collection("preparations").document(
                 data.preparation_id)
 
-            print(prep)
-            prep.update({"state": 0})
+            if prep.get().exists:
 
-            machine_id = prep.get().to_dict()["machine"].id
-            print(machine_id)
+                print(prep)
+                prep.update({"state": 0})
 
-            db.collection("machines").document(machine_id).update({"state": 0})
+                machine_id = prep.get().to_dict()["machine"].id
+                print(machine_id)
 
-            prep_dict = prep.get().to_dict()
+                db.collection("machines").document(machine_id).update({"state": 0})
 
-            is_saved = prep_dict["saved"]
+                prep_dict = prep.get().to_dict()
 
-            if is_saved:
+                is_saved = prep_dict["saved"]
 
-                next_time = calculate_next_time(prep_dict["daysOfWeek"], prep_dict["hours"], prep_dict["nextTime"])
+                if is_saved:
 
-                print("New value of next_time = {}".format(next_time))
+                    next_time = calculate_next_time(prep_dict["daysOfWeek"], prep_dict["hours"])
 
-                prep.update({
-                    "lastTime": prep_dict["nextTime"],
-                    "nextTime": next_time
+                    print("New value of next_time = {}".format(next_time))
+
+                    prep.update({
+                        "lastTime": prep_dict["nextTime"],
+                        "nextTime": next_time
+                    })
+                
+
+                notif_ref = user.collection("notifications").document()
+
+                notif_ref.set({
+                    "id": notif_ref.id,
+                    "preparation": prep,
+                    "state": 1
                 })
-            
 
-            notif_ref = user.collection("notifications").document()
+                print("------ End report_preparation_succeeded ------")
 
-            notif_ref.set({
-                "id": notif_ref.id,
-                "preparation": prep,
-                "state": 1
-            })
-
-            print("------ End report_preparation_succeeded ------")
-
-            return 200
+                return 200
+            else:
+                return 404
         except Exception as ex:
             print("Error : {}".format(ex))
-            return 404
+            return 500
 
     def report_preparation_failed(self, data: ReportPreparation):
         try:
@@ -393,43 +440,45 @@ class PreparationService(ABC):
             prep = user.collection("preparations").document(
                 data.preparation_id)
 
-            print(prep)
-            prep.update({"state": 0})
+            if prep.get().exists:
 
-            machine_id = prep.get().to_dict()["machine"].id
-            print(machine_id)
+                print(prep)
+                prep.update({"state": 0})
 
-            db.collection("machines").document(machine_id).update({"state": 0})
+                machine_id = prep.get().to_dict()["machine"].id
+                print(machine_id)
 
-            prep_dict = prep.get().to_dict()
+                db.collection("machines").document(machine_id).update({"state": 0})
 
-            is_saved = prep_dict["saved"]
+                prep_dict = prep.get().to_dict()
 
-            if is_saved:
-                
-                next_time = calculate_next_time(prep_dict["daysOfWeek"], prep_dict["hours"], prep_dict["nextTime"])
-                prep.update({
-                    "lastTime": prep_dict["nextTime"],
-                    "nextTime": next_time
+                is_saved = prep_dict["saved"]
+
+                if is_saved:
+                    
+                    next_time = calculate_next_time(prep_dict["daysOfWeek"], prep_dict["hours"])
+                    prep.update({
+                        "lastTime": prep_dict["nextTime"],
+                        "nextTime": next_time
+                    })
+
+
+                notif_ref = user.collection("notifications").document()
+
+                notif_ref.set({
+                    "id": notif_ref.id,
+                    "preparation": prep,
+                    "state": 2
                 })
+
+                print("------ End report_preparation_failed ------")
+
+                return 200
             else:
-                # TODO what happen
-                pass
-
-            notif_ref = user.collection("notifications").document()
-
-            notif_ref.set({
-                "id": notif_ref.id,
-                "preparation": prep,
-                "state": 2
-            })
-
-            print("------ End report_preparation_failed ------")
-
-            return 200
+                return 404
         except Exception as ex:
             print("Error : {}".format(ex))
-            return 404
+            return 500
 
     def create_preparation(self, data: CreatePreparation):
         try:
@@ -439,43 +488,46 @@ class PreparationService(ABC):
 
             coffee = db.collection("coffees").document(data.coffee_id)
             machine = db.collection("machines").document(data.machine_id)
-            
-            prep_dict = prep.get().to_dict()
 
-            if data.saved:
+            if coffee.get().exists and machine.get().exists:
 
-                next_time = calculate_next_time(data.days_of_week, data.hours, prep_dict["nextTime"])
+                if data.saved:
 
-                prep.set({
-                    "coffee": coffee,
-                    "creationDate": datetime.now(tz=pytz.utc),
-                    "daysOfWeek": data.days_of_week,
-                    "hours": data.hours,
-                    "id": prep.id,
-                    "lastTime": datetime.now(tz=pytz.utc),
-                    "lastUpdate": datetime.now(tz=pytz.utc),
-                    "machine": machine,
-                    "name": data.name,
-                    "saved": data.saved,
-                    "nextTime" : next_time,
-                    "state" : 0
-                })
+                    next_time = calculate_next_time(data.days_of_week, data.hours)
+                    
+
+                    prep.set({
+                        "coffee": coffee,
+                        "creationDate": datetime.now(tz=pytz.utc),
+                        "daysOfWeek": data.days_of_week,
+                        "hours": data.hours,
+                        "id": prep.id,
+                        "lastTime": datetime.now(tz=pytz.utc),
+                        "lastUpdate": datetime.now(tz=pytz.utc),
+                        "machine": machine,
+                        "name": data.name,
+                        "saved": data.saved,
+                        "nextTime" : next_time,
+                        "state" : 0
+                    })
+                else:
+                    prep.set({
+                        "coffee": coffee,
+                        "creationDate": datetime.now(tz=pytz.utc),
+                        "id": prep.id,
+                        "lastUpdate": datetime.now(tz=pytz.utc),
+                        "machine": machine,
+                        "nextTime" : datetime.strptime(data.next_time, "%Y-%m-%dT%H:%M:%SZ"),
+                        "saved": data.saved,
+                        "state" : 0
+                    })
+                print("------- End create_preparation -------")
+                return 201
             else:
-                prep.set({
-                    "coffee": coffee,
-                    "creationDate": datetime.now(tz=pytz.utc),
-                    "id": prep.id,
-                    "lastUpdate": datetime.now(tz=pytz.utc),
-                    "machine": machine,
-                    "nextTime" : datetime.strptime(data.next_time, "%Y-%m-%dT%H:%M:%SZ"),
-                    "saved": data.saved,
-                    "state" : 0
-                })
-            print("------- End create_preparation -------")
-            return 201
+                return 404
         except Exception as ex:
             print("Error : {}".format(ex))
-            return 404
+            return 500
 
     def update_preparation(self, data : UpdatePreparationSaved, id : str):
         try:
@@ -483,36 +535,47 @@ class PreparationService(ABC):
 
             prepa = db.collection('users').document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").collection("preparations").document(id)
             
-            coffee = db.collection('coffees').document(data.coffee_id)
+            if prepa.get().exists:
 
-            machine = db.collection('machines').document(data.machine_id)
+                coffee = db.collection('coffees').document(data.coffee_id)
 
-            next_time = calculate_next_time(data.days_of_week, data.hours, prepa.get().to_dict()["nextTime"])
+                machine = db.collection('machines').document(data.machine_id)
 
-            print("Date now  = {} {} and date nexttime =  {} {}".format(datetime.now(tz=pytz.utc), type(datetime.now(tz=pytz.utc)), next_time, type(next_time)))
+                if machine.get().exists and coffee.get().exists:
 
-            prepa.update({"name" : data.name,
-             "lastUpdate" : datetime.now(tz=pytz.utc),
-             "daysOfWeek" : data.days_of_week,
-             "hours" : data.hours,
-             "nextTime" : next_time,
-             "coffee" : coffee,
-             "machine" : machine
-             })
+                    next_time = calculate_next_time(data.days_of_week, data.hours, prepa.get().to_dict()["nextTime"])
 
-            print("------ End update_preparation ------")
-            return 200
+                    print("Date now  = {} {} and date nexttime =  {} {}".format(datetime.now(tz=pytz.utc), type(datetime.now(tz=pytz.utc)), next_time, type(next_time)))
+
+                    prepa.update({"name" : data.name,
+                    "lastUpdate" : datetime.now(tz=pytz.utc),
+                    "daysOfWeek" : data.days_of_week,
+                    "hours" : data.hours,
+                    "nextTime" : next_time,
+                    "coffee" : coffee,
+                    "machine" : machine
+                    })
+
+                    print("------ End update_preparation ------")
+                    return 200
+                else:
+                    return 404
+            else:
+                return 404
         except Exception as ex:
             print("Error : {}".format(ex))
-            return 400
+            return 500
 
     def delete_preparation(self, id : str):
         try:
             print("------ Start delete_preparation ------")
             prepa = db.collection('users').document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").collection("preparations").document(id)
-            prepa.delete()
-            print("------ End delete_preparation ------")
-            return 200
+            if prepa.get().exists:
+                prepa.delete()
+                print("------ End delete_preparation ------")
+                return 200
+            else:
+                return 404
         except Exception as ex:
             print("Error : {}".format(ex))
             return 400
@@ -526,26 +589,30 @@ class CoffeeService(ABC):
             print("Get coffees ---> {}".format(docs))
             coffees = []
             for doc in docs:
-                coffees.append(doc.to_dict())
+                dico = doc.to_dict()
+                coffees.append(Coffee(id=dico["id"], name=dico["name"], description=dico["description"]))
             print("------ End get_coffee ------")
             return (200, coffees)
         except Exception as ex:
             print("Error : {}".format(ex))
-            return 404
+            return 500, coffees
 
     def get_coffee_by_id(self, id):
         try:
             print("----- Start get_coffee_by_id ----")
             doc = db.collection('coffees').document(id).get()
-            print("----- End get_coffee_by_id ----")
-            return (200, doc.to_dict())
+            if doc.exists:
+                dico = doc.to_dict()
+                return 200, Coffee(id=dico["id"], name=dico["name"], description=dico["description"])
+            else:
+                return 404, None
         except Exception as ex:
             print("Error : {}".format(ex))
-            return 401
+            return 500
 
 
 
-def calculate_next_time(day_of_week : list, hours : list, old_next_time):
+def calculate_next_time(day_of_week : list, hours : list):
 
     print("---- Start calculate_next_time ------")
     
@@ -553,10 +620,9 @@ def calculate_next_time(day_of_week : list, hours : list, old_next_time):
 
     current_dayofweek = current_date.weekday()  # day = 6
     # daysOfWeek = [4,5,6]
-
+    
     if len(day_of_week) > 1:
         i = 0
-        
         while current_dayofweek > day_of_week[i]:
             i = i+1
 
@@ -573,19 +639,25 @@ def calculate_next_time(day_of_week : list, hours : list, old_next_time):
         while day_of_week[index_wanted_found] != next_time.weekday()+1:
             print("Next time : {} and weekdays : {}".format(
                 next_time, next_time.weekday()))
+
             next_time = next_time + timedelta(days=1)
 
         print("Next date : {}".format(next_time))
 
     else:
-        next_time = current_date + \
-            timedelta(days=day_of_week[0]-1)
+        next_time = current_date
+        while day_of_week[0] != next_time.weekday():
+            print("Next time : {} and weekdays : {}".format(
+                next_time, next_time.weekday()))
+
+            next_time = next_time + timedelta(days=1)
         print("Next date : {}".format(next_time))
 
-    has_same_date = ((old_next_time.day == current_date.day) and (
-        old_next_time.month == current_date.month) and (old_next_time.year == current_date.year))
+    has_same_date = ((next_time.day == current_date.day) and (
+        next_time.month == current_date.month) and (next_time.year == current_date.year))
     
     print(has_same_date)
+    
     if not has_same_date:
         print("Not the same date")
         splitted_hours = hours[0].split(":")
@@ -603,18 +675,27 @@ def calculate_next_time(day_of_week : list, hours : list, old_next_time):
     else:
         print("Same date")
         i = 0
-        for h in hours:
-            splitted_hours = h.split(":")
+        if len(hours) > 1:
+            for h in hours:
+                splitted_hours = h.split(":")
+                hour = int(splitted_hours[0])
+                minute = int(splitted_hours[1])
+                second = int(splitted_hours[2])
+
+                new_date = current_date.replace(
+                    hour=hour, minute=minute, second=second, microsecond=0, tzinfo=pytz.utc)
+
+                if new_date > current_date:
+                    next_time = new_date
+                    break
+        else:
+            splitted_hours = hours[0].split(":")
             hour = int(splitted_hours[0])
             minute = int(splitted_hours[1])
             second = int(splitted_hours[2])
 
-            new_date = current_date.replace(
-                hour=hour, minute=minute, second=second, microsecond=0, tzinfo=pytz.utc)
-
-            if new_date > current_date:
-                next_time = new_date
-                break
+            next_time = current_date.replace(
+                    hour=hour, minute=minute, second=second, microsecond=0, tzinfo=pytz.utc)
 
         print("Next time with hour = {}".format(next_time))
 
