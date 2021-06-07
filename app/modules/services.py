@@ -292,6 +292,98 @@ class PreparationService(ABC):
             print("Error : {}".format(ex))
             return 500, list_preparations
 
+    def get_preparation_next_coffee(self, id: str):
+        """
+        Return all preparations that already passed with machine with the given id
+
+        Args:
+            id (str): [Id of machine]
+
+        Returns:
+            [list]: [Preparations]
+        """
+        list_preparations = list()
+        try:
+            print("------ Start get_preparation_machine ------\n")
+            machine_ref = db.collection("machines").document(id)
+            print(machine_ref)
+
+            if machine_ref.get().exists:
+
+                users = db.collection("users").stream()
+
+                for user in users:
+                    preparations = db.collection("users").document(
+                        user.id).collection("preparations").stream()
+                    print(
+                        "Docs preparation with id : {} ---> {}\n".format(id, preparations))
+
+                    for preparation in preparations:
+
+                        prepa_dict = preparation.to_dict()
+                        nextTime = prepa_dict["nextTime"]
+                        year, month, day, hour, minute, second = nextTime.year, nextTime.month, nextTime.day, nextTime.hour, nextTime.minute, nextTime.second
+
+                        date_preparation = datetime(
+                            year, month, day, hour, minute, second)
+
+                        print("Early : {}".format(date_preparation <
+                                                  datetime.now() and prepa_dict["state"] == 0))
+
+                        if date_preparation < datetime.now() and prepa_dict["state"] == 0:
+
+                            print("Preparation passed\n")
+
+                            doc_coffee = db.collection("coffees").document(
+                                prepa_dict["coffee"].id).get()
+
+                            doc_coffee = doc_coffee.to_dict()
+
+                            coffee = Coffee(id=doc_coffee["id"], name=doc_coffee["name"],
+                                            description=doc_coffee["description"])
+
+                            doc_machine = db.collection("machines").document(
+                                prepa_dict["machine"].id).get()
+
+                            name = db.collection("machines").document(prepa_dict["machine"].id).collection(
+                                "users").document(user.id).get().to_dict()["name"]
+
+                            doc_machine = doc_machine.to_dict()
+
+                            machine = Machine(id=doc_machine["id"], state=doc_machine["state"],
+                                              type=doc_machine["type"], name=name)
+
+                            if prepa_dict["saved"]:
+                                print("Preparation saved\n")
+                                prep = PreparationSaved(coffee=coffee, creation_date=prepa_dict["creationDate"], last_update=prepa_dict["lastUpdate"], machine=machine,
+                                                        id=prepa_dict["id"], saved=prepa_dict["saved"], state=prepa_dict[
+                                                            "state"], next_time=prepa_dict["nextTime"],
+                                                        days_of_week=prepa_dict["daysOfWeek"], hours=prepa_dict["hours"], last_time=prepa_dict["lastTime"], name=prepa_dict["name"])
+                                print("Preparation : {}\n".format(prep))
+                            else:
+                                print("Preparation not saved\n")
+                                prep = Preparation(coffee=coffee, creation_date=prepa_dict["creationDate"], last_update=prepa_dict["lastUpdate"], machine=machine,
+                                                   id=prepa_dict["id"], saved=prepa_dict["saved"], state=prepa_dict["state"], next_time=prepa_dict["nextTime"])
+
+                            
+                            print("Preparation : {}\n".format(list_preparations))
+                            
+                            list_preparations.append(prep)
+
+                list_preparations.sort(key=lambda x:x.next_time, reverse=False)
+
+                print("Preparations sorted : {}\n".format(list_preparations))
+
+                print("------ End get_preparation_machine ------")
+                return 200, list_preparations
+            else:
+                return 404, list_preparations
+        except Exception as ex:
+            print("Error : {}".format(ex))
+            return 500, list_preparations
+
+
+
     def get_preparation(self):
         preparations = list()
         try:
