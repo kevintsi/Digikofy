@@ -183,6 +183,26 @@ async def get_preparation_machine(id: str, response: Response):
     else:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
+@app.get("/preparation/nextcoffee/{id}", status_code=status.HTTP_200_OK, response_model=List[Any])
+async def get_preparation_next_coffee(id: str, response: Response):
+    """
+    Route that returns late coffees to be prepared 
+
+    Args:
+        id (str): [Machine's id]
+        response (Response): [Response]
+
+    Returns:
+        [type]: [description]
+    """
+    code, preparations = PreparationService().get_preparation_next_coffe(id)
+    if code == 200:
+        return preparations
+    elif code == 404:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
 
 ###### OTHER FUNCTIONS #######
 
