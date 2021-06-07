@@ -195,7 +195,7 @@ async def get_preparation_next_coffee(id: str, response: Response):
     Returns:
         [type]: [description]
     """
-    code, preparations = PreparationService().get_preparation_next_coffe(id)
+    code, preparations = PreparationService().get_preparation_next_coffee(id)
     if code == 200:
         return preparations
     elif code == 404:
