@@ -1,17 +1,21 @@
 from typing import Any, List
+from fastapi.params import Depends
 import uvicorn
 from fastapi import FastAPI, status, Response, Request
 from .modules.response_models import CreatePreparation, MachineCreate, ReportPreparation, \
-    UpdatePreparationSaved, UserRegister, MachineUpdate, Machine, Coffee
+    UpdatePreparationSaved, UserAuthentication, MachineUpdate, Machine, Coffee
 from .modules.services import UserService, MachineService, PreparationService, CoffeeService
+from .auth.check_auth import JWTBearer
+from firebase_admin import auth
 
 
 app = FastAPI(title="DigikofyAPI")
 
-###### USER REGISTERY ROUTE ########
 
-@app.post("/register", status_code=status.HTTP_201_CREATED)
-async def register(data: UserRegister, response: Response):
+###### USER ROUTE ########
+
+@app.post("/register", status_code=status.HTTP_201_CREATED, tags=["User"])
+async def register(data: UserAuthentication, response: Response):
     code = UserService().create_user(data)
     if code == 201:
         print('Sucessfully created new user')
@@ -22,35 +26,40 @@ async def register(data: UserRegister, response: Response):
         print("Something went wrong")
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
+@app.post("/login", status_code=status.HTTP_200_OK, tags=["User"])
+async def login(data : UserAuthentication, response : Response):
+    res  = UserService().log_in_user(data)
+    if res is not None:
+        return res
+    else:
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+
 ###### MACHINE'S ROUTE ############
 
 
-@app.post("/machine", status_code=status.HTTP_201_CREATED)
-async def add_machine(data: MachineCreate, response: Response):
-    code = MachineService().create_machine(data)
+@app.post("/machine", status_code=status.HTTP_201_CREATED, tags=["Machine"])
+async def add_machine(data: MachineCreate, response: Response,  id_user : str = Depends(JWTBearer())):
+    code = MachineService().create_machine(data, id_user)
     print(code)
     if code != 201:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
-@app.get("/machines", status_code=status.HTTP_200_OK, response_model=List[Machine])
-async def get_machines(response: Response, request : Request):
-    print(request.headers)
-    """token = check_auth(request)
-    if token == "":
-        response.status_code = status.HTTP_403_FORBIDDEN
-        return"""
+@app.get("/machines", status_code=status.HTTP_200_OK, response_model=List[Machine], tags=["Machine"])
+async def get_machines(response: Response, id_user : str = Depends(JWTBearer())): 
 
-    (code, data) = MachineService().get_machines()
+    print(f"Id user : {id_user}")
+    (code, data) = MachineService().get_machines(id_user)
+
     print(code)
     if code == 200:
         return data
     else:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
-@app.get("/machine/{id}", status_code=status.HTTP_200_OK, response_model=Machine)
-async def get_machines(id: str, response: Response):
-    (code, data) = MachineService().get_machine_by_id(id)
+@app.get("/machine/{id}", status_code=status.HTTP_200_OK, response_model=Machine, tags=["Machine"])
+async def get_machines(id: str, response: Response,  id_user : str = Depends(JWTBearer())):
+    (code, data) = MachineService().get_machine_by_id(id, id_user)
     print(code)
     if code == 200:
         return data
@@ -60,9 +69,9 @@ async def get_machines(id: str, response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
-@app.put("/machine/{id}", status_code=status.HTTP_200_OK)
-async def update_machine(id: str, data : MachineUpdate, response: Response):
-    code = MachineService().update_machine(id, data)
+@app.put("/machine/{id}", status_code=status.HTTP_200_OK, tags=["Machine"])
+async def update_machine(id: str, data : MachineUpdate, response: Response,  id_user : str = Depends(JWTBearer())):
+    code = MachineService().update_machine(id, data, id_user)
     if code == 200:
         print("Machine's name update successfully")
     else:
@@ -70,9 +79,9 @@ async def update_machine(id: str, data : MachineUpdate, response: Response):
         response.status_code = status.HTTP_404_NOT_FOUND
 
 
-@app.delete("/machine/{id}", status_code=status.HTTP_200_OK)
-async def delete_machine(id: str, response: Response):
-    code = MachineService().delete_machine(id)
+@app.delete("/machine/{id}", status_code=status.HTTP_200_OK, tags=["Machine"])
+async def delete_machine(id: str, response: Response,  id_user : str = Depends(JWTBearer())):
+    code = MachineService().delete_machine(id, id_user)
     if code != 200 and code != 500:
         response.status_code = status.HTTP_404_NOT_FOUND
     elif code == 500:
@@ -82,7 +91,7 @@ async def delete_machine(id: str, response: Response):
 ######## COFFEE'S ROUTE ##########
 
 
-@app.get("/coffees", status_code=status.HTTP_200_OK, response_model=List[Coffee])
+@app.get("/coffees", status_code=status.HTTP_200_OK, response_model=List[Coffee], tags=["Coffee"])
 async def get_coffee(response: Response):
     (code, data) = CoffeeService().get_coffee()
     print(code)
@@ -92,7 +101,7 @@ async def get_coffee(response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
-@app.get("/coffee/{id}", status_code=status.HTTP_200_OK, response_model=Coffee)
+@app.get("/coffee/{id}", status_code=status.HTTP_200_OK, response_model=Coffee, tags=["Coffee"])
 async def get_coffee_by_id(id: str, response: Response):
     (code, data) = CoffeeService().get_coffee_by_id(id)
     print(code, data)
@@ -106,27 +115,27 @@ async def get_coffee_by_id(id: str, response: Response):
 
 ###### PREPARATION'S ROUTE ##########
 
-@app.post("/preparation", status_code=status.HTTP_201_CREATED)
-async def add_preparation(data: CreatePreparation, response: Response):
-    code = PreparationService().create_preparation(data)
+@app.post("/preparation", status_code=status.HTTP_201_CREATED, tags=["Preparation"])
+async def add_preparation(data: CreatePreparation, response: Response,  id_user : str = Depends(JWTBearer())):
+    code = PreparationService().create_preparation(data, id_user)
     print(code)
     if code != 201 and code != 500:
         response.status_code = status.HTTP_404_NOT_FOUND
     elif code == 500:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
-@app.get("/preparations", status_code=status.HTTP_200_OK)
-async def get_preparation(response: Response):
-    code, preparations = PreparationService().get_preparation()
+@app.get("/preparations", status_code=status.HTTP_200_OK, tags=["Preparation"])
+async def get_preparation(response: Response,  id_user : str = Depends(JWTBearer())):
+    code, preparations = PreparationService().get_preparation(id_user)
     if code == 200:
         return preparations
     else:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
-@app.put("/preparation/{id}", status_code=status.HTTP_200_OK)
-async def update_preparation(id : str, data: UpdatePreparationSaved, response: Response):
-    code = PreparationService().update_preparation(data, id)
+@app.put("/preparation/{id}", status_code=status.HTTP_200_OK, tags=["Preparation"])
+async def update_preparation(id : str, data: UpdatePreparationSaved, response: Response,  id_user : str = Depends(JWTBearer())):
+    code = PreparationService().update_preparation(data, id, id_user)
     print(code)
     if code != 200 and code != 500:
         response.status_code = status.HTTP_404_NOT_FOUND
@@ -134,9 +143,9 @@ async def update_preparation(id : str, data: UpdatePreparationSaved, response: R
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
-@app.delete("/preparation/{id}", status_code=status.HTTP_200_OK)
-async def delete_preparation(id : str, response: Response):
-    code = PreparationService().delete_preparation(id)
+@app.delete("/preparation/{id}", status_code=status.HTTP_200_OK, tags=["Preparation"])
+async def delete_preparation(id : str, response: Response,  id_user : str = Depends(JWTBearer())):
+    code = PreparationService().delete_preparation(id, id_user)
     print(code)
     if code != 200 and code != 500:
         response.status_code = status.HTTP_404_NOT_FOUND
@@ -145,18 +154,18 @@ async def delete_preparation(id : str, response: Response):
 
 ####### PREPARATION MACHINE'S ROUTE ##########
 
-@app.post("/preparation/started", status_code=status.HTTP_200_OK)
-async def report_preparation_started(data: ReportPreparation, response: Response):
-    code = PreparationService().report_preparation_started(data)
+@app.post("/preparation/started", status_code=status.HTTP_200_OK, tags=["Preparation"])
+async def report_preparation_started(data: ReportPreparation, response: Response,  id_user : str = Depends(JWTBearer())):
+    code = PreparationService().report_preparation_started(data, id_user)
     print(code)
     if code != 200 and code != 500:
         response.status_code = status.HTTP_400_BAD_REQUEST
     elif code == 500:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
-@app.post("/preparation/succeeded", status_code=status.HTTP_200_OK)
-async def report_preparation_succeeded(data: ReportPreparation, response: Response):
-    code = PreparationService().report_preparation_succeeded(data)
+@app.post("/preparation/succeeded", status_code=status.HTTP_200_OK, tags=["Preparation"])
+async def report_preparation_succeeded(data: ReportPreparation, response: Response,  id_user : str = Depends(JWTBearer())):
+    code = PreparationService().report_preparation_succeeded(data, id_user)
     print(code)
     if code != 200 and code != 500:
         response.status_code = status.HTTP_400_BAD_REQUEST
@@ -164,16 +173,16 @@ async def report_preparation_succeeded(data: ReportPreparation, response: Respon
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
-@app.post("/preparation/failed", status_code=status.HTTP_200_OK)
-async def report_preparation_failed(data: ReportPreparation, response: Response):
-    code = PreparationService().report_preparation_failed(data)
+@app.post("/preparation/failed", status_code=status.HTTP_200_OK, tags=["Preparation"])
+async def report_preparation_failed(data: ReportPreparation, response: Response,  id_user : str = Depends(JWTBearer())):
+    code = PreparationService().report_preparation_failed(data, id_user)
     print(code)
     if code != 200 and code != 500:
         response.status_code = status.HTTP_400_BAD_REQUEST
     elif code == 500:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
-@app.get("/preparation/machine/{id}", status_code=status.HTTP_200_OK, response_model=List[Any])
+@app.get("/preparation/machine/{id}", status_code=status.HTTP_200_OK, response_model=List[Any], tags=["Preparation"])
 async def get_preparation_machine(id: str, response: Response):
     code, preparations = PreparationService().get_preparation_machine(id)
     if code == 200:
@@ -183,7 +192,7 @@ async def get_preparation_machine(id: str, response: Response):
     else:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
-@app.get("/preparation/nextcoffee/{id}", status_code=status.HTTP_200_OK, response_model=List[Any])
+@app.get("/preparation/nextcoffee/{id}", status_code=status.HTTP_200_OK, response_model=List[Any], tags=["Preparation"])
 async def get_preparation_next_coffee(id: str, response: Response):
     """
     Route that returns late coffees to be prepared 
@@ -203,16 +212,6 @@ async def get_preparation_next_coffee(id: str, response: Response):
     else:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
-
-###### OTHER FUNCTIONS #######
-
-def check_auth(request : Request):
-    token = ""
-    if "Authorization" not in request.headers:
-        return token
-    else:
-        token = request.headers["Authorization"].split(" ")[1]
-        return token
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

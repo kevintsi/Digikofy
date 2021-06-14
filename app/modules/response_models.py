@@ -4,10 +4,10 @@ from pydantic import BaseModel
 from datetime import datetime
 
 
-class UserRegister(BaseModel):
+class UserAuthentication(BaseModel):
     email: str
     password: str
-
+    returnSecureToken : Optional[bool] = None
 
 class MachineUpdate(BaseModel):
     name: str

@@ -1,17 +1,17 @@
 from abc import ABC, abstractmethod
 from ..modules.response_models import CreatePreparation, MachineUpdate, PreparationSaved, ReportPreparation, UpdatePreparationSaved,\
-     UserRegister, MachineCreate, Machine, Coffee, Preparation
+     UserAuthentication, MachineCreate, Machine, Coffee, Preparation
 from firebase_admin import auth
 from ..firebase import db
 from fastapi.encoders import jsonable_encoder
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
+from os import getenv
+import requests
 import pytz
-
-# TODO CHANGE 9KFeGrJB7mQqMVX4RISBGRgI2oJ3 TO DYNAMIC VALUE GET FROM HEADER TOKEN
 
 
 class UserService(ABC):
-    def create_user(self, data: UserRegister):
+    def create_user(self, data: UserAuthentication):
         try:
             new_user = auth.create_user(
                 email=data.email,
@@ -32,13 +32,25 @@ class UserService(ABC):
         except Exception as ex:
             return 500
 
-    def log_in_user(self, data):
-        pass
+    def log_in_user(self, data : UserAuthentication):
+
+        response = requests.post(
+            url="https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword",
+            params={"key" : getenv("API_KEY_FIREBASE")},
+            data=data.json()
+            )
+
+        print(f"Response : {response}, code : {response.status_code}")
+
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return None
 
 
 class MachineService(ABC):
 
-    def create_machine(self, data: MachineCreate):
+    def create_machine(self, data: MachineCreate, id_user : str):
         """
         Create machine
 
@@ -62,16 +74,16 @@ class MachineService(ABC):
                     "type": data.type
                 })
 
-                db.collection("machines").document(data.id).collection("users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").set({
+                db.collection("machines").document(data.id).collection("users").document(id_user).set({
                     "name": data.name,
-                    "uid": "9KFeGrJB7mQqMVX4RISBGRgI2oJ3"
+                    "uid": id_user
                 })
 
             else:
                 print("Machine already created so users => adding user...")
-                db.collection("machines").document(data.id).collection("users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").set({
+                db.collection("machines").document(data.id).collection("users").document(id_user).set({
                     "name": data.name,
-                    "uid": "9KFeGrJB7mQqMVX4RISBGRgI2oJ3"
+                    "uid": id_user
                 })
             print("----- End create_machine ----")
             return 201
@@ -79,7 +91,7 @@ class MachineService(ABC):
             print("Error : {}".format(ex))
             return 500
 
-    def get_machines(self): #  token : str when I will have the token
+    def get_machines(self, id_user : str):
         """
 
         Get all the machines available
@@ -88,9 +100,6 @@ class MachineService(ABC):
             [list(Machine)]: [List of machines]
         """
         try:
-            """decode_token = auth.verify_id_token(token)
-            uid = decode_token["uid"]
-            print("UID : {}".format(uid))"""
 
             print("------ Start get machines ------")
             machines = []
@@ -99,7 +108,7 @@ class MachineService(ABC):
                 dico_machine = doc.to_dict()
                 print(dico_machine)
                 docs_user_machine = db.collection('machines').document(dico_machine["id"]).collection(
-                    "users").where("uid", "==", "9KFeGrJB7mQqMVX4RISBGRgI2oJ3").stream()
+                    "users").where("uid", "==", id_user).stream()
                 print("Get machines ---> {}".format(docs_user_machine))
                 for doc_mach_user in docs_user_machine:
                     dico_machine_user = doc_mach_user.to_dict()
@@ -113,7 +122,7 @@ class MachineService(ABC):
             print("Error : {}".format(ex))
             return 500, []
 
-    def get_machine_by_id(self, id: str):
+    def get_machine_by_id(self, id: str, id_user : str):
         """
 
         Get machine by a given id
@@ -132,7 +141,7 @@ class MachineService(ABC):
                 doc_machine = doc_machine.to_dict()
                 print(doc_machine)
                 doc_machine_user = db.collection("machines").document(id).collection(
-                    "users").document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").get()
+                    "users").document(id_user).get()
                 print(doc_machine_user)
                 dico_machine_user = doc_machine_user.to_dict()
                 print(dico_machine_user)
@@ -148,7 +157,7 @@ class MachineService(ABC):
             print("Error : {}".format(ex))
             return 500, machine
 
-    def update_machine(self, id: str, data: MachineUpdate):
+    def update_machine(self, id: str, data: MachineUpdate, id_user : str):
         """
 
         Update machine
@@ -164,7 +173,7 @@ class MachineService(ABC):
             print("----- Start update machine's name -----")
             print("{}".format(id))
             db.collection("machines").document(id).collection("users").document(
-                "9KFeGrJB7mQqMVX4RISBGRgI2oJ3").update({"name": data.name})
+                id_user).update({"name": data.name})
             print("------ End update machine's name -----")
             return 200
         except Exception as ex:
@@ -384,12 +393,12 @@ class PreparationService(ABC):
 
 
 
-    def get_preparation(self):
+    def get_preparation(self, id_user: str):
         preparations = list()
         try:
             print("------ Start get preparation ------")
             docs = db.collection("users").document(
-                "9KFeGrJB7mQqMVX4RISBGRgI2oJ3").collection("preparations").stream()
+                id_user).collection("preparations").stream()
             print("Get Preparation ---> {}".format(docs))
             for doc in docs:
                 dico = doc.to_dict()
@@ -409,21 +418,24 @@ class PreparationService(ABC):
                     dico["machine"].id).get()
                 machine = doc_machine.to_dict()
                 print("Information machine --> {}".format(machine))
+                
+                user = db.collection("machines").document(dico["machine"].id).collection("users").document(id_user).get().to_dict()
+
                 print(Machine(id=machine["id"], state=machine["state"],
-                      type=machine["type"]))
+                      type=machine["type"], name=user["name"]))
 
                 machine = Machine(id=machine["id"], state=machine["state"],
-                                  type=machine["type"])
+                                  type=machine["type"], name=user["name"])
 
                 print(dico)
                 if dico["saved"]:
                     print("Preparation saved")
-                    preparation = PreparationSaved(coffee, dico["creationDate"], dico["lastUpdate"], machine, 
-                    dico["id"], dico["saved"], dico["state"], dico["nextTime"], dico["name"], dico["daysOfWeek"], dico["hours"], dico["lastTime"])
+                    preparation = PreparationSaved(coffee=coffee, creation_date=dico["creationDate"], last_update=dico["lastUpdate"], machine=machine, 
+                    id=dico["id"], saved=dico["saved"], state=dico["state"], next_time=dico["nextTime"], name=dico["name"], days_of_week=dico["daysOfWeek"], hours=dico["hours"], last_time=dico["lastTime"])
                 else:
                     print("Preparation not saved")
-                    preparation = Preparation(coffee, dico["creationDate"], dico["lastUpdate"],
-                                              machine, dico["id"], dico["saved"], dico["state"], dico["nextTime"])
+                    preparation = Preparation(coffee=coffee, creation_date=dico["creationDate"], last_update=dico["lastUpdate"], machine=machine, 
+                    id=dico["id"], saved=dico["saved"], state=dico["state"], next_time=dico["nextTime"])
                 preparations.append(preparation)
             print("{}".format(preparations))
             print("------ End get preparation  ------")
@@ -432,12 +444,12 @@ class PreparationService(ABC):
             print("Error : {}".format(ex))
             return 500, preparations
 
-    def report_preparation_started(self, data: ReportPreparation):
+    def report_preparation_started(self, data: ReportPreparation, id_user : str):
         try:
             print("------ Start report_preparation_started ------")
 
             user = db.collection("users").document(
-                "9KFeGrJB7mQqMVX4RISBGRgI2oJ3")
+                id_user)
 
             prep = user.collection("preparations").document(
                 data.preparation_id)
@@ -469,12 +481,12 @@ class PreparationService(ABC):
             print("Error : {}".format(ex))
             return 500
 
-    def report_preparation_succeeded(self, data: ReportPreparation):
+    def report_preparation_succeeded(self, data: ReportPreparation, id_user : str):
         try:
             print("------ Start report_preparation_succeeded ------")
 
             user = db.collection("users").document(
-                "9KFeGrJB7mQqMVX4RISBGRgI2oJ3")
+                id_user)
 
             prep = user.collection("preparations").document(
                 data.preparation_id)
@@ -522,12 +534,12 @@ class PreparationService(ABC):
             print("Error : {}".format(ex))
             return 500
 
-    def report_preparation_failed(self, data: ReportPreparation):
+    def report_preparation_failed(self, data: ReportPreparation, id_user : str):
         try:
             print("------ Start report_preparation_failed ------")
 
             user = db.collection("users").document(
-                "9KFeGrJB7mQqMVX4RISBGRgI2oJ3")
+                id_user)
 
             prep = user.collection("preparations").document(
                 data.preparation_id)
@@ -572,11 +584,11 @@ class PreparationService(ABC):
             print("Error : {}".format(ex))
             return 500
 
-    def create_preparation(self, data: CreatePreparation):
+    def create_preparation(self, data: CreatePreparation, id_user : str):
         try:
             print("------- Start create_preparation -------")
             prep = db.collection("users").document(
-                "9KFeGrJB7mQqMVX4RISBGRgI2oJ3").collection("preparations").document()
+                id_user).collection("preparations").document()
 
             coffee = db.collection("coffees").document(data.coffee_id)
             machine = db.collection("machines").document(data.machine_id)
@@ -621,11 +633,11 @@ class PreparationService(ABC):
             print("Error : {}".format(ex))
             return 500
 
-    def update_preparation(self, data : UpdatePreparationSaved, id : str):
+    def update_preparation(self, data : UpdatePreparationSaved, id : str, id_user : str):
         try:
             print("------ Start update_preparation ------")
 
-            prepa = db.collection('users').document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").collection("preparations").document(id)
+            prepa = db.collection('users').document(id_user).collection("preparations").document(id)
             
             if prepa.get().exists:
 
@@ -658,10 +670,10 @@ class PreparationService(ABC):
             print("Error : {}".format(ex))
             return 500
 
-    def delete_preparation(self, id : str):
+    def delete_preparation(self, id : str, id_user : str):
         try:
             print("------ Start delete_preparation ------")
-            prepa = db.collection('users').document("9KFeGrJB7mQqMVX4RISBGRgI2oJ3").collection("preparations").document(id)
+            prepa = db.collection('users').document(id_user).collection("preparations").document(id)
             if prepa.get().exists:
                 prepa.delete()
                 print("------ End delete_preparation ------")
