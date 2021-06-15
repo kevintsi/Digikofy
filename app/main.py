@@ -158,7 +158,7 @@ async def delete_preparation(id: str, response: Response,  id_user: str = Depend
 ####### PREPARATION MACHINE'S ROUTE ##########
 
 
-@app.post("/preparation/{id}/started", status_code=status.HTTP_200_OK, tags=["Preparation"])
+@app.get("/preparation/{id}/started", status_code=status.HTTP_200_OK, tags=["Preparation"])
 async def report_preparation_started(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
     code = PreparationService().report_preparation_started(id, id_user)
     print(code)
@@ -168,7 +168,7 @@ async def report_preparation_started(id: str, response: Response,  id_user: str 
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
-@app.post("/preparation/{id}/succeeded", status_code=status.HTTP_200_OK, tags=["Preparation"])
+@app.get("/preparation/{id}/succeeded", status_code=status.HTTP_200_OK, tags=["Preparation"])
 async def report_preparation_succeeded(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
     code = PreparationService().report_preparation_succeeded(id, id_user)
     print(code)
@@ -178,7 +178,7 @@ async def report_preparation_succeeded(id: str, response: Response,  id_user: st
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
-@app.post("/preparation/{id}/failed", status_code=status.HTTP_200_OK, tags=["Preparation"])
+@app.get("/preparation/{id}/failed", status_code=status.HTTP_200_OK, tags=["Preparation"])
 async def report_preparation_failed(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
     code = PreparationService().report_preparation_failed(id, id_user)
     print(code)
