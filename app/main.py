@@ -1,12 +1,11 @@
 from typing import Any, List
 from fastapi.params import Depends
 import uvicorn
-from fastapi import FastAPI, status, Response, Request
-from .modules.response_models import CreatePreparation, MachineCreate, ReportPreparation, \
-    UpdatePreparationSaved, UserAuthentication, MachineUpdate, Machine, Coffee
+from fastapi import FastAPI, status, Response
+from .modules.response_models import CreatePreparation, MachineCreate, \
+    UpdatePreparationSaved, UserAuthentication, MachineUpdate, Machine, Coffee, UserRefreshToken
 from .modules.services import UserService, MachineService, PreparationService, CoffeeService
 from .auth.check_auth import JWTBearer
-from firebase_admin import auth
 
 
 app = FastAPI(title="DigikofyAPI")
@@ -34,6 +33,18 @@ async def login(data: UserAuthentication, response: Response):
         return res
     else:
         response.status_code = status.HTTP_401_UNAUTHORIZED
+
+@app.post("/refreshToken", status_code=status.HTTP_200_OK, tags=["User"])
+async def refresh_token(data : UserRefreshToken, response : Response):
+    res,code = UserService().get_new_token(data)
+    if res is not None:
+        return res
+    elif code == 403:
+        response.status_code = status.HTTP_403_FORBIDDEN
+
+@app.post("/revoke", status_code=status.HTTP_200_OK, tags=["User"])
+async def revoke_refresh_token(data : UserRefreshToken):
+    UserService().revoke_refresh_token(data)
 
 ###### MACHINE'S ROUTE ############
 

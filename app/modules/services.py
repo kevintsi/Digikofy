@@ -1,6 +1,6 @@
-from abc import ABC, abstractmethod
-from ..modules.response_models import CreatePreparation, MachineUpdate, PreparationSaved, ReportPreparation, UpdatePreparationSaved,\
-    UserAuthentication, MachineCreate, Machine, Coffee, Preparation
+from abc import ABC
+from ..modules.response_models import CreatePreparation, MachineUpdate, PreparationSaved, UpdatePreparationSaved,\
+    UserAuthentication, MachineCreate, Machine, Coffee, Preparation, UserRefreshToken
 from firebase_admin import auth
 from ..firebase import db
 from fastapi.encoders import jsonable_encoder
@@ -46,6 +46,32 @@ class UserService(ABC):
             return response.json()
         else:
             return None
+
+    def get_new_token(self, data : UserRefreshToken):
+
+        docs = db.collection("refreshTokensBlackList").where("refresh_token","==",data.refresh_token).get()
+        
+        if len(docs):
+            return None,403
+        else:
+            response = requests.post(
+                url="https://securetoken.googleapis.com/v1/token",
+                params={"key": getenv("API_KEY_FIREBASE")},
+                data={"grant_type" : "refresh_token", "refresh_token" : data.refresh_token}
+            )
+
+            print(f"Response : {response}, code : {response.status_code}")
+
+            if response.status_code == 200:
+                return response.json(), response.status_code
+            else:
+                return None, response.status_code
+
+    def revoke_refresh_token(self, data : UserRefreshToken):
+        db.collection("refreshTokensBlackList").add(data.dict())
+
+
+
 
 
 class MachineService(ABC):

@@ -1,4 +1,3 @@
-from os import name
 from typing import Optional, List
 from pydantic import BaseModel
 from datetime import datetime
@@ -8,6 +7,9 @@ class UserAuthentication(BaseModel):
     email: str
     password: str
     returnSecureToken : Optional[bool] = None
+
+class UserRefreshToken(BaseModel):
+    refresh_token : str
 
 class MachineUpdate(BaseModel):
     name: str
