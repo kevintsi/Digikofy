@@ -47,6 +47,17 @@ class UserService(ABC):
         else:
             return None
 
+        
+    def delete_user(self, user_id : str):
+        db.collection("users").document(user_id).delete()
+        docs_machine = db.collection("machines").stream()
+        for doc in docs_machine:
+            user_exist = db.collection("machines").document(doc.id).collection("users").document(user_id).get().exists
+            if user_exist:
+                db.collection("machines").document(doc.id).collection("users").document(user_id).delete()
+        
+        return 200
+
     def get_new_token(self, data : UserRefreshToken):
 
         docs = db.collection("refreshTokensBlackList").where("refresh_token","==",data.refresh_token).get()

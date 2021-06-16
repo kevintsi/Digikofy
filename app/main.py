@@ -25,6 +25,12 @@ async def register(data: UserAuthentication, response: Response):
         print("Something went wrong")
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
+@app.delete("/delete", status_code=status.HTTP_200_OK, tags=["User"])
+async def delete(response: Response,  id_user: str = Depends(JWTBearer())):
+    code = UserService().delete_user(id_user)
+    if code != 200:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+
 
 @app.post("/login", status_code=status.HTTP_200_OK, tags=["User"])
 async def login(data: UserAuthentication, response: Response):
