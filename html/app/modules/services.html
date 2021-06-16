@@ -1,0 +1,2941 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>app.modules.services API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>app.modules.services</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from abc import ABC
+from ..modules.response_models import CreatePreparation, MachineUpdate, PreparationSaved, UpdatePreparationSaved,\
+    UserAuthentication, MachineCreate, Machine, Coffee, Preparation, UserRefreshToken
+from firebase_admin import auth
+from ..firebase import db
+from fastapi.encoders import jsonable_encoder
+from datetime import datetime, timedelta
+from os import getenv
+import requests
+import pytz
+
+
+class UserService(ABC):
+    def create_user(self, data: UserAuthentication):
+        try:
+            new_user = auth.create_user(
+                email=data.email,
+                password=data.password
+            )
+            print(jsonable_encoder(new_user))
+            new_user = jsonable_encoder(new_user)
+            doc_ref = db.collection(&#39;users&#39;).document(
+                new_user[&#34;_data&#34;][&#34;localId&#34;])
+            doc_ref.set({
+                &#39;uid&#39;: new_user[&#34;_data&#34;][&#34;localId&#34;],
+                &#39;email&#39;: new_user[&#34;_data&#34;][&#34;email&#34;]
+            })
+            return 201
+        except auth.EmailAlreadyExistsError as ex:
+            print(type(ex))
+            return 409
+        except Exception as ex:
+            return 500
+
+    def log_in_user(self, data: UserAuthentication):
+
+        response = requests.post(
+            url=&#34;https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword&#34;,
+            params={&#34;key&#34;: getenv(&#34;API_KEY_FIREBASE&#34;)},
+            data=data.json()
+        )
+
+        print(f&#34;Response : {response}, code : {response.status_code}&#34;)
+
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return None
+
+    def delete_user(self, user_id: str):
+        db.collection(&#34;users&#34;).document(user_id).delete()
+        docs_machine = db.collection(&#34;machines&#34;).stream()
+        for doc in docs_machine:
+            user_exist = db.collection(&#34;machines&#34;).document(
+                doc.id).collection(&#34;users&#34;).document(user_id).get().exists
+            if user_exist:
+                db.collection(&#34;machines&#34;).document(doc.id).collection(
+                    &#34;users&#34;).document(user_id).delete()
+
+        return 200
+
+    def get_new_token(self, data: UserRefreshToken):
+
+        docs = db.collection(&#34;refreshTokensBlackList&#34;).where(
+            &#34;refresh_token&#34;, &#34;==&#34;, data.refresh_token).get()
+
+        if len(docs):
+            return None, 403
+        else:
+            response = requests.post(
+                url=&#34;https://securetoken.googleapis.com/v1/token&#34;,
+                params={&#34;key&#34;: getenv(&#34;API_KEY_FIREBASE&#34;)},
+                data={&#34;grant_type&#34;: &#34;refresh_token&#34;,
+                      &#34;refresh_token&#34;: data.refresh_token}
+            )
+
+            print(f&#34;Response : {response}, code : {response.status_code}&#34;)
+
+            if response.status_code == 200:
+                return response.json(), response.status_code
+            else:
+                return None, response.status_code
+
+    def revoke_refresh_token(self, data: UserRefreshToken):
+        db.collection(&#34;refreshTokensBlackList&#34;).add(data.dict())
+
+
+class MachineService(ABC):
+
+    def create_machine(self, data: MachineCreate, id_user: str):
+        &#34;&#34;&#34;
+        Create machine
+
+        Args:
+            data (MachineCreate): [Data model for creating MachineCreate]
+
+        Returns:
+            [Code]: [Status code]
+        &#34;&#34;&#34;
+        try:
+            print(&#34;----- Start create_machine ----&#34;)
+            users_exist = db.collection(&#39;machines&#39;).document(
+                data.id).collection(&#34;users&#34;).get()
+            print(len(users_exist))
+            if len(users_exist) == 0:
+                print(&#34;Machine never created so no users =&gt; creating...&#34;)
+
+                db.collection(&#34;machines&#34;).document(data.id).set({
+                    &#34;id&#34;: data.id,
+                    &#34;state&#34;: data.state,
+                    &#34;type&#34;: data.type
+                })
+
+                db.collection(&#34;machines&#34;).document(data.id).collection(&#34;users&#34;).document(id_user).set({
+                    &#34;name&#34;: data.name,
+                    &#34;uid&#34;: id_user
+                })
+
+            else:
+                print(&#34;Machine already created so users =&gt; adding user...&#34;)
+                db.collection(&#34;machines&#34;).document(data.id).collection(&#34;users&#34;).document(id_user).set({
+                    &#34;name&#34;: data.name,
+                    &#34;uid&#34;: id_user
+                })
+            print(&#34;----- End create_machine ----&#34;)
+            return 201
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500
+
+    def get_machines(self, id_user: str):
+        &#34;&#34;&#34;
+
+        Get all the machines available
+
+        Returns:
+            [list(Machine)]: [List of machines]
+        &#34;&#34;&#34;
+        try:
+
+            print(&#34;------ Start get machines ------&#34;)
+            machines = []
+            doc_machines = db.collection(&#39;machines&#39;).stream()
+            for doc in doc_machines:
+                dico_machine = doc.to_dict()
+                print(dico_machine)
+                docs_user_machine = db.collection(&#39;machines&#39;).document(dico_machine[&#34;id&#34;]).collection(
+                    &#34;users&#34;).where(&#34;uid&#34;, &#34;==&#34;, id_user).stream()
+                print(&#34;Get machines ---&gt; {}&#34;.format(docs_user_machine))
+                for doc_mach_user in docs_user_machine:
+                    dico_machine_user = doc_mach_user.to_dict()
+                    print(&#34;User&#39;s machine info : {}&#34;.format(dico_machine_user))
+                    machines.append(Machine(
+                        id=dico_machine[&#34;id&#34;], name=dico_machine_user[&#34;name&#34;], state=dico_machine[&#34;state&#34;], type=dico_machine[&#34;type&#34;]))
+            print(machines)
+            print(&#34;------ End get machines ------&#34;)
+            return 200, machines
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500, []
+
+    def get_machine_by_id(self, id: str, id_user: str):
+        &#34;&#34;&#34;
+
+        Get machine by a given id
+
+        Args:
+            id (str): [Machine&#39;s id]
+
+        Returns:
+            [Machine]: [Machine found]
+        &#34;&#34;&#34;
+        try:
+            print(&#34;------ Start get machine by id ------&#34;)
+            machine = None
+            doc_machine = db.collection(&#39;machines&#39;).document(id).get()
+            if doc_machine.exists:
+                doc_machine = doc_machine.to_dict()
+                print(doc_machine)
+                doc_machine_user = db.collection(&#34;machines&#34;).document(id).collection(
+                    &#34;users&#34;).document(id_user).get()
+                print(doc_machine_user)
+                dico_machine_user = doc_machine_user.to_dict()
+                print(dico_machine_user)
+                print(&#34;User&#39;s machine info : {}&#34;.format(dico_machine_user))
+                machine = Machine(id=doc_machine[&#34;id&#34;], name=dico_machine_user[&#34;name&#34;],
+                                  state=doc_machine[&#34;state&#34;], type=doc_machine[&#34;type&#34;])
+                print(machine)
+            else:
+                return 404, machine
+            print(&#34;------ End get machines ------&#34;)
+            return 200, machine
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500, machine
+
+    def update_machine(self, id: str, data: MachineUpdate, id_user: str):
+        &#34;&#34;&#34;
+
+        Update machine
+
+        Args:
+            id (str): [Id of machine]
+            data (MachineUpdate): [data use for updates]
+
+        Returns:
+            [Code]: [Status code]
+        &#34;&#34;&#34;
+        try:
+            print(&#34;----- Start update machine&#39;s name -----&#34;)
+            print(&#34;{}&#34;.format(id))
+            db.collection(&#34;machines&#34;).document(id).collection(&#34;users&#34;).document(
+                id_user).update({&#34;name&#34;: data.name})
+            print(&#34;------ End update machine&#39;s name -----&#34;)
+            return 200
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 404
+
+    def delete_machine(self, id: str, id_user: str):
+        &#34;&#34;&#34;
+
+        Delete the machine with the given id
+
+        Args:
+            id (str): [Machine&#39;s id]
+
+        Returns:
+            [Code]: [Status code]
+        &#34;&#34;&#34;
+        try:
+            print(&#34;----- Start delete_machine -----&#34;)
+            document = db.collection(&#34;machines&#34;).document(id)
+            if document.get().exists:
+
+                if len(document.collection(&#34;users&#34;).get()) == 0:
+
+                    document.delete()
+
+                    users = db.collection(&#34;users&#34;).stream()
+
+                    for user in users:
+
+                        preps = db.collection(&#34;users&#34;).document(
+                            user.id).collection(&#34;preparations&#34;).stream()
+
+                        for prep in preps:
+
+                            prep_dict = prep.to_dict()
+
+                            if prep_dict[&#34;machine&#34;].id == id:
+                                prep.reference.delete()
+
+                else:
+
+                    if document.collection(&#34;users&#34;).document(id_user).get().exists:
+
+                        document.collection(&#34;users&#34;).document(id_user).delete()
+
+                        preps = db.collection(&#34;users&#34;).document(
+                            id_user).collection(&#34;preparations&#34;).stream()
+
+                        for prep in preps:
+
+                            prep_dict = prep.to_dict()
+
+                            if prep_dict[&#34;machine&#34;].id == id:
+                                prep.reference.delete()
+
+                print(&#34;------ End delete_machine -----&#34;)
+                return 200
+            else:
+                return 404
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500
+
+
+class PreparationService(ABC):
+    def get_preparation_machine(self, id: str):
+        &#34;&#34;&#34;
+        Return all preparations that are programmed for a future time with machine with the given id
+
+        Args:
+            id (str): [Id of machine]
+
+        Returns:
+            [list]: [Preparations]
+        &#34;&#34;&#34;
+        list_preparations = list()
+        try:
+            print(&#34;------ Start get_preparation_machine ------&#34;)
+            machine_ref = db.collection(&#34;machines&#34;).document(id)
+            print(machine_ref)
+
+            if machine_ref.get().exists:
+
+                users = db.collection(&#34;users&#34;).stream()
+
+                for user in users:
+                    preparations = db.collection(&#34;users&#34;).document(
+                        user.id).collection(&#34;preparations&#34;).stream()
+                    print(
+                        &#34;Docs preparation with id : {} ---&gt; {}&#34;.format(id, preparations))
+
+                    for preparation in preparations:
+
+                        prepa_dict = preparation.to_dict()
+                        nextTime = prepa_dict[&#34;nextTime&#34;]
+                        year, month, day, hour, minute, second = nextTime.year, nextTime.month, nextTime.day, nextTime.hour, nextTime.minute, nextTime.second
+
+                        date_preparation = datetime(
+                            year, month, day, hour, minute, second)
+                        print(&#34;Early : {}&#34;.format(not date_preparation &lt;
+                                                  datetime.now() and prepa_dict[&#34;state&#34;] == 0))
+                        if not date_preparation &lt; datetime.now() and prepa_dict[&#34;state&#34;] == 0:
+
+                            print(&#34;Preparation not yet passed&#34;)
+
+                            doc_coffee = db.collection(&#34;coffees&#34;).document(
+                                prepa_dict[&#34;coffee&#34;].id).get()
+
+                            doc_coffee = doc_coffee.to_dict()
+
+                            coffee = Coffee(id=doc_coffee[&#34;id&#34;], name=doc_coffee[&#34;name&#34;],
+                                            description=doc_coffee[&#34;description&#34;])
+
+                            doc_machine = db.collection(&#34;machines&#34;).document(
+                                prepa_dict[&#34;machine&#34;].id).get()
+
+                            name = db.collection(&#34;machines&#34;).document(prepa_dict[&#34;machine&#34;].id).collection(
+                                &#34;users&#34;).document(user.id).get().to_dict()[&#34;name&#34;]
+
+                            doc_machine = doc_machine.to_dict()
+
+                            machine = Machine(id=doc_machine[&#34;id&#34;], state=doc_machine[&#34;state&#34;],
+                                              type=doc_machine[&#34;type&#34;], name=name)
+
+                            if prepa_dict[&#34;saved&#34;]:
+                                print(&#34;Preparation saved&#34;)
+                                prep = PreparationSaved(coffee=coffee, creation_date=prepa_dict[&#34;creationDate&#34;], last_update=prepa_dict[&#34;lastUpdate&#34;], machine=machine,
+                                                        id=prepa_dict[&#34;id&#34;], saved=prepa_dict[&#34;saved&#34;], state=prepa_dict[
+                                                            &#34;state&#34;], next_time=prepa_dict[&#34;nextTime&#34;],
+                                                        days_of_week=prepa_dict[&#34;daysOfWeek&#34;], hours=prepa_dict[&#34;hours&#34;], last_time=prepa_dict[&#34;lastTime&#34;], name=prepa_dict[&#34;name&#34;])
+                                print(&#34;Preparation : {}&#34;.format(prep))
+                            else:
+                                print(&#34;Preparation not saved&#34;)
+                                prep = Preparation(coffee=coffee, creation_date=prepa_dict[&#34;creationDate&#34;], last_update=prepa_dict[&#34;lastUpdate&#34;], machine=machine,
+                                                   id=prepa_dict[&#34;id&#34;], saved=prepa_dict[&#34;saved&#34;], state=prepa_dict[&#34;state&#34;], next_time=prepa_dict[&#34;nextTime&#34;])
+
+                            print(&#34;Preparation : {}&#34;.format(prep))
+                            list_preparations.append(prep)
+
+                print(&#34;------ End get_preparation_machine ------&#34;)
+                return 200, list_preparations
+            else:
+                return 404, list_preparations
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500, list_preparations
+
+    def get_preparation_next_coffee(self, id: str):
+        &#34;&#34;&#34;
+        Return all preparations that already passed with machine with the given id
+
+        Args:
+            id (str): [Id of machine]
+
+        Returns:
+            [list]: [Preparations]
+        &#34;&#34;&#34;
+        list_preparations = list()
+        try:
+            print(&#34;------ Start get_preparation_machine ------\n&#34;)
+            machine_ref = db.collection(&#34;machines&#34;).document(id)
+            print(machine_ref)
+
+            if machine_ref.get().exists:
+
+                users = db.collection(&#34;users&#34;).stream()
+
+                for user in users:
+                    preparations = db.collection(&#34;users&#34;).document(
+                        user.id).collection(&#34;preparations&#34;).stream()
+                    print(
+                        &#34;Docs preparation with id : {} ---&gt; {}\n&#34;.format(id, preparations))
+
+                    for preparation in preparations:
+
+                        prepa_dict = preparation.to_dict()
+                        nextTime = prepa_dict[&#34;nextTime&#34;]
+                        year, month, day, hour, minute, second = nextTime.year, nextTime.month, nextTime.day, nextTime.hour, nextTime.minute, nextTime.second
+
+                        date_preparation = datetime(
+                            year, month, day, hour, minute, second)
+
+                        print(&#34;Early : {}&#34;.format(date_preparation &lt;
+                                                  datetime.now() and prepa_dict[&#34;state&#34;] == 0))
+
+                        if date_preparation &lt; datetime.now() and prepa_dict[&#34;state&#34;] == 0:
+
+                            print(&#34;Preparation passed\n&#34;)
+
+                            doc_coffee = db.collection(&#34;coffees&#34;).document(
+                                prepa_dict[&#34;coffee&#34;].id).get()
+
+                            doc_coffee = doc_coffee.to_dict()
+
+                            coffee = Coffee(id=doc_coffee[&#34;id&#34;], name=doc_coffee[&#34;name&#34;],
+                                            description=doc_coffee[&#34;description&#34;])
+
+                            doc_machine = db.collection(&#34;machines&#34;).document(
+                                prepa_dict[&#34;machine&#34;].id).get()
+
+                            name = db.collection(&#34;machines&#34;).document(prepa_dict[&#34;machine&#34;].id).collection(
+                                &#34;users&#34;).document(user.id).get().to_dict()[&#34;name&#34;]
+
+                            doc_machine = doc_machine.to_dict()
+
+                            machine = Machine(id=doc_machine[&#34;id&#34;], state=doc_machine[&#34;state&#34;],
+                                              type=doc_machine[&#34;type&#34;], name=name)
+
+                            if prepa_dict[&#34;saved&#34;]:
+                                print(&#34;Preparation saved\n&#34;)
+                                prep = PreparationSaved(coffee=coffee, creation_date=prepa_dict[&#34;creationDate&#34;], last_update=prepa_dict[&#34;lastUpdate&#34;], machine=machine,
+                                                        id=prepa_dict[&#34;id&#34;], saved=prepa_dict[&#34;saved&#34;], state=prepa_dict[
+                                                            &#34;state&#34;], next_time=prepa_dict[&#34;nextTime&#34;],
+                                                        days_of_week=prepa_dict[&#34;daysOfWeek&#34;], hours=prepa_dict[&#34;hours&#34;], last_time=prepa_dict[&#34;lastTime&#34;], name=prepa_dict[&#34;name&#34;])
+                                print(&#34;Preparation : {}\n&#34;.format(prep))
+                            else:
+                                print(&#34;Preparation not saved\n&#34;)
+                                prep = Preparation(coffee=coffee, creation_date=prepa_dict[&#34;creationDate&#34;], last_update=prepa_dict[&#34;lastUpdate&#34;], machine=machine,
+                                                   id=prepa_dict[&#34;id&#34;], saved=prepa_dict[&#34;saved&#34;], state=prepa_dict[&#34;state&#34;], next_time=prepa_dict[&#34;nextTime&#34;])
+
+                            print(&#34;Preparation : {}\n&#34;.format(
+                                list_preparations))
+
+                            list_preparations.append(prep)
+
+                list_preparations.sort(
+                    key=lambda x: x.next_time, reverse=False)
+
+                print(&#34;Preparations sorted : {}\n&#34;.format(list_preparations))
+
+                print(&#34;------ End get_preparation_machine ------&#34;)
+                return 200, list_preparations
+            else:
+                return 404, list_preparations
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500, list_preparations
+
+    def get_preparation(self, id_user: str):
+        preparations = list()
+        try:
+            print(&#34;------ Start get preparation ------&#34;)
+            docs = db.collection(&#34;users&#34;).document(
+                id_user).collection(&#34;preparations&#34;).stream()
+            print(&#34;Get Preparation ---&gt; {}&#34;.format(docs))
+            for doc in docs:
+                dico = doc.to_dict()
+                print(&#34;Coffee reference id --&gt; {}&#34;.format(dico[&#34;coffee&#34;].id))
+                doc_coffee = db.collection(&#34;coffees&#34;).document(
+                    dico[&#34;coffee&#34;].id).get()
+                coffee = doc_coffee.to_dict()
+                print(&#34;Information coffee --&gt; {}&#34;.format(coffee))
+                print(Coffee(id=coffee[&#34;id&#34;], name=coffee[&#34;name&#34;],
+                      description=coffee[&#34;description&#34;]))
+
+                coffee = Coffee(id=coffee[&#34;id&#34;], name=coffee[&#34;name&#34;],
+                                description=coffee[&#34;description&#34;])
+
+                print(&#34;Machine reference id --&gt; {}&#34;.format(dico[&#34;machine&#34;].id))
+                doc_machine = db.collection(&#34;machines&#34;).document(
+                    dico[&#34;machine&#34;].id).get()
+                machine = doc_machine.to_dict()
+                print(&#34;Information machine --&gt; {}&#34;.format(machine))
+
+                user = db.collection(&#34;machines&#34;).document(dico[&#34;machine&#34;].id).collection(
+                    &#34;users&#34;).document(id_user).get().to_dict()
+
+                print(Machine(id=machine[&#34;id&#34;], state=machine[&#34;state&#34;],
+                      type=machine[&#34;type&#34;], name=user[&#34;name&#34;]))
+
+                machine = Machine(id=machine[&#34;id&#34;], state=machine[&#34;state&#34;],
+                                  type=machine[&#34;type&#34;], name=user[&#34;name&#34;])
+
+                print(dico)
+                if dico[&#34;saved&#34;]:
+                    print(&#34;Preparation saved&#34;)
+                    preparation = PreparationSaved(coffee=coffee, creation_date=dico[&#34;creationDate&#34;], last_update=dico[&#34;lastUpdate&#34;], machine=machine,
+                                                   id=dico[&#34;id&#34;], saved=dico[&#34;saved&#34;], state=dico[&#34;state&#34;], next_time=dico[&#34;nextTime&#34;], name=dico[&#34;name&#34;], days_of_week=dico[&#34;daysOfWeek&#34;], hours=dico[&#34;hours&#34;], last_time=dico[&#34;lastTime&#34;])
+                else:
+                    print(&#34;Preparation not saved&#34;)
+                    preparation = Preparation(coffee=coffee, creation_date=dico[&#34;creationDate&#34;], last_update=dico[&#34;lastUpdate&#34;], machine=machine,
+                                              id=dico[&#34;id&#34;], saved=dico[&#34;saved&#34;], state=dico[&#34;state&#34;], next_time=dico[&#34;nextTime&#34;])
+                preparations.append(preparation)
+            print(&#34;{}&#34;.format(preparations))
+            print(&#34;------ End get preparation  ------&#34;)
+            return 200, preparations
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500, preparations
+
+    def report_preparation_started(self, id: str, id_user: str):
+        try:
+            print(&#34;------ Start report_preparation_started ------&#34;)
+
+            user = db.collection(&#34;users&#34;).document(id_user)
+
+            prep = user.collection(&#34;preparations&#34;).document(id)
+
+            if prep.get().exists:
+
+                print(prep)
+                prep.update({&#34;state&#34;: 1})
+
+                machine_id = prep.get().to_dict()[&#34;machine&#34;].id
+                print(machine_id)
+
+                db.collection(&#34;machines&#34;).document(
+                    machine_id).update({&#34;state&#34;: 1})
+
+                notif_ref = user.collection(&#34;notifications&#34;).document()
+
+                notif_ref.set({
+                    &#34;id&#34;: notif_ref.id,
+                    &#34;preparation&#34;: prep,
+                    &#34;state&#34;: 0
+                })
+
+                print(&#34;------ End report_preparation_started ------&#34;)
+
+                return 200
+            else:
+                return 404
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500
+
+    def report_preparation_succeeded(self, id: str, id_user: str):
+        try:
+            print(&#34;------ Start report_preparation_succeeded ------&#34;)
+
+            user = db.collection(&#34;users&#34;).document(id_user)
+
+            prep = user.collection(&#34;preparations&#34;).document(id)
+
+            if prep.get().exists:
+
+                print(prep)
+                prep.update({&#34;state&#34;: 0})
+
+                machine_id = prep.get().to_dict()[&#34;machine&#34;].id
+                print(machine_id)
+
+                db.collection(&#34;machines&#34;).document(
+                    machine_id).update({&#34;state&#34;: 0})
+
+                prep_dict = prep.get().to_dict()
+
+                is_saved = prep_dict[&#34;saved&#34;]
+
+                if is_saved:
+
+                    next_time = calculate_next_time(
+                        prep_dict[&#34;daysOfWeek&#34;], prep_dict[&#34;hours&#34;])
+
+                    print(&#34;New value of next_time = {}&#34;.format(next_time))
+
+                    prep.update({
+                        &#34;lastTime&#34;: prep_dict[&#34;nextTime&#34;],
+                        &#34;nextTime&#34;: next_time
+                    })
+
+                notif_ref = user.collection(&#34;notifications&#34;).document()
+
+                notif_ref.set({
+                    &#34;id&#34;: notif_ref.id,
+                    &#34;preparation&#34;: prep,
+                    &#34;state&#34;: 1
+                })
+
+                print(&#34;------ End report_preparation_succeeded ------&#34;)
+
+                return 200
+            else:
+                return 404
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500
+
+    def report_preparation_failed(self, id: str, id_user: str):
+        try:
+            print(&#34;------ Start report_preparation_failed ------&#34;)
+
+            user = db.collection(&#34;users&#34;).document(id_user)
+
+            prep = user.collection(&#34;preparations&#34;).document(id)
+
+            if prep.get().exists:
+
+                print(prep)
+                prep.update({&#34;state&#34;: 0})
+
+                machine_id = prep.get().to_dict()[&#34;machine&#34;].id
+                print(machine_id)
+
+                db.collection(&#34;machines&#34;).document(
+                    machine_id).update({&#34;state&#34;: 0})
+
+                prep_dict = prep.get().to_dict()
+
+                is_saved = prep_dict[&#34;saved&#34;]
+
+                if is_saved:
+
+                    next_time = calculate_next_time(
+                        prep_dict[&#34;daysOfWeek&#34;], prep_dict[&#34;hours&#34;])
+                    prep.update({
+                        &#34;lastTime&#34;: prep_dict[&#34;nextTime&#34;],
+                        &#34;nextTime&#34;: next_time
+                    })
+
+                notif_ref = user.collection(&#34;notifications&#34;).document()
+
+                notif_ref.set({
+                    &#34;id&#34;: notif_ref.id,
+                    &#34;preparation&#34;: prep,
+                    &#34;state&#34;: 2
+                })
+
+                print(&#34;------ End report_preparation_failed ------&#34;)
+
+                return 200
+            else:
+                return 404
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500
+
+    def create_preparation(self, data: CreatePreparation, id_user: str):
+        try:
+            print(&#34;------- Start create_preparation -------&#34;)
+            prep = db.collection(&#34;users&#34;).document(
+                id_user).collection(&#34;preparations&#34;).document()
+
+            coffee = db.collection(&#34;coffees&#34;).document(data.coffee_id)
+            machine = db.collection(&#34;machines&#34;).document(data.machine_id)
+
+            if coffee.get().exists and machine.get().exists:
+
+                if data.saved:
+
+                    next_time = calculate_next_time(
+                        data.days_of_week, data.hours)
+
+                    prep.set({
+                        &#34;coffee&#34;: coffee,
+                        &#34;creationDate&#34;: datetime.now(tz=pytz.utc),
+                        &#34;daysOfWeek&#34;: data.days_of_week,
+                        &#34;hours&#34;: data.hours,
+                        &#34;id&#34;: prep.id,
+                        &#34;lastTime&#34;: datetime.now(tz=pytz.utc),
+                        &#34;lastUpdate&#34;: datetime.now(tz=pytz.utc),
+                        &#34;machine&#34;: machine,
+                        &#34;name&#34;: data.name,
+                        &#34;saved&#34;: data.saved,
+                        &#34;nextTime&#34;: next_time,
+                        &#34;state&#34;: 0
+                    })
+                else:
+                    prep.set({
+                        &#34;coffee&#34;: coffee,
+                        &#34;creationDate&#34;: datetime.now(tz=pytz.utc),
+                        &#34;id&#34;: prep.id,
+                        &#34;lastUpdate&#34;: datetime.now(tz=pytz.utc),
+                        &#34;machine&#34;: machine,
+                        &#34;nextTime&#34;: datetime.strptime(data.next_time, &#34;%Y-%m-%dT%H:%M:%SZ&#34;),
+                        &#34;saved&#34;: data.saved,
+                        &#34;state&#34;: 0
+                    })
+                print(&#34;------- End create_preparation -------&#34;)
+                return 201
+            else:
+                return 404
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500
+
+    def update_preparation(self, data: UpdatePreparationSaved, id: str, id_user: str):
+        try:
+            print(&#34;------ Start update_preparation ------&#34;)
+
+            prepa = db.collection(&#39;users&#39;).document(
+                id_user).collection(&#34;preparations&#34;).document(id)
+
+            if prepa.get().exists:
+
+                coffee = db.collection(&#39;coffees&#39;).document(data.coffee_id)
+
+                machine = db.collection(&#39;machines&#39;).document(data.machine_id)
+
+                if machine.get().exists and coffee.get().exists:
+
+                    next_time = calculate_next_time(
+                        data.days_of_week, data.hours, prepa.get().to_dict()[&#34;nextTime&#34;])
+
+                    print(&#34;Date now  = {} {} and date nexttime =  {} {}&#34;.format(datetime.now(
+                        tz=pytz.utc), type(datetime.now(tz=pytz.utc)), next_time, type(next_time)))
+
+                    prepa.update({&#34;name&#34;: data.name,
+                                  &#34;lastUpdate&#34;: datetime.now(tz=pytz.utc),
+                                  &#34;daysOfWeek&#34;: data.days_of_week,
+                                  &#34;hours&#34;: data.hours,
+                                  &#34;nextTime&#34;: next_time,
+                                  &#34;coffee&#34;: coffee,
+                                  &#34;machine&#34;: machine
+                                  })
+
+                    print(&#34;------ End update_preparation ------&#34;)
+                    return 200
+                else:
+                    return 404
+            else:
+                return 404
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500
+
+    def delete_preparation(self, id: str, id_user: str):
+        try:
+            print(&#34;------ Start delete_preparation ------&#34;)
+            prepa = db.collection(&#39;users&#39;).document(
+                id_user).collection(&#34;preparations&#34;).document(id)
+            if prepa.get().exists:
+                prepa.delete()
+                print(&#34;------ End delete_preparation ------&#34;)
+                return 200
+            else:
+                return 404
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 400
+
+
+class CoffeeService(ABC):
+    def get_coffee(self):
+        try:
+            print(&#34;------ Start get_coffee ------&#34;)
+            docs = db.collection(&#39;coffees&#39;).stream()
+            print(&#34;Get coffees ---&gt; {}&#34;.format(docs))
+            coffees = []
+            for doc in docs:
+                dico = doc.to_dict()
+                coffees.append(
+                    Coffee(id=dico[&#34;id&#34;], name=dico[&#34;name&#34;], description=dico[&#34;description&#34;]))
+            print(&#34;------ End get_coffee ------&#34;)
+            return (200, coffees)
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500, coffees
+
+    def get_coffee_by_id(self, id):
+        try:
+            print(&#34;----- Start get_coffee_by_id ----&#34;)
+            doc = db.collection(&#39;coffees&#39;).document(id).get()
+            if doc.exists:
+                dico = doc.to_dict()
+                return 200, Coffee(id=dico[&#34;id&#34;], name=dico[&#34;name&#34;], description=dico[&#34;description&#34;])
+            else:
+                return 404, None
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500
+
+
+def calculate_next_time(day_of_week: list, hours: list):
+
+    print(&#34;---- Start calculate_next_time ------&#34;)
+
+    current_date = datetime.now(tz=pytz.utc)
+
+    current_dayofweek = current_date.weekday()  # day = 6
+    # daysOfWeek = [4,5,6]
+
+    if len(day_of_week) &gt; 1:
+        i = 0
+        while current_dayofweek &gt; day_of_week[i]:
+            i = i+1
+
+        if i == len(day_of_week) - 1:
+            index_wanted_found = 0
+        else:
+            index_wanted_found = i
+
+        print(&#34;Index the closest day of week : {0} so prep_dict[{0}] = {1}&#34;.format(
+            index_wanted_found, day_of_week[index_wanted_found]))
+
+        next_time = current_date
+
+        while day_of_week[index_wanted_found] != next_time.weekday()+1:
+            print(&#34;Next time : {} and weekdays : {}&#34;.format(
+                next_time, next_time.weekday()))
+
+            next_time = next_time + timedelta(days=1)
+
+        print(&#34;Next date : {}&#34;.format(next_time))
+
+    else:
+        next_time = current_date
+        while day_of_week[0] != next_time.weekday():
+            print(&#34;Next time : {} and weekdays : {}&#34;.format(
+                next_time, next_time.weekday()))
+
+            next_time = next_time + timedelta(days=1)
+        print(&#34;Next date : {}&#34;.format(next_time))
+
+    has_same_date = ((next_time.day == current_date.day) and (
+        next_time.month == current_date.month) and (next_time.year == current_date.year))
+
+    print(has_same_date)
+
+    if not has_same_date:
+        print(&#34;Not the same date&#34;)
+        splitted_hours = hours[0].split(&#34;:&#34;)
+        hour = int(splitted_hours[0])
+        minute = int(splitted_hours[1])
+        second = int(splitted_hours[2])
+
+        print(&#34;Hour = {} , Minute = {} , Second = {}&#34;.format(
+            hour, minute, second))
+
+        next_time = datetime(
+            next_time.year, next_time.month, next_time.day, hour, minute, second, 0, tzinfo=pytz.utc)
+
+        print(&#34;Next time with hour = {}&#34;.format(next_time))
+    else:
+        print(&#34;Same date&#34;)
+        i = 0
+        if len(hours) &gt; 1:
+            for h in hours:
+                splitted_hours = h.split(&#34;:&#34;)
+                hour = int(splitted_hours[0])
+                minute = int(splitted_hours[1])
+                second = int(splitted_hours[2])
+
+                new_date = current_date.replace(
+                    hour=hour, minute=minute, second=second, microsecond=0, tzinfo=pytz.utc)
+
+                if new_date &gt; current_date:
+                    next_time = new_date
+                    break
+        else:
+            splitted_hours = hours[0].split(&#34;:&#34;)
+            hour = int(splitted_hours[0])
+            minute = int(splitted_hours[1])
+            second = int(splitted_hours[2])
+
+            next_time = current_date.replace(
+                hour=hour, minute=minute, second=second, microsecond=0, tzinfo=pytz.utc)
+
+        print(&#34;Next time with hour = {}&#34;.format(next_time))
+
+    return next_time</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="app.modules.services.calculate_next_time"><code class="name flex">
+<span>def <span class="ident">calculate_next_time</span></span>(<span>day_of_week: list, hours: list)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_next_time(day_of_week: list, hours: list):
+
+    print(&#34;---- Start calculate_next_time ------&#34;)
+
+    current_date = datetime.now(tz=pytz.utc)
+
+    current_dayofweek = current_date.weekday()  # day = 6
+    # daysOfWeek = [4,5,6]
+
+    if len(day_of_week) &gt; 1:
+        i = 0
+        while current_dayofweek &gt; day_of_week[i]:
+            i = i+1
+
+        if i == len(day_of_week) - 1:
+            index_wanted_found = 0
+        else:
+            index_wanted_found = i
+
+        print(&#34;Index the closest day of week : {0} so prep_dict[{0}] = {1}&#34;.format(
+            index_wanted_found, day_of_week[index_wanted_found]))
+
+        next_time = current_date
+
+        while day_of_week[index_wanted_found] != next_time.weekday()+1:
+            print(&#34;Next time : {} and weekdays : {}&#34;.format(
+                next_time, next_time.weekday()))
+
+            next_time = next_time + timedelta(days=1)
+
+        print(&#34;Next date : {}&#34;.format(next_time))
+
+    else:
+        next_time = current_date
+        while day_of_week[0] != next_time.weekday():
+            print(&#34;Next time : {} and weekdays : {}&#34;.format(
+                next_time, next_time.weekday()))
+
+            next_time = next_time + timedelta(days=1)
+        print(&#34;Next date : {}&#34;.format(next_time))
+
+    has_same_date = ((next_time.day == current_date.day) and (
+        next_time.month == current_date.month) and (next_time.year == current_date.year))
+
+    print(has_same_date)
+
+    if not has_same_date:
+        print(&#34;Not the same date&#34;)
+        splitted_hours = hours[0].split(&#34;:&#34;)
+        hour = int(splitted_hours[0])
+        minute = int(splitted_hours[1])
+        second = int(splitted_hours[2])
+
+        print(&#34;Hour = {} , Minute = {} , Second = {}&#34;.format(
+            hour, minute, second))
+
+        next_time = datetime(
+            next_time.year, next_time.month, next_time.day, hour, minute, second, 0, tzinfo=pytz.utc)
+
+        print(&#34;Next time with hour = {}&#34;.format(next_time))
+    else:
+        print(&#34;Same date&#34;)
+        i = 0
+        if len(hours) &gt; 1:
+            for h in hours:
+                splitted_hours = h.split(&#34;:&#34;)
+                hour = int(splitted_hours[0])
+                minute = int(splitted_hours[1])
+                second = int(splitted_hours[2])
+
+                new_date = current_date.replace(
+                    hour=hour, minute=minute, second=second, microsecond=0, tzinfo=pytz.utc)
+
+                if new_date &gt; current_date:
+                    next_time = new_date
+                    break
+        else:
+            splitted_hours = hours[0].split(&#34;:&#34;)
+            hour = int(splitted_hours[0])
+            minute = int(splitted_hours[1])
+            second = int(splitted_hours[2])
+
+            next_time = current_date.replace(
+                hour=hour, minute=minute, second=second, microsecond=0, tzinfo=pytz.utc)
+
+        print(&#34;Next time with hour = {}&#34;.format(next_time))
+
+    return next_time</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="app.modules.services.CoffeeService"><code class="flex name class">
+<span>class <span class="ident">CoffeeService</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper class that provides a standard way to create an ABC using
+inheritance.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CoffeeService(ABC):
+    def get_coffee(self):
+        try:
+            print(&#34;------ Start get_coffee ------&#34;)
+            docs = db.collection(&#39;coffees&#39;).stream()
+            print(&#34;Get coffees ---&gt; {}&#34;.format(docs))
+            coffees = []
+            for doc in docs:
+                dico = doc.to_dict()
+                coffees.append(
+                    Coffee(id=dico[&#34;id&#34;], name=dico[&#34;name&#34;], description=dico[&#34;description&#34;]))
+            print(&#34;------ End get_coffee ------&#34;)
+            return (200, coffees)
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500, coffees
+
+    def get_coffee_by_id(self, id):
+        try:
+            print(&#34;----- Start get_coffee_by_id ----&#34;)
+            doc = db.collection(&#39;coffees&#39;).document(id).get()
+            if doc.exists:
+                dico = doc.to_dict()
+                return 200, Coffee(id=dico[&#34;id&#34;], name=dico[&#34;name&#34;], description=dico[&#34;description&#34;])
+            else:
+                return 404, None
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>abc.ABC</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="app.modules.services.CoffeeService.get_coffee"><code class="name flex">
+<span>def <span class="ident">get_coffee</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_coffee(self):
+    try:
+        print(&#34;------ Start get_coffee ------&#34;)
+        docs = db.collection(&#39;coffees&#39;).stream()
+        print(&#34;Get coffees ---&gt; {}&#34;.format(docs))
+        coffees = []
+        for doc in docs:
+            dico = doc.to_dict()
+            coffees.append(
+                Coffee(id=dico[&#34;id&#34;], name=dico[&#34;name&#34;], description=dico[&#34;description&#34;]))
+        print(&#34;------ End get_coffee ------&#34;)
+        return (200, coffees)
+    except Exception as ex:
+        print(&#34;Error : {}&#34;.format(ex))
+        return 500, coffees</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.CoffeeService.get_coffee_by_id"><code class="name flex">
+<span>def <span class="ident">get_coffee_by_id</span></span>(<span>self, id)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_coffee_by_id(self, id):
+    try:
+        print(&#34;----- Start get_coffee_by_id ----&#34;)
+        doc = db.collection(&#39;coffees&#39;).document(id).get()
+        if doc.exists:
+            dico = doc.to_dict()
+            return 200, Coffee(id=dico[&#34;id&#34;], name=dico[&#34;name&#34;], description=dico[&#34;description&#34;])
+        else:
+            return 404, None
+    except Exception as ex:
+        print(&#34;Error : {}&#34;.format(ex))
+        return 500</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="app.modules.services.MachineService"><code class="flex name class">
+<span>class <span class="ident">MachineService</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper class that provides a standard way to create an ABC using
+inheritance.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MachineService(ABC):
+
+    def create_machine(self, data: MachineCreate, id_user: str):
+        &#34;&#34;&#34;
+        Create machine
+
+        Args:
+            data (MachineCreate): [Data model for creating MachineCreate]
+
+        Returns:
+            [Code]: [Status code]
+        &#34;&#34;&#34;
+        try:
+            print(&#34;----- Start create_machine ----&#34;)
+            users_exist = db.collection(&#39;machines&#39;).document(
+                data.id).collection(&#34;users&#34;).get()
+            print(len(users_exist))
+            if len(users_exist) == 0:
+                print(&#34;Machine never created so no users =&gt; creating...&#34;)
+
+                db.collection(&#34;machines&#34;).document(data.id).set({
+                    &#34;id&#34;: data.id,
+                    &#34;state&#34;: data.state,
+                    &#34;type&#34;: data.type
+                })
+
+                db.collection(&#34;machines&#34;).document(data.id).collection(&#34;users&#34;).document(id_user).set({
+                    &#34;name&#34;: data.name,
+                    &#34;uid&#34;: id_user
+                })
+
+            else:
+                print(&#34;Machine already created so users =&gt; adding user...&#34;)
+                db.collection(&#34;machines&#34;).document(data.id).collection(&#34;users&#34;).document(id_user).set({
+                    &#34;name&#34;: data.name,
+                    &#34;uid&#34;: id_user
+                })
+            print(&#34;----- End create_machine ----&#34;)
+            return 201
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500
+
+    def get_machines(self, id_user: str):
+        &#34;&#34;&#34;
+
+        Get all the machines available
+
+        Returns:
+            [list(Machine)]: [List of machines]
+        &#34;&#34;&#34;
+        try:
+
+            print(&#34;------ Start get machines ------&#34;)
+            machines = []
+            doc_machines = db.collection(&#39;machines&#39;).stream()
+            for doc in doc_machines:
+                dico_machine = doc.to_dict()
+                print(dico_machine)
+                docs_user_machine = db.collection(&#39;machines&#39;).document(dico_machine[&#34;id&#34;]).collection(
+                    &#34;users&#34;).where(&#34;uid&#34;, &#34;==&#34;, id_user).stream()
+                print(&#34;Get machines ---&gt; {}&#34;.format(docs_user_machine))
+                for doc_mach_user in docs_user_machine:
+                    dico_machine_user = doc_mach_user.to_dict()
+                    print(&#34;User&#39;s machine info : {}&#34;.format(dico_machine_user))
+                    machines.append(Machine(
+                        id=dico_machine[&#34;id&#34;], name=dico_machine_user[&#34;name&#34;], state=dico_machine[&#34;state&#34;], type=dico_machine[&#34;type&#34;]))
+            print(machines)
+            print(&#34;------ End get machines ------&#34;)
+            return 200, machines
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500, []
+
+    def get_machine_by_id(self, id: str, id_user: str):
+        &#34;&#34;&#34;
+
+        Get machine by a given id
+
+        Args:
+            id (str): [Machine&#39;s id]
+
+        Returns:
+            [Machine]: [Machine found]
+        &#34;&#34;&#34;
+        try:
+            print(&#34;------ Start get machine by id ------&#34;)
+            machine = None
+            doc_machine = db.collection(&#39;machines&#39;).document(id).get()
+            if doc_machine.exists:
+                doc_machine = doc_machine.to_dict()
+                print(doc_machine)
+                doc_machine_user = db.collection(&#34;machines&#34;).document(id).collection(
+                    &#34;users&#34;).document(id_user).get()
+                print(doc_machine_user)
+                dico_machine_user = doc_machine_user.to_dict()
+                print(dico_machine_user)
+                print(&#34;User&#39;s machine info : {}&#34;.format(dico_machine_user))
+                machine = Machine(id=doc_machine[&#34;id&#34;], name=dico_machine_user[&#34;name&#34;],
+                                  state=doc_machine[&#34;state&#34;], type=doc_machine[&#34;type&#34;])
+                print(machine)
+            else:
+                return 404, machine
+            print(&#34;------ End get machines ------&#34;)
+            return 200, machine
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500, machine
+
+    def update_machine(self, id: str, data: MachineUpdate, id_user: str):
+        &#34;&#34;&#34;
+
+        Update machine
+
+        Args:
+            id (str): [Id of machine]
+            data (MachineUpdate): [data use for updates]
+
+        Returns:
+            [Code]: [Status code]
+        &#34;&#34;&#34;
+        try:
+            print(&#34;----- Start update machine&#39;s name -----&#34;)
+            print(&#34;{}&#34;.format(id))
+            db.collection(&#34;machines&#34;).document(id).collection(&#34;users&#34;).document(
+                id_user).update({&#34;name&#34;: data.name})
+            print(&#34;------ End update machine&#39;s name -----&#34;)
+            return 200
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 404
+
+    def delete_machine(self, id: str, id_user: str):
+        &#34;&#34;&#34;
+
+        Delete the machine with the given id
+
+        Args:
+            id (str): [Machine&#39;s id]
+
+        Returns:
+            [Code]: [Status code]
+        &#34;&#34;&#34;
+        try:
+            print(&#34;----- Start delete_machine -----&#34;)
+            document = db.collection(&#34;machines&#34;).document(id)
+            if document.get().exists:
+
+                if len(document.collection(&#34;users&#34;).get()) == 0:
+
+                    document.delete()
+
+                    users = db.collection(&#34;users&#34;).stream()
+
+                    for user in users:
+
+                        preps = db.collection(&#34;users&#34;).document(
+                            user.id).collection(&#34;preparations&#34;).stream()
+
+                        for prep in preps:
+
+                            prep_dict = prep.to_dict()
+
+                            if prep_dict[&#34;machine&#34;].id == id:
+                                prep.reference.delete()
+
+                else:
+
+                    if document.collection(&#34;users&#34;).document(id_user).get().exists:
+
+                        document.collection(&#34;users&#34;).document(id_user).delete()
+
+                        preps = db.collection(&#34;users&#34;).document(
+                            id_user).collection(&#34;preparations&#34;).stream()
+
+                        for prep in preps:
+
+                            prep_dict = prep.to_dict()
+
+                            if prep_dict[&#34;machine&#34;].id == id:
+                                prep.reference.delete()
+
+                print(&#34;------ End delete_machine -----&#34;)
+                return 200
+            else:
+                return 404
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>abc.ABC</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="app.modules.services.MachineService.create_machine"><code class="name flex">
+<span>def <span class="ident">create_machine</span></span>(<span>self, data: <a title="app.modules.response_models.MachineCreate" href="response_models.html#app.modules.response_models.MachineCreate">MachineCreate</a>, id_user: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create machine</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>MachineCreate</code></dt>
+<dd>[Data model for creating MachineCreate]</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>[Code]</code></dt>
+<dd>[Status code]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_machine(self, data: MachineCreate, id_user: str):
+    &#34;&#34;&#34;
+    Create machine
+
+    Args:
+        data (MachineCreate): [Data model for creating MachineCreate]
+
+    Returns:
+        [Code]: [Status code]
+    &#34;&#34;&#34;
+    try:
+        print(&#34;----- Start create_machine ----&#34;)
+        users_exist = db.collection(&#39;machines&#39;).document(
+            data.id).collection(&#34;users&#34;).get()
+        print(len(users_exist))
+        if len(users_exist) == 0:
+            print(&#34;Machine never created so no users =&gt; creating...&#34;)
+
+            db.collection(&#34;machines&#34;).document(data.id).set({
+                &#34;id&#34;: data.id,
+                &#34;state&#34;: data.state,
+                &#34;type&#34;: data.type
+            })
+
+            db.collection(&#34;machines&#34;).document(data.id).collection(&#34;users&#34;).document(id_user).set({
+                &#34;name&#34;: data.name,
+                &#34;uid&#34;: id_user
+            })
+
+        else:
+            print(&#34;Machine already created so users =&gt; adding user...&#34;)
+            db.collection(&#34;machines&#34;).document(data.id).collection(&#34;users&#34;).document(id_user).set({
+                &#34;name&#34;: data.name,
+                &#34;uid&#34;: id_user
+            })
+        print(&#34;----- End create_machine ----&#34;)
+        return 201
+    except Exception as ex:
+        print(&#34;Error : {}&#34;.format(ex))
+        return 500</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.MachineService.delete_machine"><code class="name flex">
+<span>def <span class="ident">delete_machine</span></span>(<span>self, id: str, id_user: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Delete the machine with the given id</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>str</code></dt>
+<dd>[Machine's id]</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>[Code]</code></dt>
+<dd>[Status code]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_machine(self, id: str, id_user: str):
+    &#34;&#34;&#34;
+
+    Delete the machine with the given id
+
+    Args:
+        id (str): [Machine&#39;s id]
+
+    Returns:
+        [Code]: [Status code]
+    &#34;&#34;&#34;
+    try:
+        print(&#34;----- Start delete_machine -----&#34;)
+        document = db.collection(&#34;machines&#34;).document(id)
+        if document.get().exists:
+
+            if len(document.collection(&#34;users&#34;).get()) == 0:
+
+                document.delete()
+
+                users = db.collection(&#34;users&#34;).stream()
+
+                for user in users:
+
+                    preps = db.collection(&#34;users&#34;).document(
+                        user.id).collection(&#34;preparations&#34;).stream()
+
+                    for prep in preps:
+
+                        prep_dict = prep.to_dict()
+
+                        if prep_dict[&#34;machine&#34;].id == id:
+                            prep.reference.delete()
+
+            else:
+
+                if document.collection(&#34;users&#34;).document(id_user).get().exists:
+
+                    document.collection(&#34;users&#34;).document(id_user).delete()
+
+                    preps = db.collection(&#34;users&#34;).document(
+                        id_user).collection(&#34;preparations&#34;).stream()
+
+                    for prep in preps:
+
+                        prep_dict = prep.to_dict()
+
+                        if prep_dict[&#34;machine&#34;].id == id:
+                            prep.reference.delete()
+
+            print(&#34;------ End delete_machine -----&#34;)
+            return 200
+        else:
+            return 404
+    except Exception as ex:
+        print(&#34;Error : {}&#34;.format(ex))
+        return 500</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.MachineService.get_machine_by_id"><code class="name flex">
+<span>def <span class="ident">get_machine_by_id</span></span>(<span>self, id: str, id_user: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get machine by a given id</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>str</code></dt>
+<dd>[Machine's id]</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>[Machine]</code></dt>
+<dd>[Machine found]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_machine_by_id(self, id: str, id_user: str):
+    &#34;&#34;&#34;
+
+    Get machine by a given id
+
+    Args:
+        id (str): [Machine&#39;s id]
+
+    Returns:
+        [Machine]: [Machine found]
+    &#34;&#34;&#34;
+    try:
+        print(&#34;------ Start get machine by id ------&#34;)
+        machine = None
+        doc_machine = db.collection(&#39;machines&#39;).document(id).get()
+        if doc_machine.exists:
+            doc_machine = doc_machine.to_dict()
+            print(doc_machine)
+            doc_machine_user = db.collection(&#34;machines&#34;).document(id).collection(
+                &#34;users&#34;).document(id_user).get()
+            print(doc_machine_user)
+            dico_machine_user = doc_machine_user.to_dict()
+            print(dico_machine_user)
+            print(&#34;User&#39;s machine info : {}&#34;.format(dico_machine_user))
+            machine = Machine(id=doc_machine[&#34;id&#34;], name=dico_machine_user[&#34;name&#34;],
+                              state=doc_machine[&#34;state&#34;], type=doc_machine[&#34;type&#34;])
+            print(machine)
+        else:
+            return 404, machine
+        print(&#34;------ End get machines ------&#34;)
+        return 200, machine
+    except Exception as ex:
+        print(&#34;Error : {}&#34;.format(ex))
+        return 500, machine</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.MachineService.get_machines"><code class="name flex">
+<span>def <span class="ident">get_machines</span></span>(<span>self, id_user: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get all the machines available</p>
+<h2 id="returns">Returns</h2>
+<p>[list(Machine)]: [List of machines]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_machines(self, id_user: str):
+    &#34;&#34;&#34;
+
+    Get all the machines available
+
+    Returns:
+        [list(Machine)]: [List of machines]
+    &#34;&#34;&#34;
+    try:
+
+        print(&#34;------ Start get machines ------&#34;)
+        machines = []
+        doc_machines = db.collection(&#39;machines&#39;).stream()
+        for doc in doc_machines:
+            dico_machine = doc.to_dict()
+            print(dico_machine)
+            docs_user_machine = db.collection(&#39;machines&#39;).document(dico_machine[&#34;id&#34;]).collection(
+                &#34;users&#34;).where(&#34;uid&#34;, &#34;==&#34;, id_user).stream()
+            print(&#34;Get machines ---&gt; {}&#34;.format(docs_user_machine))
+            for doc_mach_user in docs_user_machine:
+                dico_machine_user = doc_mach_user.to_dict()
+                print(&#34;User&#39;s machine info : {}&#34;.format(dico_machine_user))
+                machines.append(Machine(
+                    id=dico_machine[&#34;id&#34;], name=dico_machine_user[&#34;name&#34;], state=dico_machine[&#34;state&#34;], type=dico_machine[&#34;type&#34;]))
+        print(machines)
+        print(&#34;------ End get machines ------&#34;)
+        return 200, machines
+    except Exception as ex:
+        print(&#34;Error : {}&#34;.format(ex))
+        return 500, []</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.MachineService.update_machine"><code class="name flex">
+<span>def <span class="ident">update_machine</span></span>(<span>self, id: str, data: <a title="app.modules.response_models.MachineUpdate" href="response_models.html#app.modules.response_models.MachineUpdate">MachineUpdate</a>, id_user: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Update machine</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>str</code></dt>
+<dd>[Id of machine]</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>MachineUpdate</code></dt>
+<dd>[data use for updates]</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>[Code]</code></dt>
+<dd>[Status code]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_machine(self, id: str, data: MachineUpdate, id_user: str):
+    &#34;&#34;&#34;
+
+    Update machine
+
+    Args:
+        id (str): [Id of machine]
+        data (MachineUpdate): [data use for updates]
+
+    Returns:
+        [Code]: [Status code]
+    &#34;&#34;&#34;
+    try:
+        print(&#34;----- Start update machine&#39;s name -----&#34;)
+        print(&#34;{}&#34;.format(id))
+        db.collection(&#34;machines&#34;).document(id).collection(&#34;users&#34;).document(
+            id_user).update({&#34;name&#34;: data.name})
+        print(&#34;------ End update machine&#39;s name -----&#34;)
+        return 200
+    except Exception as ex:
+        print(&#34;Error : {}&#34;.format(ex))
+        return 404</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="app.modules.services.PreparationService"><code class="flex name class">
+<span>class <span class="ident">PreparationService</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper class that provides a standard way to create an ABC using
+inheritance.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PreparationService(ABC):
+    def get_preparation_machine(self, id: str):
+        &#34;&#34;&#34;
+        Return all preparations that are programmed for a future time with machine with the given id
+
+        Args:
+            id (str): [Id of machine]
+
+        Returns:
+            [list]: [Preparations]
+        &#34;&#34;&#34;
+        list_preparations = list()
+        try:
+            print(&#34;------ Start get_preparation_machine ------&#34;)
+            machine_ref = db.collection(&#34;machines&#34;).document(id)
+            print(machine_ref)
+
+            if machine_ref.get().exists:
+
+                users = db.collection(&#34;users&#34;).stream()
+
+                for user in users:
+                    preparations = db.collection(&#34;users&#34;).document(
+                        user.id).collection(&#34;preparations&#34;).stream()
+                    print(
+                        &#34;Docs preparation with id : {} ---&gt; {}&#34;.format(id, preparations))
+
+                    for preparation in preparations:
+
+                        prepa_dict = preparation.to_dict()
+                        nextTime = prepa_dict[&#34;nextTime&#34;]
+                        year, month, day, hour, minute, second = nextTime.year, nextTime.month, nextTime.day, nextTime.hour, nextTime.minute, nextTime.second
+
+                        date_preparation = datetime(
+                            year, month, day, hour, minute, second)
+                        print(&#34;Early : {}&#34;.format(not date_preparation &lt;
+                                                  datetime.now() and prepa_dict[&#34;state&#34;] == 0))
+                        if not date_preparation &lt; datetime.now() and prepa_dict[&#34;state&#34;] == 0:
+
+                            print(&#34;Preparation not yet passed&#34;)
+
+                            doc_coffee = db.collection(&#34;coffees&#34;).document(
+                                prepa_dict[&#34;coffee&#34;].id).get()
+
+                            doc_coffee = doc_coffee.to_dict()
+
+                            coffee = Coffee(id=doc_coffee[&#34;id&#34;], name=doc_coffee[&#34;name&#34;],
+                                            description=doc_coffee[&#34;description&#34;])
+
+                            doc_machine = db.collection(&#34;machines&#34;).document(
+                                prepa_dict[&#34;machine&#34;].id).get()
+
+                            name = db.collection(&#34;machines&#34;).document(prepa_dict[&#34;machine&#34;].id).collection(
+                                &#34;users&#34;).document(user.id).get().to_dict()[&#34;name&#34;]
+
+                            doc_machine = doc_machine.to_dict()
+
+                            machine = Machine(id=doc_machine[&#34;id&#34;], state=doc_machine[&#34;state&#34;],
+                                              type=doc_machine[&#34;type&#34;], name=name)
+
+                            if prepa_dict[&#34;saved&#34;]:
+                                print(&#34;Preparation saved&#34;)
+                                prep = PreparationSaved(coffee=coffee, creation_date=prepa_dict[&#34;creationDate&#34;], last_update=prepa_dict[&#34;lastUpdate&#34;], machine=machine,
+                                                        id=prepa_dict[&#34;id&#34;], saved=prepa_dict[&#34;saved&#34;], state=prepa_dict[
+                                                            &#34;state&#34;], next_time=prepa_dict[&#34;nextTime&#34;],
+                                                        days_of_week=prepa_dict[&#34;daysOfWeek&#34;], hours=prepa_dict[&#34;hours&#34;], last_time=prepa_dict[&#34;lastTime&#34;], name=prepa_dict[&#34;name&#34;])
+                                print(&#34;Preparation : {}&#34;.format(prep))
+                            else:
+                                print(&#34;Preparation not saved&#34;)
+                                prep = Preparation(coffee=coffee, creation_date=prepa_dict[&#34;creationDate&#34;], last_update=prepa_dict[&#34;lastUpdate&#34;], machine=machine,
+                                                   id=prepa_dict[&#34;id&#34;], saved=prepa_dict[&#34;saved&#34;], state=prepa_dict[&#34;state&#34;], next_time=prepa_dict[&#34;nextTime&#34;])
+
+                            print(&#34;Preparation : {}&#34;.format(prep))
+                            list_preparations.append(prep)
+
+                print(&#34;------ End get_preparation_machine ------&#34;)
+                return 200, list_preparations
+            else:
+                return 404, list_preparations
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500, list_preparations
+
+    def get_preparation_next_coffee(self, id: str):
+        &#34;&#34;&#34;
+        Return all preparations that already passed with machine with the given id
+
+        Args:
+            id (str): [Id of machine]
+
+        Returns:
+            [list]: [Preparations]
+        &#34;&#34;&#34;
+        list_preparations = list()
+        try:
+            print(&#34;------ Start get_preparation_machine ------\n&#34;)
+            machine_ref = db.collection(&#34;machines&#34;).document(id)
+            print(machine_ref)
+
+            if machine_ref.get().exists:
+
+                users = db.collection(&#34;users&#34;).stream()
+
+                for user in users:
+                    preparations = db.collection(&#34;users&#34;).document(
+                        user.id).collection(&#34;preparations&#34;).stream()
+                    print(
+                        &#34;Docs preparation with id : {} ---&gt; {}\n&#34;.format(id, preparations))
+
+                    for preparation in preparations:
+
+                        prepa_dict = preparation.to_dict()
+                        nextTime = prepa_dict[&#34;nextTime&#34;]
+                        year, month, day, hour, minute, second = nextTime.year, nextTime.month, nextTime.day, nextTime.hour, nextTime.minute, nextTime.second
+
+                        date_preparation = datetime(
+                            year, month, day, hour, minute, second)
+
+                        print(&#34;Early : {}&#34;.format(date_preparation &lt;
+                                                  datetime.now() and prepa_dict[&#34;state&#34;] == 0))
+
+                        if date_preparation &lt; datetime.now() and prepa_dict[&#34;state&#34;] == 0:
+
+                            print(&#34;Preparation passed\n&#34;)
+
+                            doc_coffee = db.collection(&#34;coffees&#34;).document(
+                                prepa_dict[&#34;coffee&#34;].id).get()
+
+                            doc_coffee = doc_coffee.to_dict()
+
+                            coffee = Coffee(id=doc_coffee[&#34;id&#34;], name=doc_coffee[&#34;name&#34;],
+                                            description=doc_coffee[&#34;description&#34;])
+
+                            doc_machine = db.collection(&#34;machines&#34;).document(
+                                prepa_dict[&#34;machine&#34;].id).get()
+
+                            name = db.collection(&#34;machines&#34;).document(prepa_dict[&#34;machine&#34;].id).collection(
+                                &#34;users&#34;).document(user.id).get().to_dict()[&#34;name&#34;]
+
+                            doc_machine = doc_machine.to_dict()
+
+                            machine = Machine(id=doc_machine[&#34;id&#34;], state=doc_machine[&#34;state&#34;],
+                                              type=doc_machine[&#34;type&#34;], name=name)
+
+                            if prepa_dict[&#34;saved&#34;]:
+                                print(&#34;Preparation saved\n&#34;)
+                                prep = PreparationSaved(coffee=coffee, creation_date=prepa_dict[&#34;creationDate&#34;], last_update=prepa_dict[&#34;lastUpdate&#34;], machine=machine,
+                                                        id=prepa_dict[&#34;id&#34;], saved=prepa_dict[&#34;saved&#34;], state=prepa_dict[
+                                                            &#34;state&#34;], next_time=prepa_dict[&#34;nextTime&#34;],
+                                                        days_of_week=prepa_dict[&#34;daysOfWeek&#34;], hours=prepa_dict[&#34;hours&#34;], last_time=prepa_dict[&#34;lastTime&#34;], name=prepa_dict[&#34;name&#34;])
+                                print(&#34;Preparation : {}\n&#34;.format(prep))
+                            else:
+                                print(&#34;Preparation not saved\n&#34;)
+                                prep = Preparation(coffee=coffee, creation_date=prepa_dict[&#34;creationDate&#34;], last_update=prepa_dict[&#34;lastUpdate&#34;], machine=machine,
+                                                   id=prepa_dict[&#34;id&#34;], saved=prepa_dict[&#34;saved&#34;], state=prepa_dict[&#34;state&#34;], next_time=prepa_dict[&#34;nextTime&#34;])
+
+                            print(&#34;Preparation : {}\n&#34;.format(
+                                list_preparations))
+
+                            list_preparations.append(prep)
+
+                list_preparations.sort(
+                    key=lambda x: x.next_time, reverse=False)
+
+                print(&#34;Preparations sorted : {}\n&#34;.format(list_preparations))
+
+                print(&#34;------ End get_preparation_machine ------&#34;)
+                return 200, list_preparations
+            else:
+                return 404, list_preparations
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500, list_preparations
+
+    def get_preparation(self, id_user: str):
+        preparations = list()
+        try:
+            print(&#34;------ Start get preparation ------&#34;)
+            docs = db.collection(&#34;users&#34;).document(
+                id_user).collection(&#34;preparations&#34;).stream()
+            print(&#34;Get Preparation ---&gt; {}&#34;.format(docs))
+            for doc in docs:
+                dico = doc.to_dict()
+                print(&#34;Coffee reference id --&gt; {}&#34;.format(dico[&#34;coffee&#34;].id))
+                doc_coffee = db.collection(&#34;coffees&#34;).document(
+                    dico[&#34;coffee&#34;].id).get()
+                coffee = doc_coffee.to_dict()
+                print(&#34;Information coffee --&gt; {}&#34;.format(coffee))
+                print(Coffee(id=coffee[&#34;id&#34;], name=coffee[&#34;name&#34;],
+                      description=coffee[&#34;description&#34;]))
+
+                coffee = Coffee(id=coffee[&#34;id&#34;], name=coffee[&#34;name&#34;],
+                                description=coffee[&#34;description&#34;])
+
+                print(&#34;Machine reference id --&gt; {}&#34;.format(dico[&#34;machine&#34;].id))
+                doc_machine = db.collection(&#34;machines&#34;).document(
+                    dico[&#34;machine&#34;].id).get()
+                machine = doc_machine.to_dict()
+                print(&#34;Information machine --&gt; {}&#34;.format(machine))
+
+                user = db.collection(&#34;machines&#34;).document(dico[&#34;machine&#34;].id).collection(
+                    &#34;users&#34;).document(id_user).get().to_dict()
+
+                print(Machine(id=machine[&#34;id&#34;], state=machine[&#34;state&#34;],
+                      type=machine[&#34;type&#34;], name=user[&#34;name&#34;]))
+
+                machine = Machine(id=machine[&#34;id&#34;], state=machine[&#34;state&#34;],
+                                  type=machine[&#34;type&#34;], name=user[&#34;name&#34;])
+
+                print(dico)
+                if dico[&#34;saved&#34;]:
+                    print(&#34;Preparation saved&#34;)
+                    preparation = PreparationSaved(coffee=coffee, creation_date=dico[&#34;creationDate&#34;], last_update=dico[&#34;lastUpdate&#34;], machine=machine,
+                                                   id=dico[&#34;id&#34;], saved=dico[&#34;saved&#34;], state=dico[&#34;state&#34;], next_time=dico[&#34;nextTime&#34;], name=dico[&#34;name&#34;], days_of_week=dico[&#34;daysOfWeek&#34;], hours=dico[&#34;hours&#34;], last_time=dico[&#34;lastTime&#34;])
+                else:
+                    print(&#34;Preparation not saved&#34;)
+                    preparation = Preparation(coffee=coffee, creation_date=dico[&#34;creationDate&#34;], last_update=dico[&#34;lastUpdate&#34;], machine=machine,
+                                              id=dico[&#34;id&#34;], saved=dico[&#34;saved&#34;], state=dico[&#34;state&#34;], next_time=dico[&#34;nextTime&#34;])
+                preparations.append(preparation)
+            print(&#34;{}&#34;.format(preparations))
+            print(&#34;------ End get preparation  ------&#34;)
+            return 200, preparations
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500, preparations
+
+    def report_preparation_started(self, id: str, id_user: str):
+        try:
+            print(&#34;------ Start report_preparation_started ------&#34;)
+
+            user = db.collection(&#34;users&#34;).document(id_user)
+
+            prep = user.collection(&#34;preparations&#34;).document(id)
+
+            if prep.get().exists:
+
+                print(prep)
+                prep.update({&#34;state&#34;: 1})
+
+                machine_id = prep.get().to_dict()[&#34;machine&#34;].id
+                print(machine_id)
+
+                db.collection(&#34;machines&#34;).document(
+                    machine_id).update({&#34;state&#34;: 1})
+
+                notif_ref = user.collection(&#34;notifications&#34;).document()
+
+                notif_ref.set({
+                    &#34;id&#34;: notif_ref.id,
+                    &#34;preparation&#34;: prep,
+                    &#34;state&#34;: 0
+                })
+
+                print(&#34;------ End report_preparation_started ------&#34;)
+
+                return 200
+            else:
+                return 404
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500
+
+    def report_preparation_succeeded(self, id: str, id_user: str):
+        try:
+            print(&#34;------ Start report_preparation_succeeded ------&#34;)
+
+            user = db.collection(&#34;users&#34;).document(id_user)
+
+            prep = user.collection(&#34;preparations&#34;).document(id)
+
+            if prep.get().exists:
+
+                print(prep)
+                prep.update({&#34;state&#34;: 0})
+
+                machine_id = prep.get().to_dict()[&#34;machine&#34;].id
+                print(machine_id)
+
+                db.collection(&#34;machines&#34;).document(
+                    machine_id).update({&#34;state&#34;: 0})
+
+                prep_dict = prep.get().to_dict()
+
+                is_saved = prep_dict[&#34;saved&#34;]
+
+                if is_saved:
+
+                    next_time = calculate_next_time(
+                        prep_dict[&#34;daysOfWeek&#34;], prep_dict[&#34;hours&#34;])
+
+                    print(&#34;New value of next_time = {}&#34;.format(next_time))
+
+                    prep.update({
+                        &#34;lastTime&#34;: prep_dict[&#34;nextTime&#34;],
+                        &#34;nextTime&#34;: next_time
+                    })
+
+                notif_ref = user.collection(&#34;notifications&#34;).document()
+
+                notif_ref.set({
+                    &#34;id&#34;: notif_ref.id,
+                    &#34;preparation&#34;: prep,
+                    &#34;state&#34;: 1
+                })
+
+                print(&#34;------ End report_preparation_succeeded ------&#34;)
+
+                return 200
+            else:
+                return 404
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500
+
+    def report_preparation_failed(self, id: str, id_user: str):
+        try:
+            print(&#34;------ Start report_preparation_failed ------&#34;)
+
+            user = db.collection(&#34;users&#34;).document(id_user)
+
+            prep = user.collection(&#34;preparations&#34;).document(id)
+
+            if prep.get().exists:
+
+                print(prep)
+                prep.update({&#34;state&#34;: 0})
+
+                machine_id = prep.get().to_dict()[&#34;machine&#34;].id
+                print(machine_id)
+
+                db.collection(&#34;machines&#34;).document(
+                    machine_id).update({&#34;state&#34;: 0})
+
+                prep_dict = prep.get().to_dict()
+
+                is_saved = prep_dict[&#34;saved&#34;]
+
+                if is_saved:
+
+                    next_time = calculate_next_time(
+                        prep_dict[&#34;daysOfWeek&#34;], prep_dict[&#34;hours&#34;])
+                    prep.update({
+                        &#34;lastTime&#34;: prep_dict[&#34;nextTime&#34;],
+                        &#34;nextTime&#34;: next_time
+                    })
+
+                notif_ref = user.collection(&#34;notifications&#34;).document()
+
+                notif_ref.set({
+                    &#34;id&#34;: notif_ref.id,
+                    &#34;preparation&#34;: prep,
+                    &#34;state&#34;: 2
+                })
+
+                print(&#34;------ End report_preparation_failed ------&#34;)
+
+                return 200
+            else:
+                return 404
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500
+
+    def create_preparation(self, data: CreatePreparation, id_user: str):
+        try:
+            print(&#34;------- Start create_preparation -------&#34;)
+            prep = db.collection(&#34;users&#34;).document(
+                id_user).collection(&#34;preparations&#34;).document()
+
+            coffee = db.collection(&#34;coffees&#34;).document(data.coffee_id)
+            machine = db.collection(&#34;machines&#34;).document(data.machine_id)
+
+            if coffee.get().exists and machine.get().exists:
+
+                if data.saved:
+
+                    next_time = calculate_next_time(
+                        data.days_of_week, data.hours)
+
+                    prep.set({
+                        &#34;coffee&#34;: coffee,
+                        &#34;creationDate&#34;: datetime.now(tz=pytz.utc),
+                        &#34;daysOfWeek&#34;: data.days_of_week,
+                        &#34;hours&#34;: data.hours,
+                        &#34;id&#34;: prep.id,
+                        &#34;lastTime&#34;: datetime.now(tz=pytz.utc),
+                        &#34;lastUpdate&#34;: datetime.now(tz=pytz.utc),
+                        &#34;machine&#34;: machine,
+                        &#34;name&#34;: data.name,
+                        &#34;saved&#34;: data.saved,
+                        &#34;nextTime&#34;: next_time,
+                        &#34;state&#34;: 0
+                    })
+                else:
+                    prep.set({
+                        &#34;coffee&#34;: coffee,
+                        &#34;creationDate&#34;: datetime.now(tz=pytz.utc),
+                        &#34;id&#34;: prep.id,
+                        &#34;lastUpdate&#34;: datetime.now(tz=pytz.utc),
+                        &#34;machine&#34;: machine,
+                        &#34;nextTime&#34;: datetime.strptime(data.next_time, &#34;%Y-%m-%dT%H:%M:%SZ&#34;),
+                        &#34;saved&#34;: data.saved,
+                        &#34;state&#34;: 0
+                    })
+                print(&#34;------- End create_preparation -------&#34;)
+                return 201
+            else:
+                return 404
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500
+
+    def update_preparation(self, data: UpdatePreparationSaved, id: str, id_user: str):
+        try:
+            print(&#34;------ Start update_preparation ------&#34;)
+
+            prepa = db.collection(&#39;users&#39;).document(
+                id_user).collection(&#34;preparations&#34;).document(id)
+
+            if prepa.get().exists:
+
+                coffee = db.collection(&#39;coffees&#39;).document(data.coffee_id)
+
+                machine = db.collection(&#39;machines&#39;).document(data.machine_id)
+
+                if machine.get().exists and coffee.get().exists:
+
+                    next_time = calculate_next_time(
+                        data.days_of_week, data.hours, prepa.get().to_dict()[&#34;nextTime&#34;])
+
+                    print(&#34;Date now  = {} {} and date nexttime =  {} {}&#34;.format(datetime.now(
+                        tz=pytz.utc), type(datetime.now(tz=pytz.utc)), next_time, type(next_time)))
+
+                    prepa.update({&#34;name&#34;: data.name,
+                                  &#34;lastUpdate&#34;: datetime.now(tz=pytz.utc),
+                                  &#34;daysOfWeek&#34;: data.days_of_week,
+                                  &#34;hours&#34;: data.hours,
+                                  &#34;nextTime&#34;: next_time,
+                                  &#34;coffee&#34;: coffee,
+                                  &#34;machine&#34;: machine
+                                  })
+
+                    print(&#34;------ End update_preparation ------&#34;)
+                    return 200
+                else:
+                    return 404
+            else:
+                return 404
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 500
+
+    def delete_preparation(self, id: str, id_user: str):
+        try:
+            print(&#34;------ Start delete_preparation ------&#34;)
+            prepa = db.collection(&#39;users&#39;).document(
+                id_user).collection(&#34;preparations&#34;).document(id)
+            if prepa.get().exists:
+                prepa.delete()
+                print(&#34;------ End delete_preparation ------&#34;)
+                return 200
+            else:
+                return 404
+        except Exception as ex:
+            print(&#34;Error : {}&#34;.format(ex))
+            return 400</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>abc.ABC</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="app.modules.services.PreparationService.create_preparation"><code class="name flex">
+<span>def <span class="ident">create_preparation</span></span>(<span>self, data: <a title="app.modules.response_models.CreatePreparation" href="response_models.html#app.modules.response_models.CreatePreparation">CreatePreparation</a>, id_user: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_preparation(self, data: CreatePreparation, id_user: str):
+    try:
+        print(&#34;------- Start create_preparation -------&#34;)
+        prep = db.collection(&#34;users&#34;).document(
+            id_user).collection(&#34;preparations&#34;).document()
+
+        coffee = db.collection(&#34;coffees&#34;).document(data.coffee_id)
+        machine = db.collection(&#34;machines&#34;).document(data.machine_id)
+
+        if coffee.get().exists and machine.get().exists:
+
+            if data.saved:
+
+                next_time = calculate_next_time(
+                    data.days_of_week, data.hours)
+
+                prep.set({
+                    &#34;coffee&#34;: coffee,
+                    &#34;creationDate&#34;: datetime.now(tz=pytz.utc),
+                    &#34;daysOfWeek&#34;: data.days_of_week,
+                    &#34;hours&#34;: data.hours,
+                    &#34;id&#34;: prep.id,
+                    &#34;lastTime&#34;: datetime.now(tz=pytz.utc),
+                    &#34;lastUpdate&#34;: datetime.now(tz=pytz.utc),
+                    &#34;machine&#34;: machine,
+                    &#34;name&#34;: data.name,
+                    &#34;saved&#34;: data.saved,
+                    &#34;nextTime&#34;: next_time,
+                    &#34;state&#34;: 0
+                })
+            else:
+                prep.set({
+                    &#34;coffee&#34;: coffee,
+                    &#34;creationDate&#34;: datetime.now(tz=pytz.utc),
+                    &#34;id&#34;: prep.id,
+                    &#34;lastUpdate&#34;: datetime.now(tz=pytz.utc),
+                    &#34;machine&#34;: machine,
+                    &#34;nextTime&#34;: datetime.strptime(data.next_time, &#34;%Y-%m-%dT%H:%M:%SZ&#34;),
+                    &#34;saved&#34;: data.saved,
+                    &#34;state&#34;: 0
+                })
+            print(&#34;------- End create_preparation -------&#34;)
+            return 201
+        else:
+            return 404
+    except Exception as ex:
+        print(&#34;Error : {}&#34;.format(ex))
+        return 500</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.PreparationService.delete_preparation"><code class="name flex">
+<span>def <span class="ident">delete_preparation</span></span>(<span>self, id: str, id_user: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_preparation(self, id: str, id_user: str):
+    try:
+        print(&#34;------ Start delete_preparation ------&#34;)
+        prepa = db.collection(&#39;users&#39;).document(
+            id_user).collection(&#34;preparations&#34;).document(id)
+        if prepa.get().exists:
+            prepa.delete()
+            print(&#34;------ End delete_preparation ------&#34;)
+            return 200
+        else:
+            return 404
+    except Exception as ex:
+        print(&#34;Error : {}&#34;.format(ex))
+        return 400</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.PreparationService.get_preparation"><code class="name flex">
+<span>def <span class="ident">get_preparation</span></span>(<span>self, id_user: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_preparation(self, id_user: str):
+    preparations = list()
+    try:
+        print(&#34;------ Start get preparation ------&#34;)
+        docs = db.collection(&#34;users&#34;).document(
+            id_user).collection(&#34;preparations&#34;).stream()
+        print(&#34;Get Preparation ---&gt; {}&#34;.format(docs))
+        for doc in docs:
+            dico = doc.to_dict()
+            print(&#34;Coffee reference id --&gt; {}&#34;.format(dico[&#34;coffee&#34;].id))
+            doc_coffee = db.collection(&#34;coffees&#34;).document(
+                dico[&#34;coffee&#34;].id).get()
+            coffee = doc_coffee.to_dict()
+            print(&#34;Information coffee --&gt; {}&#34;.format(coffee))
+            print(Coffee(id=coffee[&#34;id&#34;], name=coffee[&#34;name&#34;],
+                  description=coffee[&#34;description&#34;]))
+
+            coffee = Coffee(id=coffee[&#34;id&#34;], name=coffee[&#34;name&#34;],
+                            description=coffee[&#34;description&#34;])
+
+            print(&#34;Machine reference id --&gt; {}&#34;.format(dico[&#34;machine&#34;].id))
+            doc_machine = db.collection(&#34;machines&#34;).document(
+                dico[&#34;machine&#34;].id).get()
+            machine = doc_machine.to_dict()
+            print(&#34;Information machine --&gt; {}&#34;.format(machine))
+
+            user = db.collection(&#34;machines&#34;).document(dico[&#34;machine&#34;].id).collection(
+                &#34;users&#34;).document(id_user).get().to_dict()
+
+            print(Machine(id=machine[&#34;id&#34;], state=machine[&#34;state&#34;],
+                  type=machine[&#34;type&#34;], name=user[&#34;name&#34;]))
+
+            machine = Machine(id=machine[&#34;id&#34;], state=machine[&#34;state&#34;],
+                              type=machine[&#34;type&#34;], name=user[&#34;name&#34;])
+
+            print(dico)
+            if dico[&#34;saved&#34;]:
+                print(&#34;Preparation saved&#34;)
+                preparation = PreparationSaved(coffee=coffee, creation_date=dico[&#34;creationDate&#34;], last_update=dico[&#34;lastUpdate&#34;], machine=machine,
+                                               id=dico[&#34;id&#34;], saved=dico[&#34;saved&#34;], state=dico[&#34;state&#34;], next_time=dico[&#34;nextTime&#34;], name=dico[&#34;name&#34;], days_of_week=dico[&#34;daysOfWeek&#34;], hours=dico[&#34;hours&#34;], last_time=dico[&#34;lastTime&#34;])
+            else:
+                print(&#34;Preparation not saved&#34;)
+                preparation = Preparation(coffee=coffee, creation_date=dico[&#34;creationDate&#34;], last_update=dico[&#34;lastUpdate&#34;], machine=machine,
+                                          id=dico[&#34;id&#34;], saved=dico[&#34;saved&#34;], state=dico[&#34;state&#34;], next_time=dico[&#34;nextTime&#34;])
+            preparations.append(preparation)
+        print(&#34;{}&#34;.format(preparations))
+        print(&#34;------ End get preparation  ------&#34;)
+        return 200, preparations
+    except Exception as ex:
+        print(&#34;Error : {}&#34;.format(ex))
+        return 500, preparations</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.PreparationService.get_preparation_machine"><code class="name flex">
+<span>def <span class="ident">get_preparation_machine</span></span>(<span>self, id: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return all preparations that are programmed for a future time with machine with the given id</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>str</code></dt>
+<dd>[Id of machine]</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>[list]</code></dt>
+<dd>[Preparations]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_preparation_machine(self, id: str):
+    &#34;&#34;&#34;
+    Return all preparations that are programmed for a future time with machine with the given id
+
+    Args:
+        id (str): [Id of machine]
+
+    Returns:
+        [list]: [Preparations]
+    &#34;&#34;&#34;
+    list_preparations = list()
+    try:
+        print(&#34;------ Start get_preparation_machine ------&#34;)
+        machine_ref = db.collection(&#34;machines&#34;).document(id)
+        print(machine_ref)
+
+        if machine_ref.get().exists:
+
+            users = db.collection(&#34;users&#34;).stream()
+
+            for user in users:
+                preparations = db.collection(&#34;users&#34;).document(
+                    user.id).collection(&#34;preparations&#34;).stream()
+                print(
+                    &#34;Docs preparation with id : {} ---&gt; {}&#34;.format(id, preparations))
+
+                for preparation in preparations:
+
+                    prepa_dict = preparation.to_dict()
+                    nextTime = prepa_dict[&#34;nextTime&#34;]
+                    year, month, day, hour, minute, second = nextTime.year, nextTime.month, nextTime.day, nextTime.hour, nextTime.minute, nextTime.second
+
+                    date_preparation = datetime(
+                        year, month, day, hour, minute, second)
+                    print(&#34;Early : {}&#34;.format(not date_preparation &lt;
+                                              datetime.now() and prepa_dict[&#34;state&#34;] == 0))
+                    if not date_preparation &lt; datetime.now() and prepa_dict[&#34;state&#34;] == 0:
+
+                        print(&#34;Preparation not yet passed&#34;)
+
+                        doc_coffee = db.collection(&#34;coffees&#34;).document(
+                            prepa_dict[&#34;coffee&#34;].id).get()
+
+                        doc_coffee = doc_coffee.to_dict()
+
+                        coffee = Coffee(id=doc_coffee[&#34;id&#34;], name=doc_coffee[&#34;name&#34;],
+                                        description=doc_coffee[&#34;description&#34;])
+
+                        doc_machine = db.collection(&#34;machines&#34;).document(
+                            prepa_dict[&#34;machine&#34;].id).get()
+
+                        name = db.collection(&#34;machines&#34;).document(prepa_dict[&#34;machine&#34;].id).collection(
+                            &#34;users&#34;).document(user.id).get().to_dict()[&#34;name&#34;]
+
+                        doc_machine = doc_machine.to_dict()
+
+                        machine = Machine(id=doc_machine[&#34;id&#34;], state=doc_machine[&#34;state&#34;],
+                                          type=doc_machine[&#34;type&#34;], name=name)
+
+                        if prepa_dict[&#34;saved&#34;]:
+                            print(&#34;Preparation saved&#34;)
+                            prep = PreparationSaved(coffee=coffee, creation_date=prepa_dict[&#34;creationDate&#34;], last_update=prepa_dict[&#34;lastUpdate&#34;], machine=machine,
+                                                    id=prepa_dict[&#34;id&#34;], saved=prepa_dict[&#34;saved&#34;], state=prepa_dict[
+                                                        &#34;state&#34;], next_time=prepa_dict[&#34;nextTime&#34;],
+                                                    days_of_week=prepa_dict[&#34;daysOfWeek&#34;], hours=prepa_dict[&#34;hours&#34;], last_time=prepa_dict[&#34;lastTime&#34;], name=prepa_dict[&#34;name&#34;])
+                            print(&#34;Preparation : {}&#34;.format(prep))
+                        else:
+                            print(&#34;Preparation not saved&#34;)
+                            prep = Preparation(coffee=coffee, creation_date=prepa_dict[&#34;creationDate&#34;], last_update=prepa_dict[&#34;lastUpdate&#34;], machine=machine,
+                                               id=prepa_dict[&#34;id&#34;], saved=prepa_dict[&#34;saved&#34;], state=prepa_dict[&#34;state&#34;], next_time=prepa_dict[&#34;nextTime&#34;])
+
+                        print(&#34;Preparation : {}&#34;.format(prep))
+                        list_preparations.append(prep)
+
+            print(&#34;------ End get_preparation_machine ------&#34;)
+            return 200, list_preparations
+        else:
+            return 404, list_preparations
+    except Exception as ex:
+        print(&#34;Error : {}&#34;.format(ex))
+        return 500, list_preparations</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.PreparationService.get_preparation_next_coffee"><code class="name flex">
+<span>def <span class="ident">get_preparation_next_coffee</span></span>(<span>self, id: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return all preparations that already passed with machine with the given id</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>str</code></dt>
+<dd>[Id of machine]</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>[list]</code></dt>
+<dd>[Preparations]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_preparation_next_coffee(self, id: str):
+    &#34;&#34;&#34;
+    Return all preparations that already passed with machine with the given id
+
+    Args:
+        id (str): [Id of machine]
+
+    Returns:
+        [list]: [Preparations]
+    &#34;&#34;&#34;
+    list_preparations = list()
+    try:
+        print(&#34;------ Start get_preparation_machine ------\n&#34;)
+        machine_ref = db.collection(&#34;machines&#34;).document(id)
+        print(machine_ref)
+
+        if machine_ref.get().exists:
+
+            users = db.collection(&#34;users&#34;).stream()
+
+            for user in users:
+                preparations = db.collection(&#34;users&#34;).document(
+                    user.id).collection(&#34;preparations&#34;).stream()
+                print(
+                    &#34;Docs preparation with id : {} ---&gt; {}\n&#34;.format(id, preparations))
+
+                for preparation in preparations:
+
+                    prepa_dict = preparation.to_dict()
+                    nextTime = prepa_dict[&#34;nextTime&#34;]
+                    year, month, day, hour, minute, second = nextTime.year, nextTime.month, nextTime.day, nextTime.hour, nextTime.minute, nextTime.second
+
+                    date_preparation = datetime(
+                        year, month, day, hour, minute, second)
+
+                    print(&#34;Early : {}&#34;.format(date_preparation &lt;
+                                              datetime.now() and prepa_dict[&#34;state&#34;] == 0))
+
+                    if date_preparation &lt; datetime.now() and prepa_dict[&#34;state&#34;] == 0:
+
+                        print(&#34;Preparation passed\n&#34;)
+
+                        doc_coffee = db.collection(&#34;coffees&#34;).document(
+                            prepa_dict[&#34;coffee&#34;].id).get()
+
+                        doc_coffee = doc_coffee.to_dict()
+
+                        coffee = Coffee(id=doc_coffee[&#34;id&#34;], name=doc_coffee[&#34;name&#34;],
+                                        description=doc_coffee[&#34;description&#34;])
+
+                        doc_machine = db.collection(&#34;machines&#34;).document(
+                            prepa_dict[&#34;machine&#34;].id).get()
+
+                        name = db.collection(&#34;machines&#34;).document(prepa_dict[&#34;machine&#34;].id).collection(
+                            &#34;users&#34;).document(user.id).get().to_dict()[&#34;name&#34;]
+
+                        doc_machine = doc_machine.to_dict()
+
+                        machine = Machine(id=doc_machine[&#34;id&#34;], state=doc_machine[&#34;state&#34;],
+                                          type=doc_machine[&#34;type&#34;], name=name)
+
+                        if prepa_dict[&#34;saved&#34;]:
+                            print(&#34;Preparation saved\n&#34;)
+                            prep = PreparationSaved(coffee=coffee, creation_date=prepa_dict[&#34;creationDate&#34;], last_update=prepa_dict[&#34;lastUpdate&#34;], machine=machine,
+                                                    id=prepa_dict[&#34;id&#34;], saved=prepa_dict[&#34;saved&#34;], state=prepa_dict[
+                                                        &#34;state&#34;], next_time=prepa_dict[&#34;nextTime&#34;],
+                                                    days_of_week=prepa_dict[&#34;daysOfWeek&#34;], hours=prepa_dict[&#34;hours&#34;], last_time=prepa_dict[&#34;lastTime&#34;], name=prepa_dict[&#34;name&#34;])
+                            print(&#34;Preparation : {}\n&#34;.format(prep))
+                        else:
+                            print(&#34;Preparation not saved\n&#34;)
+                            prep = Preparation(coffee=coffee, creation_date=prepa_dict[&#34;creationDate&#34;], last_update=prepa_dict[&#34;lastUpdate&#34;], machine=machine,
+                                               id=prepa_dict[&#34;id&#34;], saved=prepa_dict[&#34;saved&#34;], state=prepa_dict[&#34;state&#34;], next_time=prepa_dict[&#34;nextTime&#34;])
+
+                        print(&#34;Preparation : {}\n&#34;.format(
+                            list_preparations))
+
+                        list_preparations.append(prep)
+
+            list_preparations.sort(
+                key=lambda x: x.next_time, reverse=False)
+
+            print(&#34;Preparations sorted : {}\n&#34;.format(list_preparations))
+
+            print(&#34;------ End get_preparation_machine ------&#34;)
+            return 200, list_preparations
+        else:
+            return 404, list_preparations
+    except Exception as ex:
+        print(&#34;Error : {}&#34;.format(ex))
+        return 500, list_preparations</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.PreparationService.report_preparation_failed"><code class="name flex">
+<span>def <span class="ident">report_preparation_failed</span></span>(<span>self, id: str, id_user: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def report_preparation_failed(self, id: str, id_user: str):
+    try:
+        print(&#34;------ Start report_preparation_failed ------&#34;)
+
+        user = db.collection(&#34;users&#34;).document(id_user)
+
+        prep = user.collection(&#34;preparations&#34;).document(id)
+
+        if prep.get().exists:
+
+            print(prep)
+            prep.update({&#34;state&#34;: 0})
+
+            machine_id = prep.get().to_dict()[&#34;machine&#34;].id
+            print(machine_id)
+
+            db.collection(&#34;machines&#34;).document(
+                machine_id).update({&#34;state&#34;: 0})
+
+            prep_dict = prep.get().to_dict()
+
+            is_saved = prep_dict[&#34;saved&#34;]
+
+            if is_saved:
+
+                next_time = calculate_next_time(
+                    prep_dict[&#34;daysOfWeek&#34;], prep_dict[&#34;hours&#34;])
+                prep.update({
+                    &#34;lastTime&#34;: prep_dict[&#34;nextTime&#34;],
+                    &#34;nextTime&#34;: next_time
+                })
+
+            notif_ref = user.collection(&#34;notifications&#34;).document()
+
+            notif_ref.set({
+                &#34;id&#34;: notif_ref.id,
+                &#34;preparation&#34;: prep,
+                &#34;state&#34;: 2
+            })
+
+            print(&#34;------ End report_preparation_failed ------&#34;)
+
+            return 200
+        else:
+            return 404
+    except Exception as ex:
+        print(&#34;Error : {}&#34;.format(ex))
+        return 500</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.PreparationService.report_preparation_started"><code class="name flex">
+<span>def <span class="ident">report_preparation_started</span></span>(<span>self, id: str, id_user: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def report_preparation_started(self, id: str, id_user: str):
+    try:
+        print(&#34;------ Start report_preparation_started ------&#34;)
+
+        user = db.collection(&#34;users&#34;).document(id_user)
+
+        prep = user.collection(&#34;preparations&#34;).document(id)
+
+        if prep.get().exists:
+
+            print(prep)
+            prep.update({&#34;state&#34;: 1})
+
+            machine_id = prep.get().to_dict()[&#34;machine&#34;].id
+            print(machine_id)
+
+            db.collection(&#34;machines&#34;).document(
+                machine_id).update({&#34;state&#34;: 1})
+
+            notif_ref = user.collection(&#34;notifications&#34;).document()
+
+            notif_ref.set({
+                &#34;id&#34;: notif_ref.id,
+                &#34;preparation&#34;: prep,
+                &#34;state&#34;: 0
+            })
+
+            print(&#34;------ End report_preparation_started ------&#34;)
+
+            return 200
+        else:
+            return 404
+    except Exception as ex:
+        print(&#34;Error : {}&#34;.format(ex))
+        return 500</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.PreparationService.report_preparation_succeeded"><code class="name flex">
+<span>def <span class="ident">report_preparation_succeeded</span></span>(<span>self, id: str, id_user: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def report_preparation_succeeded(self, id: str, id_user: str):
+    try:
+        print(&#34;------ Start report_preparation_succeeded ------&#34;)
+
+        user = db.collection(&#34;users&#34;).document(id_user)
+
+        prep = user.collection(&#34;preparations&#34;).document(id)
+
+        if prep.get().exists:
+
+            print(prep)
+            prep.update({&#34;state&#34;: 0})
+
+            machine_id = prep.get().to_dict()[&#34;machine&#34;].id
+            print(machine_id)
+
+            db.collection(&#34;machines&#34;).document(
+                machine_id).update({&#34;state&#34;: 0})
+
+            prep_dict = prep.get().to_dict()
+
+            is_saved = prep_dict[&#34;saved&#34;]
+
+            if is_saved:
+
+                next_time = calculate_next_time(
+                    prep_dict[&#34;daysOfWeek&#34;], prep_dict[&#34;hours&#34;])
+
+                print(&#34;New value of next_time = {}&#34;.format(next_time))
+
+                prep.update({
+                    &#34;lastTime&#34;: prep_dict[&#34;nextTime&#34;],
+                    &#34;nextTime&#34;: next_time
+                })
+
+            notif_ref = user.collection(&#34;notifications&#34;).document()
+
+            notif_ref.set({
+                &#34;id&#34;: notif_ref.id,
+                &#34;preparation&#34;: prep,
+                &#34;state&#34;: 1
+            })
+
+            print(&#34;------ End report_preparation_succeeded ------&#34;)
+
+            return 200
+        else:
+            return 404
+    except Exception as ex:
+        print(&#34;Error : {}&#34;.format(ex))
+        return 500</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.PreparationService.update_preparation"><code class="name flex">
+<span>def <span class="ident">update_preparation</span></span>(<span>self, data: <a title="app.modules.response_models.UpdatePreparationSaved" href="response_models.html#app.modules.response_models.UpdatePreparationSaved">UpdatePreparationSaved</a>, id: str, id_user: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_preparation(self, data: UpdatePreparationSaved, id: str, id_user: str):
+    try:
+        print(&#34;------ Start update_preparation ------&#34;)
+
+        prepa = db.collection(&#39;users&#39;).document(
+            id_user).collection(&#34;preparations&#34;).document(id)
+
+        if prepa.get().exists:
+
+            coffee = db.collection(&#39;coffees&#39;).document(data.coffee_id)
+
+            machine = db.collection(&#39;machines&#39;).document(data.machine_id)
+
+            if machine.get().exists and coffee.get().exists:
+
+                next_time = calculate_next_time(
+                    data.days_of_week, data.hours, prepa.get().to_dict()[&#34;nextTime&#34;])
+
+                print(&#34;Date now  = {} {} and date nexttime =  {} {}&#34;.format(datetime.now(
+                    tz=pytz.utc), type(datetime.now(tz=pytz.utc)), next_time, type(next_time)))
+
+                prepa.update({&#34;name&#34;: data.name,
+                              &#34;lastUpdate&#34;: datetime.now(tz=pytz.utc),
+                              &#34;daysOfWeek&#34;: data.days_of_week,
+                              &#34;hours&#34;: data.hours,
+                              &#34;nextTime&#34;: next_time,
+                              &#34;coffee&#34;: coffee,
+                              &#34;machine&#34;: machine
+                              })
+
+                print(&#34;------ End update_preparation ------&#34;)
+                return 200
+            else:
+                return 404
+        else:
+            return 404
+    except Exception as ex:
+        print(&#34;Error : {}&#34;.format(ex))
+        return 500</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="app.modules.services.UserService"><code class="flex name class">
+<span>class <span class="ident">UserService</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper class that provides a standard way to create an ABC using
+inheritance.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UserService(ABC):
+    def create_user(self, data: UserAuthentication):
+        try:
+            new_user = auth.create_user(
+                email=data.email,
+                password=data.password
+            )
+            print(jsonable_encoder(new_user))
+            new_user = jsonable_encoder(new_user)
+            doc_ref = db.collection(&#39;users&#39;).document(
+                new_user[&#34;_data&#34;][&#34;localId&#34;])
+            doc_ref.set({
+                &#39;uid&#39;: new_user[&#34;_data&#34;][&#34;localId&#34;],
+                &#39;email&#39;: new_user[&#34;_data&#34;][&#34;email&#34;]
+            })
+            return 201
+        except auth.EmailAlreadyExistsError as ex:
+            print(type(ex))
+            return 409
+        except Exception as ex:
+            return 500
+
+    def log_in_user(self, data: UserAuthentication):
+
+        response = requests.post(
+            url=&#34;https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword&#34;,
+            params={&#34;key&#34;: getenv(&#34;API_KEY_FIREBASE&#34;)},
+            data=data.json()
+        )
+
+        print(f&#34;Response : {response}, code : {response.status_code}&#34;)
+
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return None
+
+    def delete_user(self, user_id: str):
+        db.collection(&#34;users&#34;).document(user_id).delete()
+        docs_machine = db.collection(&#34;machines&#34;).stream()
+        for doc in docs_machine:
+            user_exist = db.collection(&#34;machines&#34;).document(
+                doc.id).collection(&#34;users&#34;).document(user_id).get().exists
+            if user_exist:
+                db.collection(&#34;machines&#34;).document(doc.id).collection(
+                    &#34;users&#34;).document(user_id).delete()
+
+        return 200
+
+    def get_new_token(self, data: UserRefreshToken):
+
+        docs = db.collection(&#34;refreshTokensBlackList&#34;).where(
+            &#34;refresh_token&#34;, &#34;==&#34;, data.refresh_token).get()
+
+        if len(docs):
+            return None, 403
+        else:
+            response = requests.post(
+                url=&#34;https://securetoken.googleapis.com/v1/token&#34;,
+                params={&#34;key&#34;: getenv(&#34;API_KEY_FIREBASE&#34;)},
+                data={&#34;grant_type&#34;: &#34;refresh_token&#34;,
+                      &#34;refresh_token&#34;: data.refresh_token}
+            )
+
+            print(f&#34;Response : {response}, code : {response.status_code}&#34;)
+
+            if response.status_code == 200:
+                return response.json(), response.status_code
+            else:
+                return None, response.status_code
+
+    def revoke_refresh_token(self, data: UserRefreshToken):
+        db.collection(&#34;refreshTokensBlackList&#34;).add(data.dict())</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>abc.ABC</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="app.modules.services.UserService.create_user"><code class="name flex">
+<span>def <span class="ident">create_user</span></span>(<span>self, data: <a title="app.modules.response_models.UserAuthentication" href="response_models.html#app.modules.response_models.UserAuthentication">UserAuthentication</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_user(self, data: UserAuthentication):
+    try:
+        new_user = auth.create_user(
+            email=data.email,
+            password=data.password
+        )
+        print(jsonable_encoder(new_user))
+        new_user = jsonable_encoder(new_user)
+        doc_ref = db.collection(&#39;users&#39;).document(
+            new_user[&#34;_data&#34;][&#34;localId&#34;])
+        doc_ref.set({
+            &#39;uid&#39;: new_user[&#34;_data&#34;][&#34;localId&#34;],
+            &#39;email&#39;: new_user[&#34;_data&#34;][&#34;email&#34;]
+        })
+        return 201
+    except auth.EmailAlreadyExistsError as ex:
+        print(type(ex))
+        return 409
+    except Exception as ex:
+        return 500</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.UserService.delete_user"><code class="name flex">
+<span>def <span class="ident">delete_user</span></span>(<span>self, user_id: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_user(self, user_id: str):
+    db.collection(&#34;users&#34;).document(user_id).delete()
+    docs_machine = db.collection(&#34;machines&#34;).stream()
+    for doc in docs_machine:
+        user_exist = db.collection(&#34;machines&#34;).document(
+            doc.id).collection(&#34;users&#34;).document(user_id).get().exists
+        if user_exist:
+            db.collection(&#34;machines&#34;).document(doc.id).collection(
+                &#34;users&#34;).document(user_id).delete()
+
+    return 200</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.UserService.get_new_token"><code class="name flex">
+<span>def <span class="ident">get_new_token</span></span>(<span>self, data: <a title="app.modules.response_models.UserRefreshToken" href="response_models.html#app.modules.response_models.UserRefreshToken">UserRefreshToken</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_new_token(self, data: UserRefreshToken):
+
+    docs = db.collection(&#34;refreshTokensBlackList&#34;).where(
+        &#34;refresh_token&#34;, &#34;==&#34;, data.refresh_token).get()
+
+    if len(docs):
+        return None, 403
+    else:
+        response = requests.post(
+            url=&#34;https://securetoken.googleapis.com/v1/token&#34;,
+            params={&#34;key&#34;: getenv(&#34;API_KEY_FIREBASE&#34;)},
+            data={&#34;grant_type&#34;: &#34;refresh_token&#34;,
+                  &#34;refresh_token&#34;: data.refresh_token}
+        )
+
+        print(f&#34;Response : {response}, code : {response.status_code}&#34;)
+
+        if response.status_code == 200:
+            return response.json(), response.status_code
+        else:
+            return None, response.status_code</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.UserService.log_in_user"><code class="name flex">
+<span>def <span class="ident">log_in_user</span></span>(<span>self, data: <a title="app.modules.response_models.UserAuthentication" href="response_models.html#app.modules.response_models.UserAuthentication">UserAuthentication</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def log_in_user(self, data: UserAuthentication):
+
+    response = requests.post(
+        url=&#34;https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword&#34;,
+        params={&#34;key&#34;: getenv(&#34;API_KEY_FIREBASE&#34;)},
+        data=data.json()
+    )
+
+    print(f&#34;Response : {response}, code : {response.status_code}&#34;)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None</code></pre>
+</details>
+</dd>
+<dt id="app.modules.services.UserService.revoke_refresh_token"><code class="name flex">
+<span>def <span class="ident">revoke_refresh_token</span></span>(<span>self, data: <a title="app.modules.response_models.UserRefreshToken" href="response_models.html#app.modules.response_models.UserRefreshToken">UserRefreshToken</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def revoke_refresh_token(self, data: UserRefreshToken):
+    db.collection(&#34;refreshTokensBlackList&#34;).add(data.dict())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="app.modules" href="index.html">app.modules</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="app.modules.services.calculate_next_time" href="#app.modules.services.calculate_next_time">calculate_next_time</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="app.modules.services.CoffeeService" href="#app.modules.services.CoffeeService">CoffeeService</a></code></h4>
+<ul class="">
+<li><code><a title="app.modules.services.CoffeeService.get_coffee" href="#app.modules.services.CoffeeService.get_coffee">get_coffee</a></code></li>
+<li><code><a title="app.modules.services.CoffeeService.get_coffee_by_id" href="#app.modules.services.CoffeeService.get_coffee_by_id">get_coffee_by_id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="app.modules.services.MachineService" href="#app.modules.services.MachineService">MachineService</a></code></h4>
+<ul class="">
+<li><code><a title="app.modules.services.MachineService.create_machine" href="#app.modules.services.MachineService.create_machine">create_machine</a></code></li>
+<li><code><a title="app.modules.services.MachineService.delete_machine" href="#app.modules.services.MachineService.delete_machine">delete_machine</a></code></li>
+<li><code><a title="app.modules.services.MachineService.get_machine_by_id" href="#app.modules.services.MachineService.get_machine_by_id">get_machine_by_id</a></code></li>
+<li><code><a title="app.modules.services.MachineService.get_machines" href="#app.modules.services.MachineService.get_machines">get_machines</a></code></li>
+<li><code><a title="app.modules.services.MachineService.update_machine" href="#app.modules.services.MachineService.update_machine">update_machine</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="app.modules.services.PreparationService" href="#app.modules.services.PreparationService">PreparationService</a></code></h4>
+<ul class="">
+<li><code><a title="app.modules.services.PreparationService.create_preparation" href="#app.modules.services.PreparationService.create_preparation">create_preparation</a></code></li>
+<li><code><a title="app.modules.services.PreparationService.delete_preparation" href="#app.modules.services.PreparationService.delete_preparation">delete_preparation</a></code></li>
+<li><code><a title="app.modules.services.PreparationService.get_preparation" href="#app.modules.services.PreparationService.get_preparation">get_preparation</a></code></li>
+<li><code><a title="app.modules.services.PreparationService.get_preparation_machine" href="#app.modules.services.PreparationService.get_preparation_machine">get_preparation_machine</a></code></li>
+<li><code><a title="app.modules.services.PreparationService.get_preparation_next_coffee" href="#app.modules.services.PreparationService.get_preparation_next_coffee">get_preparation_next_coffee</a></code></li>
+<li><code><a title="app.modules.services.PreparationService.report_preparation_failed" href="#app.modules.services.PreparationService.report_preparation_failed">report_preparation_failed</a></code></li>
+<li><code><a title="app.modules.services.PreparationService.report_preparation_started" href="#app.modules.services.PreparationService.report_preparation_started">report_preparation_started</a></code></li>
+<li><code><a title="app.modules.services.PreparationService.report_preparation_succeeded" href="#app.modules.services.PreparationService.report_preparation_succeeded">report_preparation_succeeded</a></code></li>
+<li><code><a title="app.modules.services.PreparationService.update_preparation" href="#app.modules.services.PreparationService.update_preparation">update_preparation</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="app.modules.services.UserService" href="#app.modules.services.UserService">UserService</a></code></h4>
+<ul class="">
+<li><code><a title="app.modules.services.UserService.create_user" href="#app.modules.services.UserService.create_user">create_user</a></code></li>
+<li><code><a title="app.modules.services.UserService.delete_user" href="#app.modules.services.UserService.delete_user">delete_user</a></code></li>
+<li><code><a title="app.modules.services.UserService.get_new_token" href="#app.modules.services.UserService.get_new_token">get_new_token</a></code></li>
+<li><code><a title="app.modules.services.UserService.log_in_user" href="#app.modules.services.UserService.log_in_user">log_in_user</a></code></li>
+<li><code><a title="app.modules.services.UserService.revoke_refresh_token" href="#app.modules.services.UserService.revoke_refresh_token">revoke_refresh_token</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

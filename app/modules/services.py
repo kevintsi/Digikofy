@@ -47,28 +47,31 @@ class UserService(ABC):
         else:
             return None
 
-        
-    def delete_user(self, user_id : str):
+    def delete_user(self, user_id: str):
         db.collection("users").document(user_id).delete()
         docs_machine = db.collection("machines").stream()
         for doc in docs_machine:
-            user_exist = db.collection("machines").document(doc.id).collection("users").document(user_id).get().exists
+            user_exist = db.collection("machines").document(
+                doc.id).collection("users").document(user_id).get().exists
             if user_exist:
-                db.collection("machines").document(doc.id).collection("users").document(user_id).delete()
-        
+                db.collection("machines").document(doc.id).collection(
+                    "users").document(user_id).delete()
+
         return 200
 
-    def get_new_token(self, data : UserRefreshToken):
+    def get_new_token(self, data: UserRefreshToken):
 
-        docs = db.collection("refreshTokensBlackList").where("refresh_token","==",data.refresh_token).get()
-        
+        docs = db.collection("refreshTokensBlackList").where(
+            "refresh_token", "==", data.refresh_token).get()
+
         if len(docs):
-            return None,403
+            return None, 403
         else:
             response = requests.post(
                 url="https://securetoken.googleapis.com/v1/token",
                 params={"key": getenv("API_KEY_FIREBASE")},
-                data={"grant_type" : "refresh_token", "refresh_token" : data.refresh_token}
+                data={"grant_type": "refresh_token",
+                      "refresh_token": data.refresh_token}
             )
 
             print(f"Response : {response}, code : {response.status_code}")
@@ -78,11 +81,8 @@ class UserService(ABC):
             else:
                 return None, response.status_code
 
-    def revoke_refresh_token(self, data : UserRefreshToken):
+    def revoke_refresh_token(self, data: UserRefreshToken):
         db.collection("refreshTokensBlackList").add(data.dict())
-
-
-
 
 
 class MachineService(ABC):
@@ -217,7 +217,7 @@ class MachineService(ABC):
             print("Error : {}".format(ex))
             return 404
 
-    def delete_machine(self, id: str):
+    def delete_machine(self, id: str, id_user: str):
         """
 
         Delete the machine with the given id
@@ -233,21 +233,39 @@ class MachineService(ABC):
             document = db.collection("machines").document(id)
             if document.get().exists:
 
-                document.delete()
+                if len(document.collection("users").get()) == 0:
 
-                users = db.collection("users").stream()
+                    document.delete()
 
-                for user in users:
+                    users = db.collection("users").stream()
 
-                    preps = db.collection("users").document(
-                        user.id).collection("preparations").stream()
+                    for user in users:
 
-                    for prep in preps:
+                        preps = db.collection("users").document(
+                            user.id).collection("preparations").stream()
 
-                        prep_dict = prep.to_dict()
+                        for prep in preps:
 
-                        if prep_dict["machine"].id == id:
-                            prep.reference.delete()
+                            prep_dict = prep.to_dict()
+
+                            if prep_dict["machine"].id == id:
+                                prep.reference.delete()
+
+                else:
+
+                    if document.collection("users").document(id_user).get().exists:
+
+                        document.collection("users").document(id_user).delete()
+
+                        preps = db.collection("users").document(
+                            id_user).collection("preparations").stream()
+
+                        for prep in preps:
+
+                            prep_dict = prep.to_dict()
+
+                            if prep_dict["machine"].id == id:
+                                prep.reference.delete()
 
                 print("------ End delete_machine -----")
                 return 200

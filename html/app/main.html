@@ -1,0 +1,1334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>app.main API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>app.main</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from typing import Any, List
+from fastapi.params import Depends
+import uvicorn
+from fastapi import FastAPI, status, Response
+from .modules.response_models import CreatePreparation, MachineCreate, \
+    UpdatePreparationSaved, UserAuthentication, MachineUpdate, Machine, Coffee, UserRefreshToken
+from .modules.services import UserService, MachineService, PreparationService, CoffeeService
+from .auth.check_auth import JWTBearer
+
+
+app = FastAPI(title=&#34;DigikofyAPI&#34;)
+
+
+###### USER ROUTE ########
+
+@app.post(&#34;/register&#34;, status_code=status.HTTP_201_CREATED, tags=[&#34;User&#34;])
+async def register(data: UserAuthentication, response: Response):
+    &#34;&#34;&#34;
+    
+    Route to register the user in the database
+
+    Args:
+        data (UserAuthentication): [Information needed to register the user]
+        response (Response): [Response returned (status code)]
+    &#34;&#34;&#34;
+    code = UserService().create_user(data)
+    if code == 201:
+        print(&#39;Sucessfully created new user&#39;)
+    elif code == 409:
+        print(&#34;An user with this email address already exists&#34;)
+        response.status_code = status.HTTP_409_CONFLICT
+    else:
+        print(&#34;Something went wrong&#34;)
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+@app.delete(&#34;/delete&#34;, status_code=status.HTTP_200_OK, tags=[&#34;User&#34;])
+async def delete(response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route to delete the user
+
+    Args:
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = UserService().delete_user(id_user)
+    if code != 200:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+
+
+@app.post(&#34;/login&#34;, status_code=status.HTTP_200_OK, tags=[&#34;User&#34;])
+async def login(data: UserAuthentication, response: Response):
+    &#34;&#34;&#34;
+    
+    Route to log in the user
+
+    Args:
+        data (UserAuthentication): [Information needed to log in]
+        response (Response): [Response returned (status code)]
+
+    Returns:
+        [Object]: [Object containing id token, refresh_token]
+    &#34;&#34;&#34;
+    res = UserService().log_in_user(data)
+    if res is not None:
+        return res
+    else:
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+
+@app.post(&#34;/refreshToken&#34;, status_code=status.HTTP_200_OK, tags=[&#34;User&#34;])
+async def refresh_token(data : UserRefreshToken, response : Response):
+    &#34;&#34;&#34;
+    
+    Route to get a new id token with the refresh token given
+
+    Args:
+        data (UserRefreshToken): [Information needed to get a new id token]
+        response (Response): [Response returned (status code)]
+
+    Returns:
+        [Object]: [Object containing id token, refresh_token]
+    &#34;&#34;&#34;
+    res,code = UserService().get_new_token(data)
+    if res is not None:
+        return res
+    elif code == 403:
+        response.status_code = status.HTTP_403_FORBIDDEN
+
+@app.post(&#34;/revoke&#34;, status_code=status.HTTP_200_OK, tags=[&#34;User&#34;])
+async def revoke_refresh_token(data : UserRefreshToken):
+    &#34;&#34;&#34;
+    
+    Route to log out and revoke the refresh token
+
+    Args:
+        data (UserRefreshToken): [Information needed to revoke refresh token]
+    &#34;&#34;&#34;
+    UserService().revoke_refresh_token(data)
+
+###### MACHINE&#39;S ROUTE ############
+
+
+@app.post(&#34;/machine&#34;, status_code=status.HTTP_201_CREATED, tags=[&#34;Machine&#34;])
+async def add_machine(data: MachineCreate, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route to connect the user to a new machine to the database
+
+    Args:
+        data (MachineCreate): [Information needed to connect the user to a new machine]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = MachineService().create_machine(data, id_user)
+    print(code)
+    if code != 201:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+@app.get(&#34;/machines&#34;, status_code=status.HTTP_200_OK, response_model=List[Machine], tags=[&#34;Machine&#34;])
+async def get_machines(response: Response, id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route that returns all machines available
+
+    Args:
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+
+    Returns:
+        [List[Machine]]: [List of machines available]
+    &#34;&#34;&#34;
+
+    print(f&#34;Id user : {id_user}&#34;)
+    (code, data) = MachineService().get_machines(id_user)
+
+    print(code)
+    if code == 200:
+        return data
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+@app.get(&#34;/machine/{id}&#34;, status_code=status.HTTP_200_OK, response_model=Machine, tags=[&#34;Machine&#34;])
+async def get_machine(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route that returns machine with the given id
+
+
+    Args:
+        id (str): [Id machine]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+
+    Returns:
+        [Machine]: [Machine with the given id]
+    &#34;&#34;&#34;
+    (code, data) = MachineService().get_machine_by_id(id, id_user)
+    print(code)
+    if code == 200:
+        return data
+    elif code == 404:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+@app.put(&#34;/machine/{id}&#34;, status_code=status.HTTP_200_OK, tags=[&#34;Machine&#34;])
+async def update_machine(id: str, data: MachineUpdate, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route to update a machine&#39;s name that has the given id
+
+    Args:
+        id (str): [Id machine]
+        data (MachineUpdate): [Information needed to update the machine&#39;s name]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = MachineService().update_machine(id, data, id_user)
+    if code == 200:
+        print(&#34;Machine&#39;s name update successfully&#34;)
+    else:
+        print(&#34;Name not found&#34;)
+        response.status_code = status.HTTP_404_NOT_FOUND
+
+
+@app.delete(&#34;/machine/{id}&#34;, status_code=status.HTTP_200_OK, tags=[&#34;Machine&#34;])
+async def delete_machine(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route to delete a machine
+
+    Args:
+        id (str): [Id machine]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = MachineService().delete_machine(id, id_user)
+    if code != 200 and code != 500:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    elif code == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+######## COFFEE&#39;S ROUTE ##########
+
+
+@app.get(&#34;/coffees&#34;, status_code=status.HTTP_200_OK, response_model=List[Coffee], tags=[&#34;Coffee&#34;])
+async def get_coffee(response: Response):
+    &#34;&#34;&#34;
+    
+    Route that returns all coffees
+
+    Args:
+        response (Response): [Response returned (status code)]
+
+    Returns:
+        [List[Coffee]]: [List of coffees]
+    &#34;&#34;&#34;
+    (code, data) = CoffeeService().get_coffee()
+    print(code)
+    if code == 200:
+        return data
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+@app.get(&#34;/coffee/{id}&#34;, status_code=status.HTTP_200_OK, response_model=Coffee, tags=[&#34;Coffee&#34;])
+async def get_coffee_by_id(id: str, response: Response):
+    &#34;&#34;&#34;
+    
+    Route that return the coffee with the given id
+
+    Args:
+        id (str): [Id coffee]
+        response (Response): [Response returned (status code)]
+
+    Returns:
+        [Coffee]: [Coffee with the given id]
+    &#34;&#34;&#34;
+    (code, data) = CoffeeService().get_coffee_by_id(id)
+    print(code, data)
+    if code == 200:
+        return data
+    elif code == 404:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+###### PREPARATION&#39;S ROUTE ##########
+
+@app.post(&#34;/preparation&#34;, status_code=status.HTTP_201_CREATED, tags=[&#34;Preparation&#34;])
+async def add_preparation(data: CreatePreparation, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route to add a new order
+
+    Args:
+        data (CreatePreparation): [Information needed to create a new order]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = PreparationService().create_preparation(data, id_user)
+    print(code)
+    if code != 201 and code != 500:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    elif code == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+@app.get(&#34;/preparations&#34;, status_code=status.HTTP_200_OK, tags=[&#34;Preparation&#34;], response_model=List[Any])
+async def get_preparations(response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route that retrieve all user&#39;s orders
+
+    Args:
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+
+    Returns:
+        [List[Preparation]]: [List of orders that can be saved or not]
+    &#34;&#34;&#34;
+    code, preparations = PreparationService().get_preparation(id_user)
+    if code == 200:
+        return preparations
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+@app.put(&#34;/preparation/{id}&#34;, status_code=status.HTTP_200_OK, tags=[&#34;Preparation&#34;])
+async def update_preparation(id: str, data: UpdatePreparationSaved, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route that updates an order with the given id and with the given data
+
+    Args:
+        id (str): [Id order]
+        data (UpdatePreparationSaved): [Information needed to update an order]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = PreparationService().update_preparation(data, id, id_user)
+    print(code)
+    if code != 200 and code != 500:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    elif code == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+@app.delete(&#34;/preparation/{id}&#34;, status_code=status.HTTP_200_OK, tags=[&#34;Preparation&#34;])
+async def delete_preparation(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route that deletes an order with the given id
+
+    Args:
+        id (str): [Id order]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = PreparationService().delete_preparation(id, id_user)
+    print(code)
+    if code != 200 and code != 500:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    elif code == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+####### PREPARATION MACHINE&#39;S ROUTE ##########
+
+
+@app.get(&#34;/preparation/{id}/started&#34;, status_code=status.HTTP_200_OK, tags=[&#34;Preparation&#34;])
+async def report_preparation_started(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route that adds a report to inform the user that the order has started
+
+    Args:
+        id (str): [Id order]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = PreparationService().report_preparation_started(id, id_user)
+    print(code)
+    if code != 200 and code != 500:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+    elif code == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+@app.get(&#34;/preparation/{id}/succeeded&#34;, status_code=status.HTTP_200_OK, tags=[&#34;Preparation&#34;])
+async def report_preparation_succeeded(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+        Route that adds a report to inform the user that the order has succeeded
+
+    Args:
+        id (str): [Id order]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = PreparationService().report_preparation_succeeded(id, id_user)
+    print(code)
+    if code != 200 and code != 500:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+    elif code == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+@app.get(&#34;/preparation/{id}/failed&#34;, status_code=status.HTTP_200_OK, tags=[&#34;Preparation&#34;])
+async def report_preparation_failed(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;    
+    
+    Route that adds a report to inform the user that the order has failed
+
+    Args:
+        id (str): [Id order]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = PreparationService().report_preparation_failed(id, id_user)
+    print(code)
+    if code != 200 and code != 500:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+    elif code == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+@app.get(&#34;/preparation/machine/{id}&#34;, status_code=status.HTTP_200_OK, response_model=List[Any], tags=[&#34;Preparation&#34;])
+async def get_preparation_machine(id: str, response: Response):
+    &#34;&#34;&#34;
+    
+    Route that retrieves all preparations that are programmed for a future time with given machine id
+
+    Args:
+        id (str): [Id machine]
+        response (Response): [Response returned (status code)]
+
+    Returns:
+        [List[Preparation]]: [List of orders (saved or not)]
+    &#34;&#34;&#34;
+    code, preparations = PreparationService().get_preparation_machine(id)
+    if code == 200:
+        return preparations
+    elif code == 404:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+@app.get(&#34;/preparation/nextcoffee/{id}&#34;, status_code=status.HTTP_200_OK, response_model=List[Any], tags=[&#34;Preparation&#34;])
+async def get_preparation_next_coffee(id: str, response: Response):
+    &#34;&#34;&#34;
+    Route that returns late coffees to be prepared 
+
+    Args:
+        id (str): [Machine&#39;s id]
+        response (Response): [Response returned (status code)]
+
+    Returns:
+        [List[Preparation]]: [List of orders (saved or not)]
+    &#34;&#34;&#34;
+    code, preparations = PreparationService().get_preparation_next_coffee(id)
+    if code == 200:
+        return preparations
+    elif code == 404:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+if __name__ == &#34;__main__&#34;:
+    uvicorn.run(app, host=&#34;0.0.0.0&#34;, port=8000)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="app.main.add_machine"><code class="name flex">
+<span>async def <span class="ident">add_machine</span></span>(<span>data: <a title="app.modules.response_models.MachineCreate" href="modules/response_models.html#app.modules.response_models.MachineCreate">MachineCreate</a>, response: starlette.responses.Response, id_user: str = Depends(JWTBearer))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route to connect the user to a new machine to the database</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>MachineCreate</code></dt>
+<dd>[Information needed to connect the user to a new machine]</dd>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+<dt><strong><code>id_user</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>[Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.post(&#34;/machine&#34;, status_code=status.HTTP_201_CREATED, tags=[&#34;Machine&#34;])
+async def add_machine(data: MachineCreate, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route to connect the user to a new machine to the database
+
+    Args:
+        data (MachineCreate): [Information needed to connect the user to a new machine]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = MachineService().create_machine(data, id_user)
+    print(code)
+    if code != 201:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR</code></pre>
+</details>
+</dd>
+<dt id="app.main.add_preparation"><code class="name flex">
+<span>async def <span class="ident">add_preparation</span></span>(<span>data: <a title="app.modules.response_models.CreatePreparation" href="modules/response_models.html#app.modules.response_models.CreatePreparation">CreatePreparation</a>, response: starlette.responses.Response, id_user: str = Depends(JWTBearer))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route to add a new order</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>CreatePreparation</code></dt>
+<dd>[Information needed to create a new order]</dd>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+<dt><strong><code>id_user</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>[Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.post(&#34;/preparation&#34;, status_code=status.HTTP_201_CREATED, tags=[&#34;Preparation&#34;])
+async def add_preparation(data: CreatePreparation, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route to add a new order
+
+    Args:
+        data (CreatePreparation): [Information needed to create a new order]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = PreparationService().create_preparation(data, id_user)
+    print(code)
+    if code != 201 and code != 500:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    elif code == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR</code></pre>
+</details>
+</dd>
+<dt id="app.main.delete"><code class="name flex">
+<span>async def <span class="ident">delete</span></span>(<span>response: starlette.responses.Response, id_user: str = Depends(JWTBearer))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route to delete the user</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+<dt><strong><code>id_user</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>[Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.delete(&#34;/delete&#34;, status_code=status.HTTP_200_OK, tags=[&#34;User&#34;])
+async def delete(response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route to delete the user
+
+    Args:
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = UserService().delete_user(id_user)
+    if code != 200:
+        response.status_code = status.HTTP_400_BAD_REQUEST</code></pre>
+</details>
+</dd>
+<dt id="app.main.delete_machine"><code class="name flex">
+<span>async def <span class="ident">delete_machine</span></span>(<span>id: str, response: starlette.responses.Response, id_user: str = Depends(JWTBearer))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route to delete a machine</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>str</code></dt>
+<dd>[Id machine]</dd>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+<dt><strong><code>id_user</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>[Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.delete(&#34;/machine/{id}&#34;, status_code=status.HTTP_200_OK, tags=[&#34;Machine&#34;])
+async def delete_machine(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route to delete a machine
+
+    Args:
+        id (str): [Id machine]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = MachineService().delete_machine(id, id_user)
+    if code != 200 and code != 500:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    elif code == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR</code></pre>
+</details>
+</dd>
+<dt id="app.main.delete_preparation"><code class="name flex">
+<span>async def <span class="ident">delete_preparation</span></span>(<span>id: str, response: starlette.responses.Response, id_user: str = Depends(JWTBearer))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route that deletes an order with the given id</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>str</code></dt>
+<dd>[Id order]</dd>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+<dt><strong><code>id_user</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>[Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.delete(&#34;/preparation/{id}&#34;, status_code=status.HTTP_200_OK, tags=[&#34;Preparation&#34;])
+async def delete_preparation(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route that deletes an order with the given id
+
+    Args:
+        id (str): [Id order]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = PreparationService().delete_preparation(id, id_user)
+    print(code)
+    if code != 200 and code != 500:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    elif code == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR</code></pre>
+</details>
+</dd>
+<dt id="app.main.get_coffee"><code class="name flex">
+<span>async def <span class="ident">get_coffee</span></span>(<span>response: starlette.responses.Response)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route that returns all coffees</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>[List[Coffee]]</code></dt>
+<dd>[List of coffees]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.get(&#34;/coffees&#34;, status_code=status.HTTP_200_OK, response_model=List[Coffee], tags=[&#34;Coffee&#34;])
+async def get_coffee(response: Response):
+    &#34;&#34;&#34;
+    
+    Route that returns all coffees
+
+    Args:
+        response (Response): [Response returned (status code)]
+
+    Returns:
+        [List[Coffee]]: [List of coffees]
+    &#34;&#34;&#34;
+    (code, data) = CoffeeService().get_coffee()
+    print(code)
+    if code == 200:
+        return data
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR</code></pre>
+</details>
+</dd>
+<dt id="app.main.get_coffee_by_id"><code class="name flex">
+<span>async def <span class="ident">get_coffee_by_id</span></span>(<span>id: str, response: starlette.responses.Response)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route that return the coffee with the given id</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>str</code></dt>
+<dd>[Id coffee]</dd>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>[Coffee]</code></dt>
+<dd>[Coffee with the given id]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.get(&#34;/coffee/{id}&#34;, status_code=status.HTTP_200_OK, response_model=Coffee, tags=[&#34;Coffee&#34;])
+async def get_coffee_by_id(id: str, response: Response):
+    &#34;&#34;&#34;
+    
+    Route that return the coffee with the given id
+
+    Args:
+        id (str): [Id coffee]
+        response (Response): [Response returned (status code)]
+
+    Returns:
+        [Coffee]: [Coffee with the given id]
+    &#34;&#34;&#34;
+    (code, data) = CoffeeService().get_coffee_by_id(id)
+    print(code, data)
+    if code == 200:
+        return data
+    elif code == 404:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR</code></pre>
+</details>
+</dd>
+<dt id="app.main.get_machine"><code class="name flex">
+<span>async def <span class="ident">get_machine</span></span>(<span>id: str, response: starlette.responses.Response, id_user: str = Depends(JWTBearer))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route that returns machine with the given id</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>str</code></dt>
+<dd>[Id machine]</dd>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+<dt><strong><code>id_user</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>[Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>[Machine]</code></dt>
+<dd>[Machine with the given id]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.get(&#34;/machine/{id}&#34;, status_code=status.HTTP_200_OK, response_model=Machine, tags=[&#34;Machine&#34;])
+async def get_machine(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route that returns machine with the given id
+
+
+    Args:
+        id (str): [Id machine]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+
+    Returns:
+        [Machine]: [Machine with the given id]
+    &#34;&#34;&#34;
+    (code, data) = MachineService().get_machine_by_id(id, id_user)
+    print(code)
+    if code == 200:
+        return data
+    elif code == 404:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR</code></pre>
+</details>
+</dd>
+<dt id="app.main.get_machines"><code class="name flex">
+<span>async def <span class="ident">get_machines</span></span>(<span>response: starlette.responses.Response, id_user: str = Depends(JWTBearer))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route that returns all machines available</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+<dt><strong><code>id_user</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>[Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>[List[Machine]]</code></dt>
+<dd>[List of machines available]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.get(&#34;/machines&#34;, status_code=status.HTTP_200_OK, response_model=List[Machine], tags=[&#34;Machine&#34;])
+async def get_machines(response: Response, id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route that returns all machines available
+
+    Args:
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+
+    Returns:
+        [List[Machine]]: [List of machines available]
+    &#34;&#34;&#34;
+
+    print(f&#34;Id user : {id_user}&#34;)
+    (code, data) = MachineService().get_machines(id_user)
+
+    print(code)
+    if code == 200:
+        return data
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR</code></pre>
+</details>
+</dd>
+<dt id="app.main.get_preparation_machine"><code class="name flex">
+<span>async def <span class="ident">get_preparation_machine</span></span>(<span>id: str, response: starlette.responses.Response)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route that retrieves all preparations that are programmed for a future time with given machine id</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>str</code></dt>
+<dd>[Id machine]</dd>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>[List[Preparation]]</code></dt>
+<dd>[List of orders (saved or not)]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.get(&#34;/preparation/machine/{id}&#34;, status_code=status.HTTP_200_OK, response_model=List[Any], tags=[&#34;Preparation&#34;])
+async def get_preparation_machine(id: str, response: Response):
+    &#34;&#34;&#34;
+    
+    Route that retrieves all preparations that are programmed for a future time with given machine id
+
+    Args:
+        id (str): [Id machine]
+        response (Response): [Response returned (status code)]
+
+    Returns:
+        [List[Preparation]]: [List of orders (saved or not)]
+    &#34;&#34;&#34;
+    code, preparations = PreparationService().get_preparation_machine(id)
+    if code == 200:
+        return preparations
+    elif code == 404:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR</code></pre>
+</details>
+</dd>
+<dt id="app.main.get_preparation_next_coffee"><code class="name flex">
+<span>async def <span class="ident">get_preparation_next_coffee</span></span>(<span>id: str, response: starlette.responses.Response)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route that returns late coffees to be prepared </p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>str</code></dt>
+<dd>[Machine's id]</dd>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>[List[Preparation]]</code></dt>
+<dd>[List of orders (saved or not)]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.get(&#34;/preparation/nextcoffee/{id}&#34;, status_code=status.HTTP_200_OK, response_model=List[Any], tags=[&#34;Preparation&#34;])
+async def get_preparation_next_coffee(id: str, response: Response):
+    &#34;&#34;&#34;
+    Route that returns late coffees to be prepared 
+
+    Args:
+        id (str): [Machine&#39;s id]
+        response (Response): [Response returned (status code)]
+
+    Returns:
+        [List[Preparation]]: [List of orders (saved or not)]
+    &#34;&#34;&#34;
+    code, preparations = PreparationService().get_preparation_next_coffee(id)
+    if code == 200:
+        return preparations
+    elif code == 404:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR</code></pre>
+</details>
+</dd>
+<dt id="app.main.get_preparations"><code class="name flex">
+<span>async def <span class="ident">get_preparations</span></span>(<span>response: starlette.responses.Response, id_user: str = Depends(JWTBearer))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route that retrieve all user's orders</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+<dt><strong><code>id_user</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>[Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>[List[Preparation]]</code></dt>
+<dd>[List of orders that can be saved or not]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.get(&#34;/preparations&#34;, status_code=status.HTTP_200_OK, tags=[&#34;Preparation&#34;], response_model=List[Any])
+async def get_preparations(response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route that retrieve all user&#39;s orders
+
+    Args:
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+
+    Returns:
+        [List[Preparation]]: [List of orders that can be saved or not]
+    &#34;&#34;&#34;
+    code, preparations = PreparationService().get_preparation(id_user)
+    if code == 200:
+        return preparations
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR</code></pre>
+</details>
+</dd>
+<dt id="app.main.login"><code class="name flex">
+<span>async def <span class="ident">login</span></span>(<span>data: <a title="app.modules.response_models.UserAuthentication" href="modules/response_models.html#app.modules.response_models.UserAuthentication">UserAuthentication</a>, response: starlette.responses.Response)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route to log in the user</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>UserAuthentication</code></dt>
+<dd>[Information needed to log in]</dd>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>[Object]</code></dt>
+<dd>[Object containing id token, refresh_token]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.post(&#34;/login&#34;, status_code=status.HTTP_200_OK, tags=[&#34;User&#34;])
+async def login(data: UserAuthentication, response: Response):
+    &#34;&#34;&#34;
+    
+    Route to log in the user
+
+    Args:
+        data (UserAuthentication): [Information needed to log in]
+        response (Response): [Response returned (status code)]
+
+    Returns:
+        [Object]: [Object containing id token, refresh_token]
+    &#34;&#34;&#34;
+    res = UserService().log_in_user(data)
+    if res is not None:
+        return res
+    else:
+        response.status_code = status.HTTP_401_UNAUTHORIZED</code></pre>
+</details>
+</dd>
+<dt id="app.main.refresh_token"><code class="name flex">
+<span>async def <span class="ident">refresh_token</span></span>(<span>data: <a title="app.modules.response_models.UserRefreshToken" href="modules/response_models.html#app.modules.response_models.UserRefreshToken">UserRefreshToken</a>, response: starlette.responses.Response)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route to get a new id token with the refresh token given</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>UserRefreshToken</code></dt>
+<dd>[Information needed to get a new id token]</dd>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>[Object]</code></dt>
+<dd>[Object containing id token, refresh_token]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.post(&#34;/refreshToken&#34;, status_code=status.HTTP_200_OK, tags=[&#34;User&#34;])
+async def refresh_token(data : UserRefreshToken, response : Response):
+    &#34;&#34;&#34;
+    
+    Route to get a new id token with the refresh token given
+
+    Args:
+        data (UserRefreshToken): [Information needed to get a new id token]
+        response (Response): [Response returned (status code)]
+
+    Returns:
+        [Object]: [Object containing id token, refresh_token]
+    &#34;&#34;&#34;
+    res,code = UserService().get_new_token(data)
+    if res is not None:
+        return res
+    elif code == 403:
+        response.status_code = status.HTTP_403_FORBIDDEN</code></pre>
+</details>
+</dd>
+<dt id="app.main.register"><code class="name flex">
+<span>async def <span class="ident">register</span></span>(<span>data: <a title="app.modules.response_models.UserAuthentication" href="modules/response_models.html#app.modules.response_models.UserAuthentication">UserAuthentication</a>, response: starlette.responses.Response)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route to register the user in the database</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>UserAuthentication</code></dt>
+<dd>[Information needed to register the user]</dd>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.post(&#34;/register&#34;, status_code=status.HTTP_201_CREATED, tags=[&#34;User&#34;])
+async def register(data: UserAuthentication, response: Response):
+    &#34;&#34;&#34;
+    
+    Route to register the user in the database
+
+    Args:
+        data (UserAuthentication): [Information needed to register the user]
+        response (Response): [Response returned (status code)]
+    &#34;&#34;&#34;
+    code = UserService().create_user(data)
+    if code == 201:
+        print(&#39;Sucessfully created new user&#39;)
+    elif code == 409:
+        print(&#34;An user with this email address already exists&#34;)
+        response.status_code = status.HTTP_409_CONFLICT
+    else:
+        print(&#34;Something went wrong&#34;)
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR</code></pre>
+</details>
+</dd>
+<dt id="app.main.report_preparation_failed"><code class="name flex">
+<span>async def <span class="ident">report_preparation_failed</span></span>(<span>id: str, response: starlette.responses.Response, id_user: str = Depends(JWTBearer))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route that adds a report to inform the user that the order has failed</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>str</code></dt>
+<dd>[Id order]</dd>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+<dt><strong><code>id_user</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>[Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.get(&#34;/preparation/{id}/failed&#34;, status_code=status.HTTP_200_OK, tags=[&#34;Preparation&#34;])
+async def report_preparation_failed(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;    
+    
+    Route that adds a report to inform the user that the order has failed
+
+    Args:
+        id (str): [Id order]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = PreparationService().report_preparation_failed(id, id_user)
+    print(code)
+    if code != 200 and code != 500:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+    elif code == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR</code></pre>
+</details>
+</dd>
+<dt id="app.main.report_preparation_started"><code class="name flex">
+<span>async def <span class="ident">report_preparation_started</span></span>(<span>id: str, response: starlette.responses.Response, id_user: str = Depends(JWTBearer))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route that adds a report to inform the user that the order has started</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>str</code></dt>
+<dd>[Id order]</dd>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+<dt><strong><code>id_user</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>[Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.get(&#34;/preparation/{id}/started&#34;, status_code=status.HTTP_200_OK, tags=[&#34;Preparation&#34;])
+async def report_preparation_started(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route that adds a report to inform the user that the order has started
+
+    Args:
+        id (str): [Id order]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = PreparationService().report_preparation_started(id, id_user)
+    print(code)
+    if code != 200 and code != 500:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+    elif code == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR</code></pre>
+</details>
+</dd>
+<dt id="app.main.report_preparation_succeeded"><code class="name flex">
+<span>async def <span class="ident">report_preparation_succeeded</span></span>(<span>id: str, response: starlette.responses.Response, id_user: str = Depends(JWTBearer))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route that adds a report to inform the user that the order has succeeded</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>str</code></dt>
+<dd>[Id order]</dd>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+<dt><strong><code>id_user</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>[Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.get(&#34;/preparation/{id}/succeeded&#34;, status_code=status.HTTP_200_OK, tags=[&#34;Preparation&#34;])
+async def report_preparation_succeeded(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+        Route that adds a report to inform the user that the order has succeeded
+
+    Args:
+        id (str): [Id order]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = PreparationService().report_preparation_succeeded(id, id_user)
+    print(code)
+    if code != 200 and code != 500:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+    elif code == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR</code></pre>
+</details>
+</dd>
+<dt id="app.main.revoke_refresh_token"><code class="name flex">
+<span>async def <span class="ident">revoke_refresh_token</span></span>(<span>data: <a title="app.modules.response_models.UserRefreshToken" href="modules/response_models.html#app.modules.response_models.UserRefreshToken">UserRefreshToken</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route to log out and revoke the refresh token</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>UserRefreshToken</code></dt>
+<dd>[Information needed to revoke refresh token]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.post(&#34;/revoke&#34;, status_code=status.HTTP_200_OK, tags=[&#34;User&#34;])
+async def revoke_refresh_token(data : UserRefreshToken):
+    &#34;&#34;&#34;
+    
+    Route to log out and revoke the refresh token
+
+    Args:
+        data (UserRefreshToken): [Information needed to revoke refresh token]
+    &#34;&#34;&#34;
+    UserService().revoke_refresh_token(data)</code></pre>
+</details>
+</dd>
+<dt id="app.main.update_machine"><code class="name flex">
+<span>async def <span class="ident">update_machine</span></span>(<span>id: str, data: <a title="app.modules.response_models.MachineUpdate" href="modules/response_models.html#app.modules.response_models.MachineUpdate">MachineUpdate</a>, response: starlette.responses.Response, id_user: str = Depends(JWTBearer))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route to update a machine's name that has the given id</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>str</code></dt>
+<dd>[Id machine]</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>MachineUpdate</code></dt>
+<dd>[Information needed to update the machine's name]</dd>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+<dt><strong><code>id_user</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>[Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.put(&#34;/machine/{id}&#34;, status_code=status.HTTP_200_OK, tags=[&#34;Machine&#34;])
+async def update_machine(id: str, data: MachineUpdate, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route to update a machine&#39;s name that has the given id
+
+    Args:
+        id (str): [Id machine]
+        data (MachineUpdate): [Information needed to update the machine&#39;s name]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = MachineService().update_machine(id, data, id_user)
+    if code == 200:
+        print(&#34;Machine&#39;s name update successfully&#34;)
+    else:
+        print(&#34;Name not found&#34;)
+        response.status_code = status.HTTP_404_NOT_FOUND</code></pre>
+</details>
+</dd>
+<dt id="app.main.update_preparation"><code class="name flex">
+<span>async def <span class="ident">update_preparation</span></span>(<span>id: str, data: <a title="app.modules.response_models.UpdatePreparationSaved" href="modules/response_models.html#app.modules.response_models.UpdatePreparationSaved">UpdatePreparationSaved</a>, response: starlette.responses.Response, id_user: str = Depends(JWTBearer))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Route that updates an order with the given id and with the given data</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>str</code></dt>
+<dd>[Id order]</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>UpdatePreparationSaved</code></dt>
+<dd>[Information needed to update an order]</dd>
+<dt><strong><code>response</code></strong> :&ensp;<code>Response</code></dt>
+<dd>[Response returned (status code)]</dd>
+<dt><strong><code>id_user</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>[Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.put(&#34;/preparation/{id}&#34;, status_code=status.HTTP_200_OK, tags=[&#34;Preparation&#34;])
+async def update_preparation(id: str, data: UpdatePreparationSaved, response: Response,  id_user: str = Depends(JWTBearer())):
+    &#34;&#34;&#34;
+    
+    Route that updates an order with the given id and with the given data
+
+    Args:
+        id (str): [Id order]
+        data (UpdatePreparationSaved): [Information needed to update an order]
+        response (Response): [Response returned (status code)]
+        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+    &#34;&#34;&#34;
+    code = PreparationService().update_preparation(data, id, id_user)
+    print(code)
+    if code != 200 and code != 500:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    elif code == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="app" href="index.html">app</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="app.main.add_machine" href="#app.main.add_machine">add_machine</a></code></li>
+<li><code><a title="app.main.add_preparation" href="#app.main.add_preparation">add_preparation</a></code></li>
+<li><code><a title="app.main.delete" href="#app.main.delete">delete</a></code></li>
+<li><code><a title="app.main.delete_machine" href="#app.main.delete_machine">delete_machine</a></code></li>
+<li><code><a title="app.main.delete_preparation" href="#app.main.delete_preparation">delete_preparation</a></code></li>
+<li><code><a title="app.main.get_coffee" href="#app.main.get_coffee">get_coffee</a></code></li>
+<li><code><a title="app.main.get_coffee_by_id" href="#app.main.get_coffee_by_id">get_coffee_by_id</a></code></li>
+<li><code><a title="app.main.get_machine" href="#app.main.get_machine">get_machine</a></code></li>
+<li><code><a title="app.main.get_machines" href="#app.main.get_machines">get_machines</a></code></li>
+<li><code><a title="app.main.get_preparation_machine" href="#app.main.get_preparation_machine">get_preparation_machine</a></code></li>
+<li><code><a title="app.main.get_preparation_next_coffee" href="#app.main.get_preparation_next_coffee">get_preparation_next_coffee</a></code></li>
+<li><code><a title="app.main.get_preparations" href="#app.main.get_preparations">get_preparations</a></code></li>
+<li><code><a title="app.main.login" href="#app.main.login">login</a></code></li>
+<li><code><a title="app.main.refresh_token" href="#app.main.refresh_token">refresh_token</a></code></li>
+<li><code><a title="app.main.register" href="#app.main.register">register</a></code></li>
+<li><code><a title="app.main.report_preparation_failed" href="#app.main.report_preparation_failed">report_preparation_failed</a></code></li>
+<li><code><a title="app.main.report_preparation_started" href="#app.main.report_preparation_started">report_preparation_started</a></code></li>
+<li><code><a title="app.main.report_preparation_succeeded" href="#app.main.report_preparation_succeeded">report_preparation_succeeded</a></code></li>
+<li><code><a title="app.main.revoke_refresh_token" href="#app.main.revoke_refresh_token">revoke_refresh_token</a></code></li>
+<li><code><a title="app.main.update_machine" href="#app.main.update_machine">update_machine</a></code></li>
+<li><code><a title="app.main.update_preparation" href="#app.main.update_preparation">update_preparation</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
