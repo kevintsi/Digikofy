@@ -50,7 +50,7 @@ class UserService(ABC):
             return None
 
     def delete_user(self, user_id: str):
-        print(f"User id : {user_id}")
+        auth.delete_user(user_id)
         db.collection("users").document(user_id).delete()
         docs_machine = db.collection("machines").stream()
         for doc in docs_machine:
