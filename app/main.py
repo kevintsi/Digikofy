@@ -16,12 +16,11 @@ app = FastAPI(title="DigikofyAPI")
 @app.post("/register", status_code=status.HTTP_201_CREATED, tags=["User"])
 async def register(data: UserAuthentication, response: Response):
     """
-    
-    Route to register the user in the database
+        Route to register the user in the database
 
-    Args:
-        data (UserAuthentication): [Information needed to register the user]
-        response (Response): [Response returned (status code)]
+        Args:
+            data (UserAuthentication): [Information needed to register the user]
+            response (Response): [Response returned (status code)]
     """
     code = UserService().create_user(data)
     if code == 201:
@@ -36,12 +35,11 @@ async def register(data: UserAuthentication, response: Response):
 @app.delete("/delete", status_code=status.HTTP_200_OK, tags=["User"])
 async def delete(response: Response,  id_user: str = Depends(JWTBearer())):
     """
-    
-    Route to delete the user
+        Route to delete the user
 
-    Args:
-        response (Response): [Response returned (status code)]
-        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+        Args:
+            response (Response): [Response returned (status code)]
+            id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
     """
     code = UserService().delete_user(id_user)
     if code != 200:
@@ -51,15 +49,14 @@ async def delete(response: Response,  id_user: str = Depends(JWTBearer())):
 @app.post("/login", status_code=status.HTTP_200_OK, tags=["User"])
 async def login(data: UserAuthentication, response: Response):
     """
-    
-    Route to log in the user
+        Route to log in the user
 
-    Args:
-        data (UserAuthentication): [Information needed to log in]
-        response (Response): [Response returned (status code)]
+        Args:
+            data (UserAuthentication): [Information needed to log in]
+            response (Response): [Response returned (status code)]
 
-    Returns:
-        [Object]: [Object containing id token, refresh_token]
+        Returns:
+            [Object]: [Object containing id token, refresh_token]
     """
     res = UserService().log_in_user(data)
     if res is not None:
@@ -70,15 +67,14 @@ async def login(data: UserAuthentication, response: Response):
 @app.post("/refreshToken", status_code=status.HTTP_200_OK, tags=["User"])
 async def refresh_token(data : UserRefreshToken, response : Response):
     """
-    
-    Route to get a new id token with the refresh token given
+        Route to get a new id token with the refresh token given
 
-    Args:
-        data (UserRefreshToken): [Information needed to get a new id token]
-        response (Response): [Response returned (status code)]
+        Args:
+            data (UserRefreshToken): [Information needed to get a new id token]
+            response (Response): [Response returned (status code)]
 
-    Returns:
-        [Object]: [Object containing id token, refresh_token]
+        Returns:
+            [Object]: [Object containing id token, refresh_token]
     """
     res,code = UserService().get_new_token(data)
     if res is not None:
@@ -89,11 +85,10 @@ async def refresh_token(data : UserRefreshToken, response : Response):
 @app.post("/revoke", status_code=status.HTTP_200_OK, tags=["User"])
 async def revoke_refresh_token(data : UserRefreshToken):
     """
-    
-    Route to log out and revoke the refresh token
+        Route to log out and revoke the refresh token
 
-    Args:
-        data (UserRefreshToken): [Information needed to revoke refresh token]
+        Args:
+            data (UserRefreshToken): [Information needed to revoke refresh token]
     """
     UserService().revoke_refresh_token(data)
 
@@ -103,13 +98,12 @@ async def revoke_refresh_token(data : UserRefreshToken):
 @app.post("/machine", status_code=status.HTTP_201_CREATED, tags=["Machine"])
 async def add_machine(data: MachineCreate, response: Response,  id_user: str = Depends(JWTBearer())):
     """
-    
-    Route to connect the user to a new machine to the database
+        Route to connect the user to a new machine to the database
 
-    Args:
-        data (MachineCreate): [Information needed to connect the user to a new machine]
-        response (Response): [Response returned (status code)]
-        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+        Args:
+            data (MachineCreate): [Information needed to connect the user to a new machine]
+            response (Response): [Response returned (status code)]
+            id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
     """
     code = MachineService().create_machine(data, id_user)
     print(code)
@@ -120,15 +114,13 @@ async def add_machine(data: MachineCreate, response: Response,  id_user: str = D
 @app.get("/machines", status_code=status.HTTP_200_OK, response_model=List[Machine], tags=["Machine"])
 async def get_machines(response: Response, id_user: str = Depends(JWTBearer())):
     """
-    
-    Route that returns all machines available
+        Route that returns all machines available
 
-    Args:
-        response (Response): [Response returned (status code)]
-        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
-
-    Returns:
-        [List[Machine]]: [List of machines available]
+        Args:
+            response (Response): [Response returned (status code)]
+            id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+        Returns:
+            [List[Machine]]: [List of machines available]
     """
 
     print(f"Id user : {id_user}")
@@ -144,17 +136,14 @@ async def get_machines(response: Response, id_user: str = Depends(JWTBearer())):
 @app.get("/machine/{id}", status_code=status.HTTP_200_OK, response_model=Machine, tags=["Machine"])
 async def get_machine(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
     """
-    
-    Route that returns machine with the given id
+        Route that returns machine with the given id
 
-
-    Args:
-        id (str): [Id machine]
-        response (Response): [Response returned (status code)]
-        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
-
-    Returns:
-        [Machine]: [Machine with the given id]
+        Args:
+            id (str): [Id machine]
+            response (Response): [Response returned (status code)]
+            id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+        Returns:
+            [Machine]: [Machine with the given id]
     """
     (code, data) = MachineService().get_machine_by_id(id, id_user)
     print(code)
@@ -169,14 +158,13 @@ async def get_machine(id: str, response: Response,  id_user: str = Depends(JWTBe
 @app.put("/machine/{id}", status_code=status.HTTP_200_OK, tags=["Machine"])
 async def update_machine(id: str, data: MachineUpdate, response: Response,  id_user: str = Depends(JWTBearer())):
     """
-    
-    Route to update a machine's name that has the given id
+        Route to update a machine's name that has the given id
 
-    Args:
-        id (str): [Id machine]
-        data (MachineUpdate): [Information needed to update the machine's name]
-        response (Response): [Response returned (status code)]
-        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+        Args:
+            id (str): [Id machine]
+            data (MachineUpdate): [Information needed to update the machine's name]
+            response (Response): [Response returned (status code)]
+            id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
     """
     code = MachineService().update_machine(id, data, id_user)
     if code == 200:
@@ -189,13 +177,12 @@ async def update_machine(id: str, data: MachineUpdate, response: Response,  id_u
 @app.delete("/machine/{id}", status_code=status.HTTP_200_OK, tags=["Machine"])
 async def delete_machine(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
     """
-    
-    Route to delete a machine
+        Route to delete a machine
 
-    Args:
-        id (str): [Id machine]
-        response (Response): [Response returned (status code)]
-        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+        Args:
+            id (str): [Id machine]
+            response (Response): [Response returned (status code)]
+            id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
     """
     code = MachineService().delete_machine(id, id_user)
     if code != 200 and code != 500:
@@ -210,14 +197,12 @@ async def delete_machine(id: str, response: Response,  id_user: str = Depends(JW
 @app.get("/coffees", status_code=status.HTTP_200_OK, response_model=List[Coffee], tags=["Coffee"])
 async def get_coffee(response: Response):
     """
-    
-    Route that returns all coffees
+        Route that returns all coffees
 
-    Args:
-        response (Response): [Response returned (status code)]
-
-    Returns:
-        [List[Coffee]]: [List of coffees]
+        Args:
+            response (Response): [Response returned (status code)]
+        Returns:
+            [List[Coffee]]: [List of coffees]
     """
     (code, data) = CoffeeService().get_coffee()
     print(code)
@@ -230,15 +215,13 @@ async def get_coffee(response: Response):
 @app.get("/coffee/{id}", status_code=status.HTTP_200_OK, response_model=Coffee, tags=["Coffee"])
 async def get_coffee_by_id(id: str, response: Response):
     """
-    
-    Route that return the coffee with the given id
+        Route that return the coffee with the given id
 
-    Args:
-        id (str): [Id coffee]
-        response (Response): [Response returned (status code)]
-
-    Returns:
-        [Coffee]: [Coffee with the given id]
+        Args:
+            id (str): [Id coffee]
+            response (Response): [Response returned (status code)]
+        Returns:
+            [Coffee]: [Coffee with the given id]
     """
     (code, data) = CoffeeService().get_coffee_by_id(id)
     print(code, data)
@@ -255,13 +238,12 @@ async def get_coffee_by_id(id: str, response: Response):
 @app.post("/preparation", status_code=status.HTTP_201_CREATED, tags=["Preparation"])
 async def add_preparation(data: CreatePreparation, response: Response,  id_user: str = Depends(JWTBearer())):
     """
-    
-    Route to add a new order
+        Route to add a new order
 
-    Args:
-        data (CreatePreparation): [Information needed to create a new order]
-        response (Response): [Response returned (status code)]
-        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+        Args:
+            data (CreatePreparation): [Information needed to create a new order]
+            response (Response): [Response returned (status code)]
+            id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
     """
     code = PreparationService().create_preparation(data, id_user)
     print(code)
@@ -274,15 +256,13 @@ async def add_preparation(data: CreatePreparation, response: Response,  id_user:
 @app.get("/preparations", status_code=status.HTTP_200_OK, tags=["Preparation"], response_model=List[Any])
 async def get_preparations(response: Response,  id_user: str = Depends(JWTBearer())):
     """
-    
-    Route that retrieve all user's orders
+        Route that retrieve all user's orders
 
-    Args:
-        response (Response): [Response returned (status code)]
-        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
-
-    Returns:
-        [List[Preparation]]: [List of orders that can be saved or not]
+        Args:
+            response (Response): [Response returned (status code)]
+            id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+        Returns:
+            [List[Preparation]]: [List of orders that can be saved or not]
     """
     code, preparations = PreparationService().get_preparation(id_user)
     if code == 200:
@@ -294,14 +274,13 @@ async def get_preparations(response: Response,  id_user: str = Depends(JWTBearer
 @app.put("/preparation/{id}", status_code=status.HTTP_200_OK, tags=["Preparation"])
 async def update_preparation(id: str, data: UpdatePreparationSaved, response: Response,  id_user: str = Depends(JWTBearer())):
     """
-    
-    Route that updates an order with the given id and with the given data
+        Route that updates an order with the given id and with the given data
 
-    Args:
-        id (str): [Id order]
-        data (UpdatePreparationSaved): [Information needed to update an order]
-        response (Response): [Response returned (status code)]
-        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+        Args:
+            id (str): [Id order]
+            data (UpdatePreparationSaved): [Information needed to update an order]
+            response (Response): [Response returned (status code)]
+            id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
     """
     code = PreparationService().update_preparation(data, id, id_user)
     print(code)
@@ -314,13 +293,12 @@ async def update_preparation(id: str, data: UpdatePreparationSaved, response: Re
 @app.delete("/preparation/{id}", status_code=status.HTTP_200_OK, tags=["Preparation"])
 async def delete_preparation(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
     """
-    
-    Route that deletes an order with the given id
+        Route that deletes an order with the given id
 
-    Args:
-        id (str): [Id order]
-        response (Response): [Response returned (status code)]
-        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+        Args:
+            id (str): [Id order]
+            response (Response): [Response returned (status code)]
+            id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
     """
     code = PreparationService().delete_preparation(id, id_user)
     print(code)
@@ -331,17 +309,23 @@ async def delete_preparation(id: str, response: Response,  id_user: str = Depend
 
 ####### PREPARATION MACHINE'S ROUTE ##########
 
+@app.get("/preparation/next", status_code=status.HTTP_200_OK, tags=["Preparation"], response_model=Any)
+async def get_next_preparation(response : Response, id_user : str = Depends(JWTBearer())):
+    code, preparation = PreparationService().get_next_preparation(id_user)
+    if code == 200:
+        return preparation
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
 @app.get("/preparation/{id}/started", status_code=status.HTTP_200_OK, tags=["Preparation"])
 async def report_preparation_started(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
     """
-    
-    Route that adds a report to inform the user that the order has started
+        Route that adds a report to inform the user that the order has started
 
-    Args:
-        id (str): [Id order]
-        response (Response): [Response returned (status code)]
-        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+        Args:
+            id (str): [Id order]
+            response (Response): [Response returned (status code)]
+            id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
     """
     code = PreparationService().report_preparation_started(id, id_user)
     print(code)
@@ -356,10 +340,10 @@ async def report_preparation_succeeded(id: str, response: Response,  id_user: st
     """
         Route that adds a report to inform the user that the order has succeeded
 
-    Args:
-        id (str): [Id order]
-        response (Response): [Response returned (status code)]
-        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+        Args:
+            id (str): [Id order]
+            response (Response): [Response returned (status code)]
+            id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
     """
     code = PreparationService().report_preparation_succeeded(id, id_user)
     print(code)
@@ -372,13 +356,12 @@ async def report_preparation_succeeded(id: str, response: Response,  id_user: st
 @app.get("/preparation/{id}/failed", status_code=status.HTTP_200_OK, tags=["Preparation"])
 async def report_preparation_failed(id: str, response: Response,  id_user: str = Depends(JWTBearer())):
     """    
-    
-    Route that adds a report to inform the user that the order has failed
+        Route that adds a report to inform the user that the order has failed
 
-    Args:
-        id (str): [Id order]
-        response (Response): [Response returned (status code)]
-        id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+        Args:
+            id (str): [Id order]
+            response (Response): [Response returned (status code)]
+            id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
     """
     code = PreparationService().report_preparation_failed(id, id_user)
     print(code)
@@ -391,15 +374,13 @@ async def report_preparation_failed(id: str, response: Response,  id_user: str =
 @app.get("/preparation/machine/{id}", status_code=status.HTTP_200_OK, response_model=List[Any], tags=["Preparation"])
 async def get_preparation_machine(id: str, response: Response):
     """
-    
-    Route that retrieves all preparations that are programmed for a future time with given machine id
+        Route that retrieves all preparations that are programmed for a future time with given machine id
 
-    Args:
-        id (str): [Id machine]
-        response (Response): [Response returned (status code)]
-
-    Returns:
-        [List[Preparation]]: [List of orders (saved or not)]
+        Args:
+            id (str): [Id machine]
+            response (Response): [Response returned (status code)]
+        Returns:
+            [List[Preparation]]: [List of orders (saved or not)]
     """
     code, preparations = PreparationService().get_preparation_machine(id)
     if code == 200:
@@ -413,14 +394,13 @@ async def get_preparation_machine(id: str, response: Response):
 @app.get("/preparation/nextcoffee/{id}", status_code=status.HTTP_200_OK, response_model=List[Any], tags=["Preparation"])
 async def get_preparation_next_coffee(id: str, response: Response):
     """
-    Route that returns late coffees to be prepared 
-
-    Args:
-        id (str): [Machine's id]
-        response (Response): [Response returned (status code)]
-
-    Returns:
-        [List[Preparation]]: [List of orders (saved or not)]
+        Route that returns late coffees to be prepared 
+        
+        Args:
+            id (str): [Machine's id]
+            response (Response): [Response returned (status code)]
+        Returns:
+            [List[Preparation]]: [List of orders (saved or not)]
     """
     code, preparations = PreparationService().get_preparation_next_coffee(id)
     if code == 200:

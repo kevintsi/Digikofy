@@ -1,4 +1,7 @@
 from abc import ABC
+from typing import Any
+
+from pydantic import networks
 from ..modules.response_models import CreatePreparation, MachineUpdate, PreparationSaved, UpdatePreparationSaved,\
     UserAuthentication, MachineCreate, Machine, Coffee, Preparation, UserRefreshToken
 from firebase_admin import auth
@@ -501,6 +504,56 @@ class PreparationService(ABC):
         except Exception as ex:
             print("Error : {}".format(ex))
             return 500, preparations
+
+        
+    def get_next_preparation(self, id_user : str):
+        try:
+            preps = db.collection("users").document(id_user).collection("preparations").get()
+            next_prep = preps[0]
+            for prep in preps:
+                #print(f"Start with {prep.to_dict()['nextTime']}")
+                prep_dict = prep.to_dict()
+                #print(f"Superior to old next_prep : {prep_dict['nextTime'] < next_prep.to_dict()['nextTime']}")
+                #print(f"Date superior to current date : {prep_dict['nextTime'] > datetime.now(tz=pytz.UTC)}\n\n\n")
+
+                if (prep_dict["nextTime"] < next_prep.to_dict()["nextTime"]) and (prep_dict["nextTime"] > datetime.now(tz=pytz.UTC)):
+                    #print(f'New next_prep : {prep.to_dict()["nextTime"]}\n\n')
+                    next_prep = prep
+                    print(f"New next_prep : {next_prep.to_dict()['nextTime']}")
+
+            print(f"Next preparation : {next_prep.to_dict()}")
+            dico = next_prep.to_dict()
+            doc_coffee = db.collection("coffees").document(
+            dico["coffee"].id).get()
+            coffee = doc_coffee.to_dict()
+            #print("Information coffee --> {}".format(coffee))
+            #print(Coffee(id=coffee["id"], name=coffee["name"],description=coffee["description"]))
+
+            coffee = Coffee(id=coffee["id"], name=coffee["name"],
+                            description=coffee["description"])
+
+            #print("Machine reference id --> {}".format(dico["machine"].id))
+            doc_machine = db.collection("machines").document(
+                dico["machine"].id).get()
+            machine = doc_machine.to_dict()
+            #print("Information machine --> {}".format(machine))
+
+            user = db.collection("machines").document(dico["machine"].id).collection(
+                "users").document(id_user).get().to_dict()
+
+            #print(Machine(id=machine["id"], state=machine["state"],type=machine["type"], name=user["name"]))
+
+            machine = Machine(id=machine["id"], state=machine["state"],
+                                type=machine["type"], name=user["name"])
+            if next_prep.to_dict()["saved"]:
+                return 200, PreparationSaved(coffee=coffee, creation_date=dico["creationDate"], last_update=dico["lastUpdate"], machine=machine,
+                                                   id=dico["id"], saved=dico["saved"], state=dico["state"], next_time=dico["nextTime"], name=dico["name"], days_of_week=dico["daysOfWeek"], hours=dico["hours"], last_time=dico["lastTime"])
+            else:
+                return 200, Preparation(coffee=coffee, creation_date=dico["creationDate"], last_update=dico["lastUpdate"], machine=machine,
+                                              id=dico["id"], saved=dico["saved"], state=dico["state"], next_time=dico["nextTime"])
+        except Exception as ex:
+            print(f"Error : {ex}")
+            return 500, None
 
     def report_preparation_started(self, id: str, id_user: str):
         try:
