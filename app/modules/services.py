@@ -20,13 +20,12 @@ class UserService(ABC):
                 email=data.email,
                 password=data.password
             )
-            print(jsonable_encoder(new_user))
-            new_user = jsonable_encoder(new_user)
+            
             doc_ref = db.collection('users').document(
-                new_user["_data"]["localId"])
+                new_user.uid)
             doc_ref.set({
-                'uid': new_user["_data"]["localId"],
-                'email': new_user["_data"]["email"]
+                'uid': new_user.uid,
+                'email': new_user.email
             })
             return 201
         except auth.EmailAlreadyExistsError as ex:
@@ -51,6 +50,7 @@ class UserService(ABC):
             return None
 
     def delete_user(self, user_id: str):
+        print(f"User id : {user_id}")
         db.collection("users").document(user_id).delete()
         docs_machine = db.collection("machines").stream()
         for doc in docs_machine:
