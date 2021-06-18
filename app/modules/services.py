@@ -1,12 +1,8 @@
 from abc import ABC
-from typing import Any
-
-from pydantic import networks
 from ..modules.response_models import CreatePreparation, MachineUpdate, PreparationSaved, UpdatePreparationSaved,\
     UserAuthentication, MachineCreate, Machine, Coffee, Preparation, UserRefreshToken
 from firebase_admin import auth
 from ..firebase import db
-from fastapi.encoders import jsonable_encoder
 from datetime import datetime, timedelta
 from os import getenv
 import requests
@@ -116,7 +112,9 @@ class MachineService(ABC):
 
                 db.collection("machines").document(data.id).collection("users").document(id_user).set({
                     "name": data.name,
-                    "uid": id_user
+                    "uid": id_user,
+                    "last_update" : datetime.now(tz=pytz.utc),
+                    "creation_date" : datetime.now(tz=pytz.utc)
                 })
 
             else:
@@ -154,7 +152,12 @@ class MachineService(ABC):
                     dico_machine_user = doc_mach_user.to_dict()
                     print("User's machine info : {}".format(dico_machine_user))
                     machines.append(Machine(
-                        id=dico_machine["id"], name=dico_machine_user["name"], state=dico_machine["state"], type=dico_machine["type"]))
+                        id=dico_machine["id"], 
+                        name=dico_machine_user["name"], 
+                        state=dico_machine["state"], type=dico_machine["type"], 
+                        last_update=dico_machine_user["last_update"], 
+                        creation_date=dico_machine_user["creation_date"]
+                        ))
             print(machines)
             print("------ End get machines ------")
             return 200, machines
@@ -186,8 +189,14 @@ class MachineService(ABC):
                 dico_machine_user = doc_machine_user.to_dict()
                 print(dico_machine_user)
                 print("User's machine info : {}".format(dico_machine_user))
-                machine = Machine(id=doc_machine["id"], name=dico_machine_user["name"],
-                                  state=doc_machine["state"], type=doc_machine["type"])
+                machine = Machine(
+                    id=doc_machine["id"], 
+                    name=dico_machine_user["name"],
+                    state=doc_machine["state"], 
+                    type=doc_machine["type"],
+                    last_update=dico_machine_user["last_update"],
+                    creation_date=dico_machine_user["creation_date"]
+                    )
                 print(machine)
             else:
                 return 404, machine
@@ -331,13 +340,19 @@ class PreparationService(ABC):
                             doc_machine = db.collection("machines").document(
                                 prepa_dict["machine"].id).get()
 
-                            name = db.collection("machines").document(prepa_dict["machine"].id).collection(
-                                "users").document(user.id).get().to_dict()["name"]
+                            dico_machine_user = db.collection("machines").document(prepa_dict["machine"].id).collection(
+                                "users").document(user.id).get().to_dict()
 
                             doc_machine = doc_machine.to_dict()
 
-                            machine = Machine(id=doc_machine["id"], state=doc_machine["state"],
-                                              type=doc_machine["type"], name=name)
+                            machine = Machine(
+                                id=doc_machine["id"], 
+                                state=doc_machine["state"],
+                                type=doc_machine["type"], 
+                                name=dico_machine_user["name"],
+                                last_update=dico_machine_user["last_update"],
+                                creation_date=dico_machine_user["creation_date"]
+                                )
 
                             if prepa_dict["saved"]:
                                 print("Preparation saved")
@@ -415,13 +430,19 @@ class PreparationService(ABC):
                             doc_machine = db.collection("machines").document(
                                 prepa_dict["machine"].id).get()
 
-                            name = db.collection("machines").document(prepa_dict["machine"].id).collection(
-                                "users").document(user.id).get().to_dict()["name"]
+                            dico_machine_user = db.collection("machines").document(prepa_dict["machine"].id).collection(
+                                "users").document(user.id).get().to_dict()
 
                             doc_machine = doc_machine.to_dict()
 
-                            machine = Machine(id=doc_machine["id"], state=doc_machine["state"],
-                                              type=doc_machine["type"], name=name)
+                            machine = Machine(
+                                id=doc_machine["id"], 
+                                state=doc_machine["state"],
+                                type=doc_machine["type"], 
+                                name=dico_machine_user["name"],
+                                last_update=dico_machine_user["last_update"],
+                                creation_date=dico_machine_user["creation_date"]
+                                )
 
                             if prepa_dict["saved"]:
                                 print("Preparation saved\n")
@@ -479,14 +500,17 @@ class PreparationService(ABC):
                 machine = doc_machine.to_dict()
                 print("Information machine --> {}".format(machine))
 
-                user = db.collection("machines").document(dico["machine"].id).collection(
+                dico_machine_user = db.collection("machines").document(dico["machine"].id).collection(
                     "users").document(id_user).get().to_dict()
 
-                print(Machine(id=machine["id"], state=machine["state"],
-                      type=machine["type"], name=user["name"]))
-
-                machine = Machine(id=machine["id"], state=machine["state"],
-                                  type=machine["type"], name=user["name"])
+                machine = Machine(
+                    id=machine["id"], 
+                    state=machine["state"],
+                    type=machine["type"], 
+                    name=dico_machine_user["name"],
+                    last_update=dico_machine_user["last_update"],
+                    creation_date=dico_machine_user["creation_date"]
+                    )
 
                 print(dico)
                 if dico["saved"]:
@@ -516,7 +540,7 @@ class PreparationService(ABC):
                 #print(f"Superior to old next_prep : {prep_dict['nextTime'] < next_prep.to_dict()['nextTime']}")
                 #print(f"Date superior to current date : {prep_dict['nextTime'] > datetime.now(tz=pytz.UTC)}\n\n\n")
 
-                if (prep_dict["nextTime"] < next_prep.to_dict()["nextTime"]) and (prep_dict["nextTime"] > datetime.now(tz=pytz.UTC)):
+                if (prep_dict["nextTime"] < next_prep.to_dict()["nextTime"]) and (prep_dict["nextTime"] > datetime.now(tz=pytz.utc)):
                     #print(f'New next_prep : {prep.to_dict()["nextTime"]}\n\n')
                     next_prep = prep
                     print(f"New next_prep : {next_prep.to_dict()['nextTime']}")
@@ -538,13 +562,20 @@ class PreparationService(ABC):
             machine = doc_machine.to_dict()
             #print("Information machine --> {}".format(machine))
 
-            user = db.collection("machines").document(dico["machine"].id).collection(
+            dico_machine_user = db.collection("machines").document(dico["machine"].id).collection(
                 "users").document(id_user).get().to_dict()
 
             #print(Machine(id=machine["id"], state=machine["state"],type=machine["type"], name=user["name"]))
 
-            machine = Machine(id=machine["id"], state=machine["state"],
-                                type=machine["type"], name=user["name"])
+            machine = Machine(
+                id=machine["id"], 
+                state=machine["state"],
+                type=machine["type"], 
+                name=dico_machine_user["name"],
+                last_update=dico_machine_user["last_update"],
+                creation_date=dico_machine_user["creation_date"]
+                )
+
             if next_prep.to_dict()["saved"]:
                 return 200, PreparationSaved(coffee=coffee, creation_date=dico["creationDate"], last_update=dico["lastUpdate"], machine=machine,
                                                    id=dico["id"], saved=dico["saved"], state=dico["state"], next_time=dico["nextTime"], name=dico["name"], days_of_week=dico["daysOfWeek"], hours=dico["hours"], last_time=dico["lastTime"])

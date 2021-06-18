@@ -56,6 +56,8 @@ class Machine(BaseModel):
     name : str
     state : int
     type  : int
+    last_update : datetime
+    creation_date : datetime
 
 
 class Preparation(BaseModel):
