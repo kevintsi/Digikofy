@@ -633,7 +633,7 @@ class PreparationService(ABC):
             if prep.get().exists:
 
                 print(prep)
-                prep.update({"state": 0})
+                prep.update({"state": 1})
 
                 machine_id = prep.get().to_dict()["machine"].id
                 print(machine_id)
