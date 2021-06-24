@@ -63,7 +63,7 @@ class UserService(ABC):
         docs = db.collection("refreshTokensBlackList").where(
             "refresh_token", "==", data.refresh_token).get()
 
-        if len(docs):
+        if len(docs) > 0:
             return None, 403
         else:
             response = requests.post(
@@ -224,7 +224,7 @@ class MachineService(ABC):
             print("----- Start update machine's name -----")
             print("{}".format(id))
             db.collection("machines").document(id).collection("users").document(
-                id_user).update({"name": data.name})
+                id_user).update({"name": data.name, "last_update" : datetime.now(tz=pytz.utc)})
             print("------ End update machine's name -----")
             return 200
         except Exception as ex:

@@ -54,6 +54,6 @@ docs/_build/
 
 .vscode/
 
-app/pytest_cache/*
+.pytest_cache/
 
 .env
