@@ -2,7 +2,7 @@ from typing import Any, List
 from fastapi.params import Depends
 import uvicorn
 from fastapi import FastAPI, status, Response
-from .modules.response_models import CreatePreparation, MachineCreate, \
+from .modules.response_models import CreatePreparation, MachineCreate, PreparationSaved, \
     UpdatePreparationSaved, UserAuthentication, MachineUpdate, Machine, Coffee, UserRefreshToken
 from .modules.services import UserService, MachineService, PreparationService, CoffeeService
 from .auth.check_auth import JWTBearer
@@ -312,6 +312,14 @@ async def delete_preparation(id: str, response: Response,  id_user: str = Depend
 @app.get("/preparation/next", status_code=status.HTTP_200_OK, tags=["Preparation"], response_model=Any)
 async def get_next_preparation(response : Response, id_user : str = Depends(JWTBearer())):
     code, preparation = PreparationService().get_next_preparation(id_user)
+    if code == 200:
+        return preparation
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+@app.get("/preparation/last", status_code=status.HTTP_200_OK, tags=["Preparation"], response_model=PreparationSaved)
+async def get_next_preparation(response : Response, id_user : str = Depends(JWTBearer())):
+    code, preparation = PreparationService().get_last_preparation(id_user)
     if code == 200:
         return preparation
     else:
