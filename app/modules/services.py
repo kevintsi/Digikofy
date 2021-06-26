@@ -157,8 +157,8 @@ class MachineService(ABC):
                         id=dico_machine["id"], 
                         name=dico_machine_user["name"], 
                         state=dico_machine["state"], type=dico_machine["type"], 
-                        last_update=dico_machine_user["last_update"], 
-                        creation_date=dico_machine_user["creation_date"]
+                        last_update=convert_to_datetime(dico_machine_user["last_update"]), 
+                        creation_date=convert_to_datetime(dico_machine_user["creation_date"])
                         ))
             print(machines)
             print("------ End get machines ------")
@@ -196,8 +196,8 @@ class MachineService(ABC):
                     name=dico_machine_user["name"],
                     state=doc_machine["state"], 
                     type=doc_machine["type"],
-                    last_update=dico_machine_user["last_update"],
-                    creation_date=dico_machine_user["creation_date"]
+                    last_update=convert_to_datetime(dico_machine_user["last_update"]),
+                    creation_date=convert_to_datetime(dico_machine_user["creation_date"])
                     )
                 print(machine)
             else:
@@ -352,21 +352,21 @@ class PreparationService(ABC):
                                 state=doc_machine["state"],
                                 type=doc_machine["type"], 
                                 name=dico_machine_user["name"],
-                                last_update=dico_machine_user["last_update"],
-                                creation_date=dico_machine_user["creation_date"]
+                                last_update=convert_to_datetime(dico_machine_user["last_update"]),
+                                creation_date=convert_to_datetime(dico_machine_user["creation_date"])
                                 )
 
                             if prepa_dict["saved"]:
                                 print("Preparation saved")
-                                prep = PreparationSaved(coffee=coffee, creation_date=prepa_dict["creationDate"], last_update=prepa_dict["lastUpdate"], machine=machine,
+                                prep = PreparationSaved(coffee=coffee, creation_date=convert_to_datetime(prepa_dict["creationDate"]), last_update=convert_to_datetime(prepa_dict["lastUpdate"]), machine=machine,
                                                         id=prepa_dict["id"], saved=prepa_dict["saved"], state=prepa_dict[
-                                                            "state"], next_time=prepa_dict["nextTime"],
-                                                        days_of_week=prepa_dict["daysOfWeek"], hours=prepa_dict["hours"], last_time=prepa_dict["lastTime"], name=prepa_dict["name"])
+                                                            "state"], next_time=convert_to_datetime(prepa_dict["nextTime"]),
+                                                        days_of_week=prepa_dict["daysOfWeek"], hours=prepa_dict["hours"], last_time=convert_to_datetime(prepa_dict["lastTime"]), name=prepa_dict["name"])
                                 print("Preparation : {}".format(prep))
                             else:
                                 print("Preparation not saved")
-                                prep = Preparation(coffee=coffee, creation_date=prepa_dict["creationDate"], last_update=prepa_dict["lastUpdate"], machine=machine,
-                                                   id=prepa_dict["id"], saved=prepa_dict["saved"], state=prepa_dict["state"], next_time=prepa_dict["nextTime"])
+                                prep = Preparation(coffee=coffee, creation_date=convert_to_datetime(prepa_dict["creationDate"]), last_update=convert_to_datetime(prepa_dict["lastUpdate"]), machine=machine,
+                                                   id=prepa_dict["id"], saved=prepa_dict["saved"], state=prepa_dict["state"], next_time=convert_to_datetime(prepa_dict["nextTime"]))
 
                             print("Preparation : {}".format(prep))
                             list_preparations.append(prep)
@@ -442,21 +442,21 @@ class PreparationService(ABC):
                                 state=doc_machine["state"],
                                 type=doc_machine["type"], 
                                 name=dico_machine_user["name"],
-                                last_update=dico_machine_user["last_update"],
-                                creation_date=dico_machine_user["creation_date"]
+                                last_update=convert_to_datetime(dico_machine_user["last_update"]),
+                                creation_date=convert_to_datetime(dico_machine_user["creation_date"])
                                 )
 
                             if prepa_dict["saved"]:
                                 print("Preparation saved\n")
-                                prep = PreparationSaved(coffee=coffee, creation_date=prepa_dict["creationDate"], last_update=prepa_dict["lastUpdate"], machine=machine,
+                                prep = PreparationSaved(coffee=coffee, creation_date=convert_to_datetime(prepa_dict["creationDate"]), last_update=convert_to_datetime(prepa_dict["lastUpdate"]), machine=machine,
                                                         id=prepa_dict["id"], saved=prepa_dict["saved"], state=prepa_dict[
-                                                            "state"], next_time=prepa_dict["nextTime"],
-                                                        days_of_week=prepa_dict["daysOfWeek"], hours=prepa_dict["hours"], last_time=prepa_dict["lastTime"], name=prepa_dict["name"])
+                                                            "state"], next_time=convert_to_datetime(prepa_dict["nextTime"]),
+                                                        days_of_week=prepa_dict["daysOfWeek"], hours=prepa_dict["hours"], last_time=convert_to_datetime(prepa_dict["lastTime"]), name=prepa_dict["name"])
                                 print("Preparation : {}\n".format(prep))
                             else:
                                 print("Preparation not saved\n")
-                                prep = Preparation(coffee=coffee, creation_date=prepa_dict["creationDate"], last_update=prepa_dict["lastUpdate"], machine=machine,
-                                                   id=prepa_dict["id"], saved=prepa_dict["saved"], state=prepa_dict["state"], next_time=prepa_dict["nextTime"])
+                                prep = Preparation(coffee=coffee, creation_date=convert_to_datetime(prepa_dict["creationDate"]), last_update=convert_to_datetime(prepa_dict["lastUpdate"]), machine=machine,
+                                                   id=prepa_dict["id"], saved=prepa_dict["saved"], state=prepa_dict["state"], next_time=convert_to_datetime(prepa_dict["nextTime"]))
 
                             print("Preparation : {}\n".format(
                                 list_preparations))
@@ -510,19 +510,19 @@ class PreparationService(ABC):
                     state=machine["state"],
                     type=machine["type"], 
                     name=dico_machine_user["name"],
-                    last_update=dico_machine_user["last_update"],
-                    creation_date=dico_machine_user["creation_date"]
+                    last_update=convert_to_datetime(dico_machine_user["last_update"]),
+                    creation_date=convert_to_datetime(dico_machine_user["creation_date"])
                     )
 
                 print(dico)
                 if dico["saved"]:
                     print("Preparation saved")
-                    preparation = PreparationSaved(coffee=coffee, creation_date=dico["creationDate"], last_update=dico["lastUpdate"], machine=machine,
-                                                   id=dico["id"], saved=dico["saved"], state=dico["state"], next_time=dico["nextTime"], name=dico["name"], days_of_week=dico["daysOfWeek"], hours=dico["hours"], last_time=dico["lastTime"])
+                    preparation = PreparationSaved(coffee=coffee, creation_date=convert_to_datetime(dico["creationDate"]), last_update=convert_to_datetime(dico["lastUpdate"]), machine=machine,
+                                                   id=dico["id"], saved=dico["saved"], state=dico["state"], next_time=convert_to_datetime(dico["nextTime"]), name=dico["name"], days_of_week=dico["daysOfWeek"], hours=dico["hours"], last_time=convert_to_datetime(dico["lastTime"]))
                 else:
                     print("Preparation not saved")
-                    preparation = Preparation(coffee=coffee, creation_date=dico["creationDate"], last_update=dico["lastUpdate"], machine=machine,
-                                              id=dico["id"], saved=dico["saved"], state=dico["state"], next_time=dico["nextTime"])
+                    preparation = Preparation(coffee=coffee, creation_date=convert_to_datetime(dico["creationDate"]), last_update=convert_to_datetime(dico["lastUpdate"]), machine=machine,
+                                              id=dico["id"], saved=dico["saved"], state=dico["state"], next_time=convert_to_datetime(dico["nextTime"]))
                 preparations.append(preparation)
             print("{}".format(preparations))
             print("------ End get preparation  ------")
@@ -579,16 +579,16 @@ class PreparationService(ABC):
                 state=machine["state"],
                 type=machine["type"], 
                 name=dico_machine_user["name"],
-                last_update=dico_machine_user["last_update"],
-                creation_date=dico_machine_user["creation_date"]
+                last_update=convert_to_datetime(dico_machine_user["last_update"]),
+                creation_date=convert_to_datetime(dico_machine_user["creation_date"])
                 )
 
             if next_prep.to_dict()["saved"]:
-                return 200, PreparationSaved(coffee=coffee, creation_date=dico["creationDate"], last_update=dico["lastUpdate"], machine=machine,
-                                                   id=dico["id"], saved=dico["saved"], state=dico["state"], next_time=dico["nextTime"], name=dico["name"], days_of_week=dico["daysOfWeek"], hours=dico["hours"], last_time=dico["lastTime"])
+                return 200, PreparationSaved(coffee=coffee, creation_date=convert_to_datetime(dico["creationDate"]), last_update=convert_to_datetime(dico["lastUpdate"]), machine=machine,
+                                                   id=dico["id"], saved=dico["saved"], state=dico["state"], next_time=convert_to_datetime(dico["nextTime"]), name=dico["name"], days_of_week=dico["daysOfWeek"], hours=dico["hours"], last_time=convert_to_datetime(dico["lastTime"]))
             else:
-                return 200, Preparation(coffee=coffee, creation_date=dico["creationDate"], last_update=dico["lastUpdate"], machine=machine,
-                                              id=dico["id"], saved=dico["saved"], state=dico["state"], next_time=dico["nextTime"])
+                return 200, Preparation(coffee=coffee, creation_date=convert_to_datetime(dico["creationDate"]), last_update=convert_to_datetime(dico["lastUpdate"]), machine=machine,
+                                              id=dico["id"], saved=dico["saved"], state=dico["state"], next_time=convert_to_datetime(dico["nextTime"]))
         except Exception as ex:
             print(f"Error : {ex}")
             return 500, None
@@ -640,12 +640,12 @@ class PreparationService(ABC):
                 state=machine["state"],
                 type=machine["type"], 
                 name=dico_machine_user["name"],
-                last_update=dico_machine_user["last_update"],
-                creation_date=dico_machine_user["creation_date"]
+                last_update=convert_to_datetime(dico_machine_user["last_update"]),
+                creation_date=convert_to_datetime(dico_machine_user["creation_date"])
                 )
 
-            return 200, PreparationSaved(coffee=coffee, creation_date=dico["creationDate"], last_update=dico["lastUpdate"], machine=machine,
-                                                id=dico["id"], saved=dico["saved"], state=dico["state"], next_time=dico["nextTime"], name=dico["name"], days_of_week=dico["daysOfWeek"], hours=dico["hours"], last_time=dico["lastTime"])
+            return 200, PreparationSaved(coffee=coffee, creation_date=convert_to_datetime(dico["creationDate"]), last_update=convert_to_datetime(dico["lastUpdate"]), machine=machine,
+                                                id=dico["id"], saved=dico["saved"], state=dico["state"], next_time=convert_to_datetime(dico["nextTime"]), name=dico["name"], days_of_week=dico["daysOfWeek"], hours=dico["hours"], last_time=convert_to_datetime(dico["lastTime"]))
         except Exception as ex:
             print(f"Error : {ex}")
             return 500, None
@@ -1011,3 +1011,8 @@ def calculate_next_time(day_of_week: list, hours: list):
         print("Next time with hour = {}".format(next_time))
 
     return next_time
+
+def convert_to_datetime(date):
+    val = date
+    year,month,day,hour,minute,second,tzinfo = val.year,val.month,val.day,val.hour, val.minute, val.second, val.tzinfo
+    return datetime(year,month,day,hour,minute,second, tzinfo=tzinfo)
