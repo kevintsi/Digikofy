@@ -106,7 +106,7 @@ class MachineService(ABC):
 
                 db.collection("machines").document(data.id).set({
                     "id": data.id,
-                    "state": data.state,
+                    "state": 0,
                     "type": data.type
                 })
 
