@@ -318,7 +318,7 @@ async def get_next_preparation(response : Response, id_user : str = Depends(JWTB
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
 @app.get("/preparation/last", status_code=status.HTTP_200_OK, tags=["Preparation"], response_model=PreparationSaved)
-async def get_next_preparation(response : Response, id_user : str = Depends(JWTBearer())):
+async def get_last_preparation(response : Response, id_user : str = Depends(JWTBearer())):
     code, preparation = PreparationService().get_last_preparation(id_user)
     if code == 200:
         return preparation

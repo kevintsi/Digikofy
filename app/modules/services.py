@@ -957,11 +957,56 @@ def calculate_next_time(day_of_week: list, hours: list):
 
     else:
         next_time = current_date
-        while day_of_week[0] != next_time.weekday():
-            print("Next time : {} and weekdays : {}".format(
-                next_time, next_time.weekday()))
+        if day_of_week[0] == current_date.weekday(): ## Check if same day
+            print("Same day with only one day of week")
+            if len(hours) > 1: ## Check if several hours
+                print("Several hours")
+                has_past = False
+                for h in hours:
+                    splitted_hours = h.split(":")
+                    hour = int(splitted_hours[0])
+                    minute = int(splitted_hours[1])
 
-            next_time = next_time + timedelta(days=1)
+                    new_date = current_date.replace(
+                        hour=hour, minute=minute,second=0, microsecond=0, tzinfo=pytz.utc)
+
+                    if new_date > current_date:
+                        next_time = new_date
+                        break
+
+                    has_past = True
+
+                if has_past:
+                    while day_of_week[0] != next_time.weekday():
+                        print("Next time : {} and weekdays : {}".format(
+                        next_time, next_time.weekday()))
+                        next_time = next_time + timedelta(days=1)
+
+                return next_time
+            else:
+                print("One hour")
+                splitted_hours = hours[0].split(":")
+                hour = int(splitted_hours[0])
+                minute = int(splitted_hours[1])
+                next_time = current_date.replace(
+                    hour=hour, minute=minute, second=0, microsecond=0, tzinfo=pytz.utc)
+                
+                if next_time < current_date:
+                    print("Already past")
+                    next_time = next_time + timedelta(days=1)
+                    while day_of_week[0] != next_time.weekday():
+                        print("Next time : {} and weekdays : {}".format(
+                        next_time, next_time.weekday()))
+                        next_time = next_time + timedelta(days=1)
+                
+                return next_time
+
+        else:
+            while day_of_week[0] != next_time.weekday():
+                print("Next time : {} and weekdays : {}".format(
+                    next_time, next_time.weekday()))
+
+                next_time = next_time + timedelta(days=1)
         print("Next date : {}".format(next_time))
 
     has_same_date = ((next_time.day == current_date.day) and (
@@ -974,13 +1019,12 @@ def calculate_next_time(day_of_week: list, hours: list):
         splitted_hours = hours[0].split(":")
         hour = int(splitted_hours[0])
         minute = int(splitted_hours[1])
-        second = int(splitted_hours[2])
 
-        print("Hour = {} , Minute = {} , Second = {}".format(
-            hour, minute, second))
+        print("Hour = {} , Minute = {}".format(
+            hour, minute))
 
         next_time = datetime(
-            next_time.year, next_time.month, next_time.day, hour, minute, second, 0, tzinfo=pytz.utc)
+            next_time.year, next_time.month, next_time.day, hour, minute,0, 0, tzinfo=pytz.utc)
 
         print("Next time with hour = {}".format(next_time))
     else:
@@ -991,10 +1035,9 @@ def calculate_next_time(day_of_week: list, hours: list):
                 splitted_hours = h.split(":")
                 hour = int(splitted_hours[0])
                 minute = int(splitted_hours[1])
-                second = int(splitted_hours[2])
 
                 new_date = current_date.replace(
-                    hour=hour, minute=minute, second=second, microsecond=0, tzinfo=pytz.utc)
+                    hour=hour, minute=minute,second=0, microsecond=0, tzinfo=pytz.utc)
 
                 if new_date > current_date:
                     next_time = new_date
@@ -1003,14 +1046,12 @@ def calculate_next_time(day_of_week: list, hours: list):
             splitted_hours = hours[0].split(":")
             hour = int(splitted_hours[0])
             minute = int(splitted_hours[1])
-            second = int(splitted_hours[2])
-
             next_time = current_date.replace(
-                hour=hour, minute=minute, second=second, microsecond=0, tzinfo=pytz.utc)
+                hour=hour, minute=minute, second=0, microsecond=0, tzinfo=pytz.utc)
 
         print("Next time with hour = {}".format(next_time))
 
-    return next_time
+    return next_time + timedelta(days=1)
 
 def convert_to_datetime(date):
     val = date
