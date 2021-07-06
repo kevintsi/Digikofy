@@ -4,7 +4,7 @@ from ..modules.response_models import CreatePreparation, MachineUpdate, Preparat
 from firebase_admin import auth
 from ..firebase import db
 from datetime import datetime, timedelta
-from os import getenv
+from os import getenv, name
 import requests
 import pytz
 
@@ -531,7 +531,71 @@ class PreparationService(ABC):
             print("Error : {}".format(ex))
             return 500, preparations
 
-        
+    def get_by_id(self, id, id_user):
+        preparation = None
+        try:
+            print(f"------ Start get preparation by id : {id} ------")
+            prep = db.collection("users").document(
+                id_user).collection("preparations").document(id).get()
+            
+            if prep.exists:
+                prep_dict = prep.to_dict()
+
+                doc_coffee = db.collection("coffees").document(
+                prep_dict["coffee"].id).get()
+                coffee = doc_coffee.to_dict()
+                coffee = Coffee(id=coffee["id"], name=coffee["name"],
+                                description=coffee["description"])
+
+                doc_machine = db.collection("machines").document(
+                prep_dict["machine"].id).get()
+                machine = doc_machine.to_dict()
+
+                dico_machine_user = db.collection("machines").document(prep_dict["machine"].id).collection(
+                    "users").document(id_user).get().to_dict()
+
+                machine = Machine(
+                    id=machine["id"], 
+                    state=machine["state"],
+                    type=machine["type"], 
+                    name=dico_machine_user["name"],
+                    last_update=convert_to_datetime(dico_machine_user["last_update"]),
+                    creation_date=convert_to_datetime(dico_machine_user["creation_date"])
+                    )
+
+                if prep_dict["saved"]:
+                    preparation = PreparationSaved(coffee=coffee, 
+                    creation_date=convert_to_datetime(prep_dict["creationDate"]), 
+                    last_update=convert_to_datetime(prep_dict["lastUpdate"]),
+                    machine=machine,
+                    id=prep_dict["id"],
+                    saved=prep_dict["saved"],
+                    state=prep_dict["state"],
+                    next_time=convert_to_datetime(prep_dict["nextTime"]),
+                    days_of_week=prep_dict["daysOfWeek"],
+                    hours=prep_dict["hours"],
+                    last_time=convert_to_datetime(prep_dict["lastTime"]),
+                    name=prep_dict["name"]
+                    ) 
+                else:
+                    preparation = Preparation(coffee=coffee, 
+                    creation_date=convert_to_datetime(prep_dict["creationDate"]), 
+                    last_update=convert_to_datetime(prep_dict["lastUpdate"]),
+                    machine=machine,
+                    id=prep_dict["id"],
+                    saved=prep_dict["saved"],
+                    state=prep_dict["state"],
+                    next_time=convert_to_datetime(prep_dict["nextTime"])
+                    )
+                
+                return 200, preparation
+            else:
+                return 404, None
+            
+        except Exception as ex:
+            print("Error : {}".format(ex))
+            return 500, preparation
+
     def get_next_preparation(self, id_user : str):
         try:
             preps = db.collection("users").document(id_user).collection("preparations").get()

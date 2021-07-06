@@ -271,6 +271,26 @@ async def get_preparations(response: Response,  id_user: str = Depends(JWTBearer
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
+@app.get("/preparation/{id}", status_code=status.HTTP_200_OK, tags=["Preparation"], response_model=Any)
+async def get_preparation(id:str, response: Response,  id_user: str = Depends(JWTBearer())):
+    """
+        Route that retrieve an order by id
+
+        Args:
+            response (Response): [Response returned (status code)]
+            id_user (str, optional): [Id user returned after checking the token used]. Defaults to Depends(JWTBearer()).
+        Returns:
+            [List[Preparation]]: [Order with the given id]
+    """
+    code, preparation = PreparationService().get_by_id(id,id_user)
+    if code != 200 and code != 500:
+        response.status_code = status.HTTP_404_NOT_FOUND
+    elif code == 200:
+        return preparation
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
 @app.put("/preparation/{id}", status_code=status.HTTP_200_OK, tags=["Preparation"])
 async def update_preparation(id: str, data: UpdatePreparationSaved, response: Response,  id_user: str = Depends(JWTBearer())):
     """
