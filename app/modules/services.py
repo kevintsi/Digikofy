@@ -659,7 +659,7 @@ class PreparationService(ABC):
 
     def get_last_preparation(self, id_user : str):
         try:
-            preps = db.collection("users").document(id_user).collection("preparations").get()
+            preps = db.collection("users").document(id_user).collection("preparations").where("saved","==",True).get()
             if len(preps) == 0:
                 return 200, None
             last_prep = preps[0]
@@ -668,13 +668,13 @@ class PreparationService(ABC):
                 prep_dict = prep.to_dict()
                 #print(f"Superior to old next_prep : {prep_dict['nextTime'] < next_prep.to_dict()['nextTime']}")
                 #print(f"Date superior to current date : {prep_dict['nextTime'] > datetime.now(tz=pytz.UTC)}\n\n\n")
-                if prep_dict["saved"]:
-                    if (prep_dict["lastTime"] > last_prep.to_dict()["lastTime"]) and (prep_dict["lastTime"] < datetime.now(tz=pytz.utc)):
-                        #print(f'New next_prep : {prep.to_dict()["nextTime"]}\n\n')
-                        last_prep = prep
-                        print(f"New last_prep : {last_prep.to_dict()['nextTime']}")
+                print(f"Prep : {prep_dict} and {last_prep.to_dict()}")
+                if (prep_dict["lastTime"] > last_prep.to_dict()["lastTime"]) and (prep_dict["lastTime"] < datetime.now(tz=pytz.utc)):
+                    #print(f'New next_prep : {prep.to_dict()["nextTime"]}\n\n')
+                    last_prep = prep
+                    print(f"New last_prep : {last_prep.to_dict()['lastTime']}")
             
-            if last_prep == None or not last_prep.to_dict()["saved"]:
+            if last_prep == None:
                 return 200,None
 
             print(f"Last preparation : {last_prep.to_dict()}")
@@ -711,7 +711,7 @@ class PreparationService(ABC):
             return 200, PreparationSaved(coffee=coffee, creation_date=convert_to_datetime(dico["creationDate"]), last_update=convert_to_datetime(dico["lastUpdate"]), machine=machine,
                                                 id=dico["id"], saved=dico["saved"], state=dico["state"], next_time=convert_to_datetime(dico["nextTime"]), name=dico["name"], days_of_week=dico["daysOfWeek"], hours=dico["hours"], last_time=convert_to_datetime(dico["lastTime"]))
         except Exception as ex:
-            print(f"Error : {ex}")
+            print(f"Error : {ex} {ex.with_traceback}")
             return 500, None
 
     def report_preparation_started(self, id: str, id_user: str):

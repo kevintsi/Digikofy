@@ -329,7 +329,7 @@ async def delete_preparation(id: str, response: Response,  id_user: str = Depend
 
 ####### PREPARATION MACHINE'S ROUTE ##########
 
-@app.get("/preparation/next", status_code=status.HTTP_200_OK, tags=["Preparation"], response_model=Any)
+@app.get("/preparation/home/next", status_code=status.HTTP_200_OK, tags=["Preparation"], response_model=Any)
 async def get_next_preparation(response : Response, id_user : str = Depends(JWTBearer())):
     code, preparation = PreparationService().get_next_preparation(id_user)
     if code == 200:
@@ -337,7 +337,7 @@ async def get_next_preparation(response : Response, id_user : str = Depends(JWTB
     else:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
-@app.get("/preparation/last", status_code=status.HTTP_200_OK, tags=["Preparation"], response_model=PreparationSaved)
+@app.get("/preparation/home/last", status_code=status.HTTP_200_OK, tags=["Preparation"], response_model=PreparationSaved)
 async def get_last_preparation(response : Response, id_user : str = Depends(JWTBearer())):
     code, preparation = PreparationService().get_last_preparation(id_user)
     if code == 200:
