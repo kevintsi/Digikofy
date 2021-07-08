@@ -601,7 +601,7 @@ class PreparationService(ABC):
             preps = db.collection("users").document(id_user).collection("preparations").get()
             if len(preps) == 0:
                 return 200, None
-            next_prep = preps[0]
+            next_prep = preps[0] # the potential next order
             for prep in preps:
                 #print(f"Start with {prep.to_dict()['nextTime']}")
                 prep_dict = prep.to_dict()
@@ -613,11 +613,12 @@ class PreparationService(ABC):
                     next_prep = prep
                     print(f"New next_prep : {next_prep.to_dict()['nextTime']}")
 
-            if next_prep == None:
+            dico = next_prep.to_dict()
+
+            if dico["nextTime"] < datetime.now(tz=pytz.utc):
                 return 200, None
 
-            print(f"Next preparation : {next_prep.to_dict()}")
-            dico = next_prep.to_dict()
+            print(f"Next preparation : {dico}")
             doc_coffee = db.collection("coffees").document(
             dico["coffee"].id).get()
             coffee = doc_coffee.to_dict()
