@@ -409,15 +409,17 @@ class PreparationService(ABC):
 
                         prepa_dict = preparation.to_dict()
                         nextTime = prepa_dict["nextTime"]
-                        year, month, day, hour, minute, second = nextTime.year, nextTime.month, nextTime.day, nextTime.hour, nextTime.minute, nextTime.second
+                        year, month, day, hour, minute, second, tz = nextTime.year, nextTime.month, nextTime.day, nextTime.hour, nextTime.minute, nextTime.second, nextTime.tzinfo
 
                         date_preparation = datetime(
-                            year, month, day, hour, minute, second)
+                            year, month, day, hour, minute, second, tzinfo=tz)
+                            
+                        print(f"Date preparation next time : {date_preparation} and Europe now : {datetime.now(tz=pytz.utc) + timedelta(hours=2)}")
 
                         print("Early : {}".format(date_preparation <
-                                                  datetime.now() and prepa_dict["state"] == 0))
+                                                  datetime.now(tz=pytz.utc) + timedelta(hours=2) and prepa_dict["state"] == 0))
 
-                        if date_preparation < datetime.now() and prepa_dict["state"] == 0:
+                        if date_preparation < datetime.now(tz=pytz.utc) + timedelta(hours=2) and prepa_dict["state"] == 0:
 
                             print("Preparation passed\n")
 
